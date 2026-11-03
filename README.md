@@ -7,7 +7,7 @@ Teaching materials by Marco Scuderi, Sapienza Università di Roma: lecture slide
 The available lecture folders are numbered consecutively in their original teaching order. This is an index of the supplied materials, not a reconstruction of missing sessions. Original file names and numbers printed within slides are retained for traceability and compatibility.
 
 | Lecture | Topic | 
-|---|---|---|
+|---|---|
 | 01 | [Course introduction](lectures/01/) | 
 | 02 | [Describing rocks quantitatively](lectures/02/) | 
 | 03 | [Stress and strain](lectures/03/) | 
