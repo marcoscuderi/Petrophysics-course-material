@@ -2,7 +2,6 @@
 
 Original Drive folder: `L09`. Repository lecture numbers are consecutive; labels inside the original teaching files are preserved.
 
-[Back to course index](../../README.md)
 
 ## Materials
 
@@ -23,10 +22,6 @@ Original Drive folder: `L09`. Repository lecture numbers are consecutive; labels
 - [01_granit/waves/third_granite_broken.bscan.tsv](01_granit/waves/third_granite_broken.bscan.tsv)
 - [01_granit/waves/third_granite_broken.eur](01_granit/waves/third_granite_broken.eur)
 - [01_granit/waves/third_granite_broken.ini](01_granit/waves/third_granite_broken.ini)
-- [01_granit/waves_g2/.step1_granit_g2.eur.Vzmqj0](01_granit/waves_g2/.step1_granit_g2.eur.Vzmqj0)
-- [01_granit/waves_g2/.step2_granit_g2.eur.lFkG0W](01_granit/waves_g2/.step2_granit_g2.eur.lFkG0W)
-- [01_granit/waves_g2/.step3_granit_g2.eur.D7kWoA](01_granit/waves_g2/.step3_granit_g2.eur.D7kWoA)
-- [01_granit/waves_g2/.step3_granit_g2.eur.D7kWoA.PEQiGv](01_granit/waves_g2/.step3_granit_g2.eur.D7kWoA.PEQiGv)
 - [01_granit/waves_g2/step1_granit_g2.ini](01_granit/waves_g2/step1_granit_g2.ini)
 - [01_granit/waves_g2/step2_granit_g2.ini](01_granit/waves_g2/step2_granit_g2.ini)
 - [01_granit/waves_g2/step3_granit_g2.ini](01_granit/waves_g2/step3_granit_g2.ini)
@@ -46,7 +41,6 @@ Original Drive folder: `L09`. Repository lecture numbers are consecutive; labels
 - [03_carbonate/mech/UCS_carbonate_1.tdms_index](03_carbonate/mech/UCS_carbonate_1.tdms_index)
 - [03_carbonate/mech/UCS_carbonate_2.tdms](03_carbonate/mech/UCS_carbonate_2.tdms)
 - [03_carbonate/mech/UCS_carbonate_2.tdms_index](03_carbonate/mech/UCS_carbonate_2.tdms_index)
-- [03_carbonate/waves/.carb_1.bscan.tsv.PfQk07](03_carbonate/waves/.carb_1.bscan.tsv.PfQk07)
 - [Extra Interactive tools /Lecture_08_Interactive_Activities (1).html](Extra%20Interactive%20tools%20/Lecture_08_Interactive_Activities%20%281%29.html)
 - [Extra Interactive tools /Petrophysics_Lecture_09_Interactive_Activities.html](Extra%20Interactive%20tools%20/Petrophysics_Lecture_09_Interactive_Activities.html)
 - [Extra Interactive tools /Petrophysics_Lecture_09_Interactive_Activities_Student_Guide.pdf](Extra%20Interactive%20tools%20/Petrophysics_Lecture_09_Interactive_Activities_Student_Guide.pdf)
@@ -68,4 +62,3 @@ Original Drive folder: `L09`. Repository lecture numbers are consecutive; labels
 
 ## Running the analysis
 
-See the [installation instructions](../../README.md#python-tools). Keep the supplied subdirectories together and select your local input paths in the GUI or notebook. Consult the supplied student guides for experiment-specific steps.
