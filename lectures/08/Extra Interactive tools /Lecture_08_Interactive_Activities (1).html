@@ -1,0 +1,2158 @@
+<!doctype html>
+<html lang="en" data-visualize-standalone>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Lecture 8 Interactive</title>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+</head>
+<body>
+<iframe id="codex-visualization" sandbox="allow-scripts" referrerpolicy="no-referrer" title="Lecture 8 Interactive" data-srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot; data-visualize-standalone&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;Lecture 8 Interactive&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(
+    --background,
+    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
+  ) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: var(
+    --color-background-primary,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
+  --card-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --popover: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255), rgb(45 45 45))
+  );
+  --popover-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --primary: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --primary-foreground: var(
+    --color-text-inverse,
+    light-dark(rgb(255 255 255), rgb(13 13 13))
+  );
+  --secondary: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
+  );
+  --secondary-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: var(
+    --color-text-secondary,
+    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
+  );
+  --accent: var(
+    --color-background-info,
+    light-dark(rgb(229 242 255), rgb(13 39 63))
+  );
+  --accent-foreground: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --destructive: var(
+    --color-text-warning,
+    light-dark(rgb(226 85 7), rgb(255 133 73))
+  );
+  --border: var(
+    --color-border-secondary,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+  --input: var(
+    --color-border-primary,
+    light-dark(
+      rgb(26 28 31 / 11.8%),
+      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+    )
+  );
+  --ring: var(
+    --color-ring-primary,
+    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
+  );
+  --font-size-base: var(--font-text-md-size, 14px);
+  --blue: light-dark(rgb(51 156 255), rgb(51 156 255));
+  --orange: light-dark(rgb(226 85 7), rgb(251 106 34));
+  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --red: light-dark(rgb(224 46 42), rgb(255 103 100));
+  --purple: light-dark(rgb(146 79 247), rgb(173 123 249));
+  --yellow: light-dark(rgb(255 195 0), rgb(255 210 64));
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --icon-size: 16px;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --corner-shape: round;
+  --radius: var(--border-radius-lg, 10px);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
+  --color-background-primary: var(
+    --background,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --color-text-primary: var(
+    --foreground,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --color-border-secondary: var(
+    --border,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+
+  margin: 0;
+  padding: var(--visualize-paint-gutter, 0px);
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+:root:not([data-app-block-surface], [data-visualize-standalone]) &gt; body {
+  padding: 12px;
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium, 500);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead th {
+  padding-block: 8px;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 6px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: var(--corner-shape);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card, .progress) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* The shared runtime owns data-tooltip; suppress AppBlock&#x27;s pseudo-tooltip. */
+main [data-tooltip]::after {
+  content: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+hr {
+  width: 100%;
+  height: 1px;
+  margin-block: 6px;
+  border: 0;
+  background: var(--border);
+}
+
+.nav {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+.progress {
+  display: flex;
+  height: 8px;
+  margin-block: calc((var(--line-height-normal, 1.5em) - 8px) / 2);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+}
+
+.progress-bar:only-child {
+  border-radius: var(--radius-full);
+}
+
+.progress-bar {
+  height: 100%;
+  flex-shrink: 0;
+  border: 0;
+  background: var(--viz-series-1);
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.nav-link,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn,
+.nav-link {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover,
+.nav-link:not(:disabled):not([aria-disabled=&quot;true&quot;]):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.nav-pills .nav-link {
+  min-width: 0;
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.nav-justified .nav-link {
+  flex: 1 1 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.nav-pills .nav-link.active {
+  color: var(--foreground);
+  background: var(--muted);
+}
+
+.btn:disabled,
+.nav-link:disabled,
+.nav-link[aria-disabled=&quot;true&quot;] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: var(--corner-shape);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: var(--corner-shape);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+  [aria-pressed=&quot;true&quot;],
+  [aria-selected=&quot;true&quot;],
+  .is-selected
+) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible,
+.nav-link:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (pointer: coarse) {
+  .btn,
+  .nav-link,
+  .form-control,
+  .form-select {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Keep small-screen WebKit from zooming when a text field receives focus. */
+  .form-control,
+  .form-select {
+    font-size: max(16px, var(--font-size-normal));
+  }
+
+  .form-control[type=&quot;file&quot;]::file-selector-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .form-control-color[type=&quot;color&quot;] {
+    width: 44px;
+    height: 44px;
+  }
+
+  .form-control:is(
+    [type=&quot;date&quot;],
+    [type=&quot;datetime-local&quot;],
+    [type=&quot;month&quot;],
+    [type=&quot;time&quot;],
+    [type=&quot;week&quot;]
+  ) {
+    min-width: 0;
+    max-width: 100%;
+    padding-block: 8px;
+  }
+
+  .form-check {
+    min-height: 44px;
+    padding-inline: 15px;
+  }
+
+  .form-check-input {
+    position: relative;
+  }
+
+  .form-check-input::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    content: &quot;&quot;;
+    transform: translate(-50%, -50%);
+  }
+
+  .form-check-label {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .form-range {
+    height: 44px;
+    touch-action: pan-y;
+  }
+
+  .form-range::-webkit-slider-runnable-track {
+    height: 44px;
+  }
+
+  .form-range::-moz-range-track {
+    height: 44px;
+  }
+
+  .form-range::-webkit-slider-thumb {
+    margin-top: 12px;
+  }
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+/* Model-authored chart rules can otherwise stretch icons after these styles load. */
+svg.lucide {
+  display: block;
+  width: var(--icon-size) !important;
+  height: var(--icon-size) !important;
+  flex: none;
+  margin: 0 !important;
+  stroke-width: 1.6;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type=&quot;application/json&quot; id=&quot;codex-visualization-widget-state&quot;&gt;__CODEX_VISUALIZATION_WIDGET_STATE__&lt;/script&gt;
+&lt;script&gt;(() =&gt; {
+  const root = document.documentElement;
+  const mediaQuery = globalThis.matchMedia(&quot;(prefers-color-scheme: dark)&quot;);
+  const apply = Reflect.apply;
+  const isArray = Array.isArray;
+  const hasOwn = Object.hasOwn;
+  const parentWindow = globalThis.parent;
+  const stringify = JSON.stringify;
+  const parse = JSON.parse;
+  const encode = TextEncoder.prototype.encode.bind(new TextEncoder());
+  const initialStateElement = document.getElementById(
+    &quot;codex-visualization-widget-state&quot;,
+  );
+  const initialGlobals = parse(initialStateElement?.textContent ?? &quot;{}&quot;);
+  initialStateElement?.remove();
+  /** @type {Record&lt;string, unknown&gt; | null} */
+  let state = initialGlobals.widgetState ?? null;
+  const statePersistence = initialGlobals.statePersistence ?? &quot;none&quot;;
+  let nextStateRequestId = 0;
+  /** @type {Map&lt;number, { resolve: () =&gt; void; reject: (error: Error) =&gt; void; timeout: ReturnType&lt;typeof globalThis.setTimeout&gt;; serializedState: string }&gt;} */
+  const pendingStateWrites = new Map();
+  const persistenceError = () =&gt;
+    Object.assign(
+      new Error(&quot;The host could not persist the widget state update&quot;),
+      {
+        code: -32000,
+        data: { code: &quot;widget_state_persistence_failed&quot;, retryable: false },
+      },
+    );
+  /**
+   * @param {object} prototype
+   * @param {string} property
+   */
+  const getPrototypeGetter = (prototype, property) =&gt; {
+    // oxlint-disable-next-line typescript/unbound-method -- invoked through captured Reflect.apply
+    const getter = Object.getOwnPropertyDescriptor(prototype, property)?.get;
+    if (getter == null) {
+      throw new Error(`Missing ${property} getter`);
+    }
+    return getter;
+  };
+  const getMessageData = getPrototypeGetter(MessageEvent.prototype, &quot;data&quot;);
+  const getMessagePorts = getPrototypeGetter(MessageEvent.prototype, &quot;ports&quot;);
+  const getMessageSource = getPrototypeGetter(MessageEvent.prototype, &quot;source&quot;);
+  // oxlint-disable-next-line typescript/unbound-method -- captured before the untrusted fragment runs
+  const addHostMessageListener = MessagePort.prototype.addEventListener;
+  // oxlint-disable-next-line typescript/unbound-method -- captured before the untrusted fragment runs
+  const postHostMessage = MessagePort.prototype.postMessage;
+  // oxlint-disable-next-line typescript/unbound-method -- captured before the untrusted fragment runs
+  const startHostPort = MessagePort.prototype.start;
+  // oxlint-disable-next-line typescript/unbound-method -- captured before the untrusted fragment runs
+  const stopMessagePropagation = Event.prototype.stopImmediatePropagation;
+  /** @type {MessagePort | null} */
+  let hostPort = null;
+  const postToHost = (type, payload) =&gt; {
+    if (hostPort != null) {
+      apply(postHostMessage, hostPort, [{ type, ...payload }]);
+    }
+  };
+  const openExternal = ({ href }) =&gt; {
+    if (globalThis.navigator.userActivation?.isActive === true) {
+      postToHost(&quot;open-external&quot;, { href });
+    }
+  };
+  const sendFollowUpMessage = ({ context, prompt, title }) =&gt; {
+    if (globalThis.navigator.userActivation?.isActive === true) {
+      postToHost(&quot;follow-up&quot;, { context, prompt, title });
+    }
+    return Promise.resolve();
+  };
+  /**
+   * @param {Record&lt;string, unknown&gt; | ((previous: Record&lt;string, unknown&gt; | null) =&gt; Record&lt;string, unknown&gt;)} next
+   * @returns {Promise&lt;void&gt;}
+   */
+  const setWidgetState = async (next) =&gt; {
+    const nextState = typeof next === &quot;function&quot; ? next(state) : next;
+    if (
+      nextState == null ||
+      typeof nextState !== &quot;object&quot; ||
+      isArray(nextState)
+    ) {
+      throw new TypeError(&quot;Widget state must be a JSON object&quot;);
+    }
+    const inputState = stringify(
+      nextState,
+      (_key, /** @type {unknown} */ value) =&gt; {
+        if (
+          typeof value === &quot;undefined&quot; ||
+          typeof value === &quot;function&quot; ||
+          typeof value === &quot;symbol&quot; ||
+          (typeof value === &quot;number&quot; &amp;&amp; !Number.isFinite(value))
+        ) {
+          throw new TypeError(&quot;Widget state must be a JSON object&quot;);
+        }
+        return value;
+      },
+    );
+    const parsedState = parse(inputState);
+    if (
+      parsedState == null ||
+      typeof parsedState !== &quot;object&quot; ||
+      isArray(parsedState)
+    ) {
+      throw new TypeError(&quot;Widget state must be a JSON object&quot;);
+    }
+    const storedState = {
+      modelContent: null,
+      privateContent: null,
+      ...parsedState,
+    };
+    const serializedState = stringify(storedState);
+    if (encode(serializedState).length &gt; 16 * 1024) {
+      throw new TypeError(
+        &quot;Widget state must be a JSON object of at most 16 KiB&quot;,
+      );
+    }
+    if (
+      hasOwn(storedState, &quot;imageIds&quot;) &amp;&amp;
+      (!isArray(storedState.imageIds) ||
+        storedState.imageIds.some(
+          (/** @type {unknown} */ id) =&gt; typeof id !== &quot;string&quot;,
+        ))
+    ) {
+      throw new TypeError(&quot;Widget state imageIds must be an array of strings&quot;);
+    }
+    if (storedState.imageIds?.length &gt; 0) {
+      throw Object.assign(
+        new TypeError(&quot;Visualization state does not support image attachments&quot;),
+        { code: -32602, data: { code: &quot;images_unsupported&quot; } },
+      );
+    }
+    state = storedState;
+    globalThis.openai.widgetState = state;
+    globalThis.dispatchEvent(
+      new CustomEvent(&quot;openai:set_globals&quot;, {
+        detail: { globals: { widgetState: state } },
+      }),
+    );
+    if (statePersistence === &quot;none&quot;) {
+      throw persistenceError();
+    }
+    const id = ++nextStateRequestId;
+    return new Promise((resolve, reject) =&gt; {
+      const timeout = globalThis.setTimeout(() =&gt; {
+        pendingStateWrites.delete(id);
+        reject(persistenceError());
+      }, 30_000);
+      pendingStateWrites.set(id, { resolve, reject, timeout, serializedState });
+      postToHost(&quot;widget-state-write&quot;, { id, state: serializedState });
+    });
+  };
+  const syncTheme = () =&gt; {
+    const theme = mediaQuery.matches ? &quot;dark&quot; : &quot;light&quot;;
+    root.dataset.theme = theme;
+    globalThis.openai = {
+      ...globalThis.openai,
+      openExternal,
+      sendFollowUpMessage,
+      setWidgetState,
+      theme,
+      visualizationStyleVariables: {},
+      visualizationTheme: theme,
+      widgetState: state,
+      statePersistence,
+      stateModelContext: &quot;none&quot;,
+    };
+    globalThis.dispatchEvent(
+      new CustomEvent(&quot;openai:set_globals&quot;, {
+        detail: { globals: globalThis.openai },
+      }),
+    );
+  };
+  const sendHeight = () =&gt; {
+    postToHost(&quot;height&quot;, {
+      height: Math.ceil(
+        Math.max(
+          document.body.scrollHeight,
+          document.body.getBoundingClientRect().height,
+        ),
+      ),
+    });
+  };
+
+  globalThis.addEventListener(
+    &quot;message&quot;,
+    (event) =&gt; {
+      const data = apply(getMessageData, event, []);
+      const ports = apply(getMessagePorts, event, []);
+      const source = apply(getMessageSource, event, []);
+      if (
+        hostPort != null ||
+        source !== parentWindow ||
+        typeof data !== &quot;object&quot; ||
+        data?.type !== &quot;codex-visualization-initialize&quot; ||
+        !isArray(ports) ||
+        ports.length !== 1
+      ) {
+        return;
+      }
+      apply(stopMessagePropagation, event, []);
+      const nextHostPort = ports[0];
+      try {
+        apply(addHostMessageListener, nextHostPort, [
+          &quot;message&quot;,
+          (event) =&gt; {
+            const data = apply(getMessageData, event, []);
+            if (typeof data === &quot;object&quot; &amp;&amp; data?.type === &quot;measure&quot;) {
+              sendHeight();
+            } else if (
+              typeof data === &quot;object&quot; &amp;&amp;
+              data?.type === &quot;widget-state-result&quot;
+            ) {
+              /** @type {unknown} */
+              const id = data.id;
+              if (typeof id !== &quot;number&quot;) {
+                return;
+              }
+              const pending = pendingStateWrites.get(id);
+              if (pending != null) {
+                pendingStateWrites.delete(id);
+                globalThis.clearTimeout(pending.timeout);
+                if (data.ok === true) {
+                  pending.resolve();
+                } else {
+                  pending.reject(persistenceError());
+                }
+              }
+            }
+          },
+        ]);
+        apply(startHostPort, nextHostPort, []);
+      } catch {
+        return;
+      }
+      hostPort = nextHostPort;
+      for (const [id, { serializedState }] of pendingStateWrites) {
+        postToHost(&quot;widget-state-write&quot;, { id, state: serializedState });
+      }
+      sendHeight();
+    },
+    { capture: true },
+  );
+  document.currentScript?.remove();
+  mediaQuery.addEventListener(&quot;change&quot;, syncTheme);
+  globalThis.addEventListener(&quot;click&quot;, (event) =&gt; {
+    if (event.defaultPrevented) {
+      return;
+    }
+    let element = null;
+    if (event.target instanceof globalThis.Element) {
+      element = event.target;
+    } else if (event.target instanceof globalThis.Node) {
+      element = event.target.parentElement;
+    }
+    const link = element?.closest(&quot;a[href]&quot;);
+    const href = link?.getAttribute(&quot;href&quot;);
+    if (href == null) {
+      return;
+    }
+    if (href.startsWith(&quot;#&quot;)) {
+      let id;
+      try {
+        id = decodeURIComponent(href.slice(1));
+      } catch {
+        return;
+      }
+      const target = id.length === 0 ? root : document.getElementById(id);
+      if (
+        target == null ||
+        globalThis.navigator.userActivation?.isActive !== true
+      ) {
+        return;
+      }
+      event.preventDefault();
+      postToHost(&quot;scroll-to&quot;, {
+        top: target.getBoundingClientRect().top + globalThis.scrollY,
+      });
+      return;
+    }
+    event.preventDefault();
+    openExternal({ href });
+  });
+  new ResizeObserver(sendHeight).observe(document.body);
+  syncTheme();
+})();
+&lt;/script&gt;
+&lt;div id=&quot;lecture8-interactive&quot;&gt;
+  &lt;header class=&quot;l8-header&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;l8-kicker&quot;&gt;PETROPHYSICS · LECTURE 8&lt;/div&gt;
+      &lt;h1&gt;When and how does a rock fail?&lt;/h1&gt;
+      &lt;p&gt;Investigate the Westerly granite experiments, then reconstruct their failure stress states.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-secondary l8-reset&quot; id=&quot;l8-reset&quot;&gt;Reset activities&lt;/button&gt;
+  &lt;/header&gt;
+
+  &lt;nav class=&quot;nav nav-tabs l8-tabs&quot; aria-label=&quot;Interactive activities&quot;&gt;
+    &lt;button type=&quot;button&quot; class=&quot;nav-link active&quot; id=&quot;l8-tab-data&quot; aria-selected=&quot;true&quot;&gt;1 · Discover the strength trend&lt;/button&gt;
+    &lt;button type=&quot;button&quot; class=&quot;nav-link&quot; id=&quot;l8-tab-mohr&quot; aria-selected=&quot;false&quot;&gt;2 · Build the failure stress state&lt;/button&gt;
+  &lt;/nav&gt;
+
+  &lt;section id=&quot;l8-data-panel&quot; class=&quot;l8-panel&quot;&gt;
+    &lt;div class=&quot;l8-intro&quot;&gt;
+      &lt;div&gt;
+        &lt;h2&gt;Does confinement make granite stronger?&lt;/h2&gt;
+        &lt;p class=&quot;text-muted&quot;&gt;Start with a prediction. Then reveal the 16 published peak-stress measurements without fitting a model first.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;l8-progress&quot; aria-label=&quot;Data reveal progress&quot;&gt;&lt;span id=&quot;l8-progress-fill&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;l8-predict&quot; id=&quot;l8-predict-box&quot;&gt;
+      &lt;fieldset&gt;
+        &lt;legend&gt;Before seeing the data, I predict that increasing &lt;em&gt;P&lt;/em&gt;&lt;sub&gt;c&lt;/sub&gt; will make &lt;em&gt;q&lt;/em&gt;&lt;sub&gt;peak&lt;/sub&gt;…&lt;/legend&gt;
+        &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input&quot; type=&quot;radio&quot; name=&quot;l8-prediction&quot; value=&quot;decrease&quot;&gt;&lt;span class=&quot;form-check-label&quot;&gt;decrease&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input&quot; type=&quot;radio&quot; name=&quot;l8-prediction&quot; value=&quot;same&quot;&gt;&lt;span class=&quot;form-check-label&quot;&gt;remain approximately constant&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input&quot; type=&quot;radio&quot; name=&quot;l8-prediction&quot; value=&quot;increase&quot;&gt;&lt;span class=&quot;form-check-label&quot;&gt;increase&lt;/span&gt;&lt;/label&gt;
+      &lt;/fieldset&gt;
+      &lt;label class=&quot;form-label&quot; for=&quot;l8-reason&quot;&gt;One-sentence justification&lt;/label&gt;
+      &lt;textarea class=&quot;form-control&quot; id=&quot;l8-reason&quot; rows=&quot;2&quot; placeholder=&quot;Because…&quot;&gt;&lt;/textarea&gt;
+      &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot; id=&quot;l8-commit&quot;&gt;Commit prediction&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;l8-data-workspace&quot; id=&quot;l8-data-workspace&quot; hidden&gt;
+      &lt;div class=&quot;l8-toolbar&quot; aria-label=&quot;Reveal pressure groups&quot;&gt;
+        &lt;span class=&quot;l8-toolbar-label&quot;&gt;Reveal experiments:&lt;/span&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary l8-reveal active&quot; data-pressure=&quot;50&quot;&gt;50 MPa&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary l8-reveal&quot; data-pressure=&quot;100&quot;&gt;100 MPa&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary l8-reveal&quot; data-pressure=&quot;150&quot;&gt;150 MPa&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary l8-reveal&quot; data-pressure=&quot;200&quot;&gt;200 MPa&lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;l8-chart-shell&quot;&gt;
+        &lt;div class=&quot;l8-chart-head&quot;&gt;
+          &lt;div&gt;
+            &lt;h3&gt;Peak differential stress&lt;/h3&gt;
+            &lt;p class=&quot;text-muted&quot; id=&quot;l8-chart-prompt&quot;&gt;Describe the four values at 50 MPa before revealing the next group.&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;l8-chart-actions&quot;&gt;
+            &lt;label class=&quot;form-check form-switch&quot;&gt;&lt;input class=&quot;form-check-input&quot; type=&quot;checkbox&quot; id=&quot;l8-means&quot;&gt;&lt;span class=&quot;form-check-label&quot;&gt;Show means&lt;/span&gt;&lt;/label&gt;
+            &lt;label class=&quot;form-check form-switch&quot;&gt;&lt;input class=&quot;form-check-input&quot; type=&quot;checkbox&quot; id=&quot;l8-fit&quot; disabled&gt;&lt;span class=&quot;form-check-label&quot;&gt;Test straight-line model&lt;/span&gt;&lt;/label&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;l8-svg-wrap&quot; id=&quot;l8-strength-wrap&quot;&gt;
+          &lt;svg id=&quot;l8-strength-chart&quot; role=&quot;img&quot; aria-labelledby=&quot;l8-strength-title l8-strength-desc&quot;&gt;&lt;title id=&quot;l8-strength-title&quot;&gt;Westerly granite peak strength versus confining pressure&lt;/title&gt;&lt;desc id=&quot;l8-strength-desc&quot;&gt;A progressive scatter plot of 16 peak differential stress measurements at four confining pressures.&lt;/desc&gt;&lt;/svg&gt;
+          &lt;div class=&quot;l8-tooltip&quot; id=&quot;l8-data-tooltip&quot; role=&quot;tooltip&quot; hidden&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;l8-data-footer&quot;&gt;
+        &lt;div class=&quot;l8-observation&quot; aria-live=&quot;polite&quot;&gt;
+          &lt;span class=&quot;text-muted&quot;&gt;Current evidence&lt;/span&gt;
+          &lt;strong id=&quot;l8-evidence&quot;&gt;Four specimens are visible at 50 MPa.&lt;/strong&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;l8-observation&quot; id=&quot;l8-delta-box&quot; hidden&gt;
+          &lt;span class=&quot;text-muted&quot;&gt;Change in mean strength, 50 → 200 MPa&lt;/span&gt;
+          &lt;strong&gt;&lt;span id=&quot;l8-delta&quot;&gt;480.3&lt;/span&gt; MPa&lt;/strong&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;l8-question&quot;&gt;
+          &lt;label class=&quot;form-label&quot; for=&quot;l8-claim&quot;&gt;Write the conclusion supported by the measurements&lt;/label&gt;
+          &lt;textarea class=&quot;form-control&quot; id=&quot;l8-claim&quot; rows=&quot;2&quot; placeholder=&quot;Over the measured pressure range…&quot;&gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section id=&quot;l8-mohr-panel&quot; class=&quot;l8-panel&quot; hidden&gt;
+    &lt;div class=&quot;l8-intro&quot;&gt;
+      &lt;div&gt;
+        &lt;h2&gt;What changes in the stress state?&lt;/h2&gt;
+        &lt;p class=&quot;text-muted&quot;&gt;First hold differential stress fixed. Then compare the measured failure states.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;l8-mode&quot; role=&quot;group&quot; aria-label=&quot;Mohr activity mode&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot; id=&quot;l8-mode-load&quot; aria-pressed=&quot;true&quot;&gt;Explore loading&lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary&quot; id=&quot;l8-mode-compare&quot; aria-pressed=&quot;false&quot;&gt;Compare failures&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;l8-mohr-controls&quot; id=&quot;l8-load-controls&quot;&gt;
+      &lt;div class=&quot;l8-control-block&quot;&gt;
+        &lt;label class=&quot;form-label&quot; for=&quot;l8-pc&quot;&gt;Confining pressure &lt;em&gt;P&lt;/em&gt;&lt;sub&gt;c&lt;/sub&gt; = σ&lt;sub&gt;3&lt;/sub&gt;: &lt;strong class=&quot;tabular-nums&quot;&gt;&lt;span id=&quot;l8-pc-value&quot;&gt;50&lt;/span&gt; MPa&lt;/strong&gt;&lt;/label&gt;
+        &lt;input class=&quot;form-range&quot; id=&quot;l8-pc&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;200&quot; step=&quot;10&quot; value=&quot;50&quot;&gt;
+        &lt;div class=&quot;l8-range-labels&quot;&gt;&lt;span&gt;0&lt;/span&gt;&lt;span&gt;100&lt;/span&gt;&lt;span&gt;200 MPa&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;l8-control-block&quot;&gt;
+        &lt;label class=&quot;form-label&quot; for=&quot;l8-q&quot;&gt;Differential stress &lt;em&gt;q&lt;/em&gt; = σ&lt;sub&gt;1&lt;/sub&gt; − σ&lt;sub&gt;3&lt;/sub&gt;: &lt;strong class=&quot;tabular-nums&quot;&gt;&lt;span id=&quot;l8-q-value&quot;&gt;250&lt;/span&gt; MPa&lt;/strong&gt;&lt;/label&gt;
+        &lt;input class=&quot;form-range&quot; id=&quot;l8-q&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1050&quot; step=&quot;5&quot; value=&quot;250&quot;&gt;
+        &lt;div class=&quot;l8-range-labels&quot;&gt;&lt;span&gt;0&lt;/span&gt;&lt;span&gt;525&lt;/span&gt;&lt;span&gt;1050 MPa&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-secondary&quot; id=&quot;l8-to-failure&quot;&gt;Jump to measured failure at nearest tested &lt;em&gt;P&lt;/em&gt;&lt;sub&gt;c&lt;/sub&gt;&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;l8-compare-controls&quot; id=&quot;l8-compare-controls&quot; hidden&gt;
+      &lt;div class=&quot;l8-circle-picker&quot;&gt;
+        &lt;span class=&quot;l8-toolbar-label&quot;&gt;Measured failure circles:&lt;/span&gt;
+        &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input l8-circle-check&quot; type=&quot;checkbox&quot; value=&quot;50&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;50 MPa&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input l8-circle-check&quot; type=&quot;checkbox&quot; value=&quot;100&quot;&gt;&lt;span class=&quot;form-check-label&quot;&gt;100 MPa&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input l8-circle-check&quot; type=&quot;checkbox&quot; value=&quot;150&quot;&gt;&lt;span class=&quot;form-check-label&quot;&gt;150 MPa&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input l8-circle-check&quot; type=&quot;checkbox&quot; value=&quot;200&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;200 MPa&lt;/span&gt;&lt;/label&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;table-responsive l8-measured-table&quot;&gt;
+        &lt;table class=&quot;table table-sm&quot;&gt;
+          &lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;em&gt;P&lt;/em&gt;&lt;sub&gt;c&lt;/sub&gt; (MPa)&lt;/th&gt;&lt;th class=&quot;text-end&quot;&gt;Test 1&lt;/th&gt;&lt;th class=&quot;text-end&quot;&gt;Test 2&lt;/th&gt;&lt;th class=&quot;text-end&quot;&gt;Test 3&lt;/th&gt;&lt;th class=&quot;text-end&quot;&gt;Test 4&lt;/th&gt;&lt;th class=&quot;text-end&quot;&gt;Mean &lt;em&gt;q&lt;/em&gt;&lt;sub&gt;peak&lt;/sub&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;&lt;th&gt;50&lt;/th&gt;&lt;td class=&quot;text-end&quot;&gt;543.2&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;545.9&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;527.6&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;518.3&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;533.75&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;th&gt;100&lt;/th&gt;&lt;td class=&quot;text-end&quot;&gt;737.2&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;737.5&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;709.2&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;716.5&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;725.10&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;th&gt;150&lt;/th&gt;&lt;td class=&quot;text-end&quot;&gt;899.2&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;897.1&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;877.1&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;862.6&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;884.00&lt;/td&gt;&lt;/tr&gt;
+            &lt;tr&gt;&lt;th&gt;200&lt;/th&gt;&lt;td class=&quot;text-end&quot;&gt;1028.4&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;1037.6&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;996.7&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;993.3&lt;/td&gt;&lt;td class=&quot;text-end&quot;&gt;1014.00&lt;/td&gt;&lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+      &lt;p class=&quot;text-small text-muted l8-data-note&quot;&gt;Measured: &lt;em&gt;P&lt;/em&gt;&lt;sub&gt;c&lt;/sub&gt; and the 16 individual &lt;em&gt;q&lt;/em&gt;&lt;sub&gt;peak&lt;/sub&gt; values. Means, Mohr-circle coordinates and failure-plane stresses are calculated from them.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;l8-live-values&quot; id=&quot;l8-live-values&quot; aria-live=&quot;polite&quot;&gt;
+      &lt;span&gt;σ&lt;sub&gt;3&lt;/sub&gt; &lt;strong id=&quot;l8-s3&quot;&gt;50&lt;/strong&gt; MPa&lt;/span&gt;
+      &lt;span&gt;σ&lt;sub&gt;1&lt;/sub&gt; &lt;strong id=&quot;l8-s1&quot;&gt;300&lt;/strong&gt; MPa&lt;/span&gt;
+      &lt;span&gt;Centre &lt;strong id=&quot;l8-centre&quot;&gt;175&lt;/strong&gt; MPa&lt;/span&gt;
+      &lt;span&gt;Radius &lt;strong id=&quot;l8-radius&quot;&gt;125&lt;/strong&gt; MPa&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;l8-failure-values&quot; id=&quot;l8-failure-values&quot; hidden aria-live=&quot;polite&quot;&gt;
+      &lt;span&gt;Measured failure state reached&lt;/span&gt;
+      &lt;strong&gt;Inferred plane stresses:&lt;/strong&gt;
+      &lt;span&gt;σ&lt;sub&gt;n,f&lt;/sub&gt; = &lt;strong id=&quot;l8-snf&quot;&gt;—&lt;/strong&gt; MPa&lt;/span&gt;
+      &lt;span&gt;τ&lt;sub&gt;f&lt;/sub&gt; = &lt;strong id=&quot;l8-tauf&quot;&gt;—&lt;/strong&gt; MPa&lt;/span&gt;
+      &lt;span&gt;plane angle α = &lt;strong id=&quot;l8-alpha-live&quot;&gt;—&lt;/strong&gt;° to σ&lt;sub&gt;1&lt;/sub&gt;&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;l8-linked-views&quot;&gt;
+      &lt;div class=&quot;l8-mini-view&quot;&gt;
+        &lt;h3&gt;Specimen&lt;/h3&gt;
+        &lt;svg id=&quot;l8-specimen&quot; viewBox=&quot;0 0 240 280&quot; role=&quot;img&quot; aria-label=&quot;Triaxial specimen with axial and confining stress arrows&quot;&gt;&lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;l8-mini-view l8-stress-view&quot;&gt;
+        &lt;h3&gt;Loading components&lt;/h3&gt;
+        &lt;div class=&quot;l8-svg-wrap&quot; id=&quot;l8-stress-wrap&quot;&gt;&lt;svg id=&quot;l8-stress-chart&quot; role=&quot;img&quot; aria-label=&quot;Principal stress components during loading&quot;&gt;&lt;/svg&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;l8-mini-view l8-circle-view&quot;&gt;
+        &lt;div class=&quot;l8-chart-head&quot;&gt;
+          &lt;h3&gt;Mohr diagram&lt;/h3&gt;
+          &lt;label class=&quot;form-check form-switch&quot;&gt;&lt;input class=&quot;form-check-input&quot; type=&quot;checkbox&quot; id=&quot;l8-envelope&quot;&gt;&lt;span class=&quot;form-check-label&quot;&gt;Fit failure envelope&lt;/span&gt;&lt;/label&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;l8-svg-wrap&quot; id=&quot;l8-mohr-wrap&quot;&gt;
+          &lt;svg id=&quot;l8-mohr-chart&quot; role=&quot;img&quot; aria-labelledby=&quot;l8-mohr-title l8-mohr-desc&quot;&gt;&lt;title id=&quot;l8-mohr-title&quot;&gt;Mohr circle for the selected stress state&lt;/title&gt;&lt;desc id=&quot;l8-mohr-desc&quot;&gt;Normal and shear stress axes have exactly the same scale per megapascal.&lt;/desc&gt;&lt;/svg&gt;
+          &lt;div class=&quot;l8-tooltip&quot; id=&quot;l8-mohr-tooltip&quot; role=&quot;tooltip&quot; hidden&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;l8-envelope-controls&quot; id=&quot;l8-envelope-controls&quot; hidden&gt;
+      &lt;div class=&quot;l8-control-block&quot;&gt;
+        &lt;label class=&quot;form-label&quot; for=&quot;l8-c&quot;&gt;Cohesion &lt;em&gt;c&lt;/em&gt;: &lt;strong&gt;&lt;span id=&quot;l8-c-value&quot;&gt;95&lt;/span&gt; MPa&lt;/strong&gt;&lt;/label&gt;
+        &lt;input class=&quot;form-range&quot; id=&quot;l8-c&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;200&quot; step=&quot;5&quot; value=&quot;95&quot;&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;l8-control-block&quot;&gt;
+        &lt;label class=&quot;form-label&quot; for=&quot;l8-phi&quot;&gt;Friction angle φ: &lt;strong&gt;&lt;span id=&quot;l8-phi-value&quot;&gt;38&lt;/span&gt;°&lt;/strong&gt; · friction μ = tanφ = &lt;strong&gt;&lt;span id=&quot;l8-mu-value&quot;&gt;0.78&lt;/span&gt;&lt;/strong&gt;&lt;/label&gt;
+        &lt;input class=&quot;form-range&quot; id=&quot;l8-phi&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;50&quot; step=&quot;1&quot; value=&quot;38&quot;&gt;
+      &lt;/div&gt;
+      &lt;div&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-secondary&quot; id=&quot;l8-use-fit&quot;&gt;Use fit to measured means&lt;/button&gt;
+        &lt;p class=&quot;text-muted&quot;&gt;The fitted starting values are &lt;em&gt;c&lt;/em&gt; ≈ 95 MPa, φ ≈ 38°, μ ≈ 0.78. The specimen shows α = 45° − φ/2.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;l8-synthesis&quot;&gt;
+      &lt;div class=&quot;l8-callout&quot; id=&quot;l8-mohr-insight&quot; aria-live=&quot;polite&quot;&gt;&lt;strong&gt;Fixed &lt;em&gt;q&lt;/em&gt;:&lt;/strong&gt; changing &lt;em&gt;P&lt;/em&gt;&lt;sub&gt;c&lt;/sub&gt; moves the centre but leaves the radius unchanged.&lt;/div&gt;
+      &lt;label class=&quot;form-label&quot; for=&quot;l8-explain&quot;&gt;Explain the difference between translating and enlarging a circle&lt;/label&gt;
+      &lt;textarea class=&quot;form-control&quot; id=&quot;l8-explain&quot; rows=&quot;2&quot; placeholder=&quot;At fixed q… At measured failure…&quot;&gt;&lt;/textarea&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;footer class=&quot;l8-source&quot;&gt;Data: Lockner (1998), Table 3, JGR 103, 5107–5123. Stress conventions follow Paterson &amp;amp; Wong, &lt;em&gt;Experimental Rock Deformation: The Brittle Field&lt;/em&gt;.&lt;/footer&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+#lecture8-interactive{font-family:var(--font-sans);color:var(--foreground);max-width:1180px;margin:0 auto;padding:8px 2px 20px;--l8-soft:color-mix(in srgb,var(--viz-series-1) 10%,var(--background));--l8-warm:color-mix(in srgb,var(--viz-series-3) 12%,var(--background))}
+#lecture8-interactive *{box-sizing:border-box}
+.l8-header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:8px 2px 20px}
+.l8-header h1{margin:3px 0 6px}.l8-header p{margin:0;color:var(--muted-foreground)}
+.l8-kicker{color:var(--viz-series-1);font-weight:500;letter-spacing:.08em;font-size:12px}
+.l8-reset{white-space:nowrap}.l8-tabs{margin-bottom:20px}.l8-panel{min-height:560px}
+.l8-intro{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:18px}
+.l8-intro h2{margin:0 0 5px}.l8-intro p{margin:0}.l8-progress{width:180px;height:7px;background:var(--muted);margin-top:16px}.l8-progress span{display:block;height:100%;width:25%;background:var(--viz-series-1);transition:width .25s ease}
+.l8-predict{max-width:720px;padding:20px;background:var(--l8-soft);border-left:4px solid var(--viz-series-1)}
+.l8-predict fieldset{border:0;padding:0;margin:0 0 14px}.l8-predict legend{font-weight:500;margin-bottom:9px}.l8-predict .form-check{display:inline-flex;margin-right:18px}
+.l8-predict textarea{margin-bottom:12px}.l8-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}.l8-toolbar-label{font-weight:500;margin-right:4px}
+.l8-reveal.active{background:var(--primary);color:var(--primary-foreground)}
+.l8-chart-shell{padding:14px 16px 8px;background:var(--card);color:var(--card-foreground);border:1px solid var(--border)}
+.l8-chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}.l8-chart-head h3{margin:0 0 3px}.l8-chart-head p{margin:0}.l8-chart-actions{display:flex;gap:18px;flex-wrap:wrap}.l8-svg-wrap{position:relative;width:100%}.l8-svg-wrap svg{display:block;width:100%}
+.l8-tooltip{position:absolute;pointer-events:none;background:var(--popover);color:var(--popover-foreground);border:1px solid var(--border);padding:7px 9px;z-index:3;font-size:12px;max-width:210px}
+.l8-data-footer{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.l8-observation,.l8-question{padding:13px 15px;background:var(--l8-soft)}.l8-observation span,.l8-observation strong{display:block}.l8-observation strong{margin-top:4px}.l8-question{grid-column:1/-1}.l8-question textarea{margin-top:5px}
+.l8-mode{display:flex;gap:8px}.l8-mohr-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:18px;align-items:end;margin-bottom:14px;padding:14px 16px;background:var(--l8-soft)}
+.l8-control-block label{display:block}.l8-range-labels{display:flex;justify-content:space-between;color:var(--muted-foreground);font-size:12px}.l8-compare-controls{padding:12px 15px;background:var(--l8-soft);margin-bottom:14px}.l8-circle-picker{display:flex;align-items:center;flex-wrap:wrap;gap:9px}.l8-measured-table{margin-top:10px}.l8-measured-table table{margin-bottom:0}.l8-data-note{margin:5px 0 0}
+.l8-live-values{display:flex;gap:0;flex-wrap:wrap;margin:8px 0 14px}.l8-live-values span{padding:7px 15px;border-right:1px solid var(--border)}.l8-live-values span:first-child{padding-left:0}.l8-live-values strong{margin-left:4px}
+.l8-failure-values{display:flex;align-items:center;flex-wrap:wrap;gap:14px;padding:9px 13px;margin:-4px 0 14px;background:var(--l8-warm);border-left:4px solid var(--viz-series-3)}
+.l8-linked-views{display:grid;grid-template-columns:190px minmax(260px,.72fr) minmax(380px,1.25fr);gap:14px;align-items:stretch}.l8-mini-view{border:1px solid var(--border);padding:12px;background:var(--card);color:var(--card-foreground)}.l8-mini-view h3{margin:0 0 8px}.l8-mini-view&gt;svg{width:100%;height:300px}.l8-stress-view svg{height:300px}.l8-circle-view svg{height:390px}
+.l8-envelope-controls{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:18px;align-items:center;background:var(--l8-warm);padding:12px 15px;margin-top:12px}.l8-envelope-controls p{margin:0}.l8-synthesis{margin-top:12px}.l8-callout{padding:11px 14px;margin-bottom:10px;background:var(--l8-soft);border-left:4px solid var(--viz-series-1)}.l8-source{margin-top:20px;padding-top:12px;border-top:1px solid var(--border);color:var(--muted-foreground);font-size:12px}
+.l8-axis text,.l8-chart-label{fill:var(--foreground);font-size:12px}.l8-axis line,.l8-axis path{stroke:var(--border)}.l8-grid{stroke:var(--border);stroke-width:1}.l8-frame{fill:none;stroke:var(--border)}.l8-axis-title{fill:var(--foreground);font-size:12px;font-weight:500}.l8-point{stroke:var(--background);stroke-width:1.5}.l8-mean{fill:var(--background);stroke:var(--viz-series-2);stroke-width:3}.l8-mean-line{fill:none;stroke:var(--viz-series-2);stroke-width:2.5}.l8-fit-line{fill:none;stroke:var(--viz-series-3);stroke-width:2.2;stroke-dasharray:7 5}.l8-mohr-circle{fill:none;stroke-width:2.7}.l8-failure-point{fill:var(--background);stroke-width:3}.l8-failure-radius{stroke:var(--muted-foreground);stroke-width:1.2;stroke-dasharray:4 4}.l8-envelope-line{stroke:var(--viz-series-3);stroke-width:2.4}.l8-failure-plane{stroke:var(--viz-series-3);stroke-width:4}.l8-stress-s1{stroke:var(--viz-series-4);fill:none;stroke-width:3}.l8-stress-s3{stroke:var(--viz-series-1);fill:none;stroke-width:3}
+@media(max-width:850px){.l8-linked-views{grid-template-columns:1fr 1fr}.l8-circle-view{grid-column:1/-1}.l8-mohr-controls{grid-template-columns:1fr 1fr}.l8-mohr-controls button{grid-column:1/-1}.l8-envelope-controls{grid-template-columns:1fr 1fr}.l8-envelope-controls p{grid-column:1/-1}}
+@media(max-width:600px){.l8-header,.l8-intro,.l8-chart-head{display:block}.l8-reset{margin-top:14px}.l8-progress{width:100%}.l8-predict .form-check{display:flex}.l8-chart-actions{margin-top:10px}.l8-data-footer,.l8-mohr-controls,.l8-linked-views,.l8-envelope-controls{grid-template-columns:1fr}.l8-circle-view{grid-column:auto}.l8-live-values span{width:50%;border-bottom:1px solid var(--border)}.l8-mini-view&gt;svg,.l8-stress-view svg{height:250px}.l8-circle-view svg{height:330px}}
+@media(prefers-reduced-motion:reduce){.l8-progress span{transition:none}}
+&lt;/style&gt;
+
+&lt;script&gt;
+(()=&gt;{
+const root=document.getElementById(&#x27;lecture8-interactive&#x27;);
+const data={50:[543.2,545.9,527.6,518.3],100:[737.2,737.5,709.2,716.5],150:[899.2,897.1,877.1,862.6],200:[1028.4,1037.6,996.7,993.3]};
+const pressures=[50,100,150,200], means=Object.fromEntries(pressures.map(p=&gt;[p,data[p].reduce((a,b)=&gt;a+b,0)/data[p].length]));
+const colors=[&#x27;var(--viz-series-1)&#x27;,&#x27;var(--viz-series-2)&#x27;,&#x27;var(--viz-series-3)&#x27;,&#x27;var(--viz-series-4)&#x27;];
+let reveal=50, dataMode=true, compareMode=false;
+const $=s=&gt;root.querySelector(s), $$=s=&gt;[...root.querySelectorAll(s)];
+const svgEl=(name,attrs={})=&gt;{const e=document.createElementNS(&#x27;http://www.w3.org/2000/svg&#x27;,name);Object.entries(attrs).forEach(([k,v])=&gt;e.setAttribute(k,v));return e};
+const clear=svg=&gt;{while(svg.firstChild)svg.removeChild(svg.firstChild)};
+const text=(svg,x,y,str,cls=&#x27;l8-chart-label&#x27;,anchor=&#x27;start&#x27;)=&gt;{const t=svgEl(&#x27;text&#x27;,{x,y,class:cls,&#x27;text-anchor&#x27;:anchor});t.textContent=str;svg.appendChild(t);return t};
+const line=(svg,x1,y1,x2,y2,cls)=&gt;{const l=svgEl(&#x27;line&#x27;,{x1,y1,x2,y2,class:cls});svg.appendChild(l);return l};
+const path=(pts)=&gt;pts.map((p,i)=&gt;(i?&#x27;L&#x27;:&#x27;M&#x27;)+p[0].toFixed(2)+&#x27;,&#x27;+p[1].toFixed(2)).join(&#x27; &#x27;);
+const tooltip=(el,tip,container)=&gt;{el.style.cursor=&#x27;crosshair&#x27;;el.addEventListener(&#x27;pointerenter&#x27;,e=&gt;showTip(e,tip,container));el.addEventListener(&#x27;pointermove&#x27;,e=&gt;showTip(e,tip,container));el.addEventListener(&#x27;pointerleave&#x27;,()=&gt;tip.hidden=true)};
+function showTip(e,tip,container){const box=container.getBoundingClientRect();tip.hidden=false;tip.style.left=Math.min(e.clientX-box.left+12,box.width-205)+&#x27;px&#x27;;tip.style.top=Math.max(4,e.clientY-box.top-46)+&#x27;px&#x27;}
+function axis(svg,{w,h,m,xMin,xMax,yMin,yMax,xTicks,yTicks,xTitle,yTitle}){const X=v=&gt;m.l+(v-xMin)/(xMax-xMin)*(w-m.l-m.r),Y=v=&gt;h-m.b-(v-yMin)/(yMax-yMin)*(h-m.t-m.b);const frame=svgEl(&#x27;rect&#x27;,{x:m.l,y:m.t,width:w-m.l-m.r,height:h-m.t-m.b,class:&#x27;l8-frame&#x27;,&#x27;data-chart-frame&#x27;:&#x27;&#x27;});svg.appendChild(frame);yTicks.forEach(v=&gt;{line(svg,m.l,Y(v),w-m.r,Y(v),&#x27;l8-grid&#x27;);text(svg,m.l-9,Y(v)+4,String(v),&#x27;l8-chart-label&#x27;,&#x27;end&#x27;)});xTicks.forEach(v=&gt;{line(svg,X(v),m.t,X(v),h-m.b,&#x27;l8-grid&#x27;);text(svg,X(v),h-m.b+19,String(v),&#x27;l8-chart-label&#x27;,&#x27;middle&#x27;)});text(svg,(m.l+w-m.r)/2,h-5,xTitle,&#x27;l8-axis-title&#x27;,&#x27;middle&#x27;);const yt=text(svg,15,(m.t+h-m.b)/2,yTitle,&#x27;l8-axis-title&#x27;,&#x27;middle&#x27;);yt.setAttribute(&#x27;transform&#x27;,`rotate(-90 15 ${(m.t+h-m.b)/2})`);return {X,Y}};
+
+function drawStrength(){const wrap=$(&#x27;#l8-strength-wrap&#x27;),svg=$(&#x27;#l8-strength-chart&#x27;),w=Math.max(320,wrap.clientWidth),h=w&lt;520?330:390,m={l:67,r:24,t:20,b:52};clear(svg);svg.setAttribute(&#x27;viewBox&#x27;,`0 0 ${w} ${h}`);svg.style.height=h+&#x27;px&#x27;;const {X,Y}=axis(svg,{w,h,m,xMin:30,xMax:220,yMin:450,yMax:1100,xTicks:pressures,yTicks:[500,700,900,1100],xTitle:&#x27;Confining pressure Pₜ (MPa)&#x27;,yTitle:&#x27;Peak differential stress qₚₑₐₖ (MPa)&#x27;});let visible=pressures.filter(p=&gt;p&lt;=reveal);visible.forEach((p,pi)=&gt;data[p].forEach((q,i)=&gt;{const jit=[-7,-2,3,8][i]*(w-m.l-m.r)/600;const c=svgEl(&#x27;circle&#x27;,{cx:X(p)+jit,cy:Y(q),r:5.5,fill:colors[pi],class:&#x27;l8-point&#x27;,&#x27;aria-label&#x27;:`Specimen ${i+1}, confining pressure ${p} MPa, peak differential stress ${q} MPa`});svg.appendChild(c);const tip=$(&#x27;#l8-data-tooltip&#x27;);c.addEventListener(&#x27;pointerenter&#x27;,e=&gt;{tip.textContent=`Pₜ ${p} MPa · specimen ${i+1} · qₚₑₐₖ ${q.toFixed(1)} MPa`;showTip(e,tip,wrap)});c.addEventListener(&#x27;pointermove&#x27;,e=&gt;showTip(e,tip,wrap));c.addEventListener(&#x27;pointerleave&#x27;,()=&gt;tip.hidden=true)}));
+if($(&#x27;#l8-means&#x27;).checked){let pts=visible.map(p=&gt;[X(p),Y(means[p])]);if(pts.length&gt;1)svg.appendChild(svgEl(&#x27;path&#x27;,{d:path(pts),class:&#x27;l8-mean-line&#x27;}));pts.forEach((pt,i)=&gt;{const c=svgEl(&#x27;circle&#x27;,{cx:pt[0],cy:pt[1],r:7,class:&#x27;l8-mean&#x27;});svg.appendChild(c);text(svg,pt[0],pt[1]-13,Math.round(means[visible[i]])+&#x27; MPa&#x27;,&#x27;l8-chart-label&#x27;,&#x27;middle&#x27;)})}
+if($(&#x27;#l8-fit&#x27;).checked&amp;&amp;reveal===200){const fit=p=&gt;389.3+3.1993*p;svg.appendChild(svgEl(&#x27;path&#x27;,{d:path([[X(50),Y(fit(50))],[X(200),Y(fit(200))]]),class:&#x27;l8-fit-line&#x27;}));text(svg,X(127),Y(fit(127))+22,&#x27;straight-line fit&#x27;,&#x27;l8-chart-label&#x27;,&#x27;middle&#x27;)}
+}
+function updateReveal(p){reveal=p;$$(&#x27;.l8-reveal&#x27;).forEach(b=&gt;{const active=+b.dataset.pressure&lt;=p;b.classList.toggle(&#x27;active&#x27;,active);b.setAttribute(&#x27;aria-pressed&#x27;,active)});$(&#x27;#l8-progress-fill&#x27;).style.width=((pressures.indexOf(p)+1)*25)+&#x27;%&#x27;;const n=(pressures.indexOf(p)+1)*4;$(&#x27;#l8-evidence&#x27;).textContent=`${n} specimens are visible from ${pressures.filter(x=&gt;x&lt;=p).length} pressure ${p===50?&#x27;group&#x27;:&#x27;groups&#x27;}.`;$(&#x27;#l8-chart-prompt&#x27;).textContent=p&lt;200?`Describe the values at ${p} MPa before revealing the next group.`:&#x27;All four pressure groups are visible. Now compare their means and test a straight line.&#x27;;$(&#x27;#l8-fit&#x27;).disabled=p&lt;200;$(&#x27;#l8-delta-box&#x27;).hidden=p&lt;200;drawStrength()}
+$(&#x27;#l8-commit&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{const pred=$(&#x27;input[name=&quot;l8-prediction&quot;]:checked&#x27;);if(!pred){$(&#x27;#l8-predict-box&#x27;).setAttribute(&#x27;role&#x27;,&#x27;alert&#x27;);return}$(&#x27;#l8-predict-box&#x27;).hidden=true;$(&#x27;#l8-data-workspace&#x27;).hidden=false;updateReveal(50)});
+$$(&#x27;.l8-reveal&#x27;).forEach(b=&gt;b.addEventListener(&#x27;click&#x27;,()=&gt;updateReveal(+b.dataset.pressure)));$(&#x27;#l8-means&#x27;).addEventListener(&#x27;change&#x27;,drawStrength);$(&#x27;#l8-fit&#x27;).addEventListener(&#x27;change&#x27;,drawStrength);
+
+function tab(which){dataMode=which===&#x27;data&#x27;;$(&#x27;#l8-data-panel&#x27;).hidden=!dataMode;$(&#x27;#l8-mohr-panel&#x27;).hidden=dataMode;$(&#x27;#l8-tab-data&#x27;).classList.toggle(&#x27;active&#x27;,dataMode);$(&#x27;#l8-tab-mohr&#x27;).classList.toggle(&#x27;active&#x27;,!dataMode);$(&#x27;#l8-tab-data&#x27;).setAttribute(&#x27;aria-selected&#x27;,dataMode);$(&#x27;#l8-tab-mohr&#x27;).setAttribute(&#x27;aria-selected&#x27;,!dataMode);if(dataMode&amp;&amp; !$(&#x27;#l8-data-workspace&#x27;).hidden)drawStrength();if(!dataMode)drawAllMohr()}
+$(&#x27;#l8-tab-data&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;tab(&#x27;data&#x27;));$(&#x27;#l8-tab-mohr&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;tab(&#x27;mohr&#x27;));
+
+function nearestPressure(pc){return pressures.reduce((a,b)=&gt;Math.abs(b-pc)&lt;Math.abs(a-pc)?b:a)}
+function state(){const pc=+$(&#x27;#l8-pc&#x27;).value,q=+$(&#x27;#l8-q&#x27;).value;return {pc,q,s1:pc+q,C:pc+q/2,R:q/2}}
+function frictionState(){const phiDeg=+$(&#x27;#l8-phi&#x27;).value,phi=phiDeg*Math.PI/180;return {phiDeg,phi,mu:Math.tan(phi),alpha:45-phiDeg/2}}
+function failurePoint(pc,q){const f=frictionState(),C=pc+q/2,R=q/2;return {sn:C-R*Math.sin(f.phi),tau:R*Math.cos(f.phi),C,R,...f}}
+function atMeasuredFailure(){const st=state(),p=nearestPressure(st.pc);return Math.abs(st.pc-p)&lt;0.01&amp;&amp;Math.abs(st.q-means[p])&lt;=3}
+function setMode(compare){compareMode=compare;$(&#x27;#l8-load-controls&#x27;).hidden=compare;$(&#x27;#l8-compare-controls&#x27;).hidden=!compare;$(&#x27;#l8-live-values&#x27;).hidden=compare;$(&#x27;#l8-mode-load&#x27;).className=&#x27;btn &#x27;+(!compare?&#x27;btn-primary&#x27;:&#x27;btn-secondary&#x27;);$(&#x27;#l8-mode-compare&#x27;).className=&#x27;btn &#x27;+(compare?&#x27;btn-primary&#x27;:&#x27;btn-secondary&#x27;);$(&#x27;#l8-mode-load&#x27;).setAttribute(&#x27;aria-pressed&#x27;,!compare);$(&#x27;#l8-mode-compare&#x27;).setAttribute(&#x27;aria-pressed&#x27;,compare);$(&#x27;#l8-mohr-insight&#x27;).innerHTML=compare?&#x27;&lt;strong&gt;Measured failures:&lt;/strong&gt; increasing &lt;em&gt;P&lt;/em&gt;&lt;sub&gt;c&lt;/sub&gt; shifts the centre and increases the radius because &lt;em&gt;q&lt;/em&gt;&lt;sub&gt;peak&lt;/sub&gt; also rises.&#x27;:&#x27;&lt;strong&gt;Fixed &lt;em&gt;q&lt;/em&gt;:&lt;/strong&gt; changing &lt;em&gt;P&lt;/em&gt;&lt;sub&gt;c&lt;/sub&gt; moves the centre but leaves the radius unchanged.&#x27;;drawAllMohr()}
+$(&#x27;#l8-mode-load&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;setMode(false));$(&#x27;#l8-mode-compare&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;setMode(true));
+[&#x27;#l8-pc&#x27;,&#x27;#l8-q&#x27;,&#x27;#l8-c&#x27;,&#x27;#l8-phi&#x27;].forEach(id=&gt;$(id).addEventListener(&#x27;input&#x27;,drawAllMohr));$$(&#x27;.l8-circle-check&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,drawAllMohr));
+$(&#x27;#l8-to-failure&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{const p=nearestPressure(+$(&#x27;#l8-pc&#x27;).value);$(&#x27;#l8-pc&#x27;).value=p;$(&#x27;#l8-q&#x27;).value=Math.round(means[p]/5)*5;drawAllMohr()});
+$(&#x27;#l8-envelope&#x27;).addEventListener(&#x27;change&#x27;,()=&gt;{$(&#x27;#l8-envelope-controls&#x27;).hidden=!$(&#x27;#l8-envelope&#x27;).checked;drawAllMohr()});
+$(&#x27;#l8-use-fit&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{$(&#x27;#l8-c&#x27;).value=95;$(&#x27;#l8-phi&#x27;).value=38;drawAllMohr()});
+function drawSpecimen(){const svg=$(&#x27;#l8-specimen&#x27;);clear(svg);const st=state();svg.appendChild(svgEl(&#x27;rect&#x27;,{x:82,y:55,width:76,height:170,rx:8,fill:&#x27;color-mix(in srgb,var(--viz-series-3) 14%,var(--card))&#x27;,stroke:&#x27;var(--border)&#x27;}));svg.appendChild(svgEl(&#x27;rect&#x27;,{x:66,y:37,width:108,height:20,fill:&#x27;var(--muted)&#x27;}));svg.appendChild(svgEl(&#x27;rect&#x27;,{x:66,y:224,width:108,height:20,fill:&#x27;var(--muted)&#x27;}));[[&#x27;120&#x27;,&#x27;22&#x27;,&#x27;120&#x27;,&#x27;50&#x27;],[&#x27;120&#x27;,&#x27;259&#x27;,&#x27;120&#x27;,&#x27;231&#x27;]].forEach(v=&gt;line(svg,...v,&#x27;l8-stress-s1&#x27;));[[&#x27;27&#x27;,&#x27;140&#x27;,&#x27;77&#x27;,&#x27;140&#x27;],[&#x27;213&#x27;,&#x27;140&#x27;,&#x27;163&#x27;,&#x27;140&#x27;]].forEach(v=&gt;line(svg,...v,&#x27;l8-stress-s3&#x27;));const heads=[[120,50,113,40,127,40],[120,231,113,241,127,241],[77,140,67,133,67,147],[163,140,173,133,173,147]];heads.forEach((a,i)=&gt;svg.appendChild(svgEl(&#x27;polygon&#x27;,{points:`${a[0]},${a[1]} ${a[2]},${a[3]} ${a[4]},${a[5]}`,fill:i&lt;2?&#x27;var(--viz-series-4)&#x27;:&#x27;var(--viz-series-1)&#x27;})));
+const showPlane=$(&#x27;#l8-envelope&#x27;).checked||(!compareMode&amp;&amp;atMeasuredFailure());if(showPlane){const f=frictionState(),a=f.alpha*Math.PI/180,L=Math.min(35/Math.sin(a),80/Math.cos(a)),dx=L*Math.sin(a),dy=L*Math.cos(a);line(svg,120-dx,140+dy,120+dx,140-dy,&#x27;l8-failure-plane&#x27;);text(svg,120,213,`failure plane α = ${f.alpha.toFixed(1)}°`,&#x27;l8-chart-label&#x27;,&#x27;middle&#x27;)}
+text(svg,120,19,compareMode?&#x27;σ₁ · axial&#x27;:`σ₁ = ${Math.round(st.s1)} MPa`,&#x27;l8-chart-label&#x27;,&#x27;middle&#x27;);text(svg,120,277,compareMode?&#x27;σ₃ · radial&#x27;:`σ₃ = ${Math.round(st.pc)} MPa`,&#x27;l8-chart-label&#x27;,&#x27;middle&#x27;)}
+function drawStress(){const wrap=$(&#x27;#l8-stress-wrap&#x27;),svg=$(&#x27;#l8-stress-chart&#x27;),w=Math.max(250,wrap.clientWidth),h=300,m={l:55,r:17,t:18,b:46};clear(svg);svg.setAttribute(&#x27;viewBox&#x27;,`0 0 ${w} ${h}`);const st=state(),max=Math.max(400,Math.ceil(st.s1/200)*200);const {X,Y}=axis(svg,{w,h,m,xMin:0,xMax:1,yMin:0,yMax:max,xTicks:[0,.5,1],yTicks:[0,max/2,max],xTitle:&#x27;Loading stage&#x27;,yTitle:&#x27;Stress (MPa)&#x27;});const s3=[[X(0),Y(0)],[X(.28),Y(st.pc)],[X(1),Y(st.pc)]],s1=[[X(0),Y(0)],[X(.28),Y(st.pc)],[X(1),Y(st.s1)]];svg.appendChild(svgEl(&#x27;path&#x27;,{d:path(s1),class:&#x27;l8-stress-s1&#x27;}));svg.appendChild(svgEl(&#x27;path&#x27;,{d:path(s3),class:&#x27;l8-stress-s3&#x27;}));text(svg,X(.97),Y(st.s1)-8,&#x27;σ₁&#x27;,&#x27;l8-chart-label&#x27;,&#x27;end&#x27;);text(svg,X(.97),Y(st.pc)-8,&#x27;σ₃&#x27;,&#x27;l8-chart-label&#x27;,&#x27;end&#x27;)}
+function circlePath(X,Y,pc,q){let pts=[];const C=pc+q/2,R=q/2;for(let d=0;d&lt;=360;d+=3){let a=d*Math.PI/180;pts.push([X(C+R*Math.cos(a)),Y(R*Math.sin(a))])}return path(pts)}
+function drawMohr(){const wrap=$(&#x27;#l8-mohr-wrap&#x27;),svg=$(&#x27;#l8-mohr-chart&#x27;),w=Math.max(320,wrap.clientWidth),h=w&lt;460?330:390,m={l:62,r:20,t:16,b:48};clear(svg);svg.setAttribute(&#x27;viewBox&#x27;,`0 0 ${w} ${h}`);svg.style.height=h+&#x27;px&#x27;;const plotW=w-m.l-m.r,plotH=h-m.t-m.b,spanX=1300,spanY=1300,scale=Math.min(plotW/spanX,plotH/spanY),usedW=spanX*scale,usedH=spanY*scale,mm={l:m.l+(plotW-usedW)/2,r:w-(m.l+(plotW-usedW)/2+usedW),t:m.t+(plotH-usedH)/2,b:h-(m.t+(plotH-usedH)/2+usedH)};const {X,Y}=axis(svg,{w,h,m:mm,xMin:0,xMax:1300,yMin:-650,yMax:650,xTicks:w&lt;430?[0,650,1300]:[0,325,650,975,1300],yTicks:w&lt;430?[-650,0,650]:[-650,-325,0,325,650],xTitle:&#x27;Normal stress σₙ (MPa)&#x27;,yTitle:&#x27;Shear stress τ (MPa)&#x27;});
+let states;if(compareMode){states=$$(&#x27;.l8-circle-check:checked&#x27;).map(x=&gt;+x.value).map(p=&gt;({pc:p,q:means[p],label:`P₍c₎ ${p} MPa`}))}else{const st=state();states=[{pc:st.pc,q:st.q,label:`P₍c₎ ${Math.round(st.pc)} MPa`}]}states.forEach((st,i)=&gt;{const col=colors[pressures.indexOf(st.pc)&gt;=0?pressures.indexOf(st.pc):0],p=svgEl(&#x27;path&#x27;,{d:circlePath(X,Y,st.pc,st.q),class:&#x27;l8-mohr-circle&#x27;,stroke:col});svg.appendChild(p);const C=st.pc+st.q/2,R=st.q/2;const showFailurePoint=(compareMode&amp;&amp;$(&#x27;#l8-envelope&#x27;).checked)||(!compareMode&amp;&amp;atMeasuredFailure());if(showFailurePoint){const fp=failurePoint(st.pc,st.q);line(svg,X(C),Y(0),X(fp.sn),Y(fp.tau),&#x27;l8-failure-radius&#x27;);const marker=svgEl(&#x27;circle&#x27;,{cx:X(fp.sn),cy:Y(fp.tau),r:6,class:&#x27;l8-failure-point&#x27;,stroke:col});svg.appendChild(marker);const tip=$(&#x27;#l8-mohr-tooltip&#x27;);marker.addEventListener(&#x27;pointerenter&#x27;,e=&gt;{tip.textContent=`${st.label} · inferred failure-plane stress: σₙ,f ${fp.sn.toFixed(1)} MPa, τf ${fp.tau.toFixed(1)} MPa`;showTip(e,tip,wrap)});marker.addEventListener(&#x27;pointermove&#x27;,e=&gt;showTip(e,tip,wrap));marker.addEventListener(&#x27;pointerleave&#x27;,()=&gt;tip.hidden=true);text(svg,X(fp.sn)+8,Y(fp.tau)-8,`τf ${fp.tau.toFixed(0)} MPa`,&#x27;l8-chart-label&#x27;,&#x27;start&#x27;)}
+text(svg,X(C),Math.max(mm.t+13,Y(R)-9),st.label,&#x27;l8-chart-label&#x27;,&#x27;middle&#x27;)});
+if($(&#x27;#l8-envelope&#x27;).checked){const c=+$(&#x27;#l8-c&#x27;).value,f=frictionState(),xEnd=f.mu&lt;.0001?1300:Math.min(1300,(650-c)/f.mu),yEnd=c+xEnd*f.mu;line(svg,X(0),Y(c),X(xEnd),Y(yEnd),&#x27;l8-envelope-line&#x27;);const lx=Math.min(900,xEnd*.72),ly=c+lx*f.mu;text(svg,X(lx),Y(ly)-9,&#x27;τ = c + μσₙ&#x27;,&#x27;l8-chart-label&#x27;,&#x27;middle&#x27;)}
+}
+function drawAllMohr(){const st=state(),f=frictionState();$(&#x27;#l8-pc-value&#x27;).textContent=Math.round(st.pc);$(&#x27;#l8-q-value&#x27;).textContent=Math.round(st.q);$(&#x27;#l8-s3&#x27;).textContent=Math.round(st.pc);$(&#x27;#l8-s1&#x27;).textContent=Math.round(st.s1);$(&#x27;#l8-centre&#x27;).textContent=Math.round(st.C);$(&#x27;#l8-radius&#x27;).textContent=Math.round(st.R);$(&#x27;#l8-c-value&#x27;).textContent=$(&#x27;#l8-c&#x27;).value;$(&#x27;#l8-phi-value&#x27;).textContent=f.phiDeg;$(&#x27;#l8-mu-value&#x27;).textContent=f.mu.toFixed(2);const show=!compareMode&amp;&amp;atMeasuredFailure();$(&#x27;#l8-failure-values&#x27;).hidden=!show;if(show){const fp=failurePoint(st.pc,st.q);$(&#x27;#l8-snf&#x27;).textContent=fp.sn.toFixed(1);$(&#x27;#l8-tauf&#x27;).textContent=fp.tau.toFixed(1);$(&#x27;#l8-alpha-live&#x27;).textContent=fp.alpha.toFixed(1)}drawSpecimen();drawStress();drawMohr()}
+$(&#x27;#l8-reset&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{reveal=50;$$(&#x27;input[name=&quot;l8-prediction&quot;]&#x27;).forEach(x=&gt;x.checked=false);[&#x27;#l8-reason&#x27;,&#x27;#l8-claim&#x27;,&#x27;#l8-explain&#x27;].forEach(x=&gt;$(x).value=&#x27;&#x27;);$(&#x27;#l8-predict-box&#x27;).hidden=false;$(&#x27;#l8-data-workspace&#x27;).hidden=true;$(&#x27;#l8-means&#x27;).checked=false;$(&#x27;#l8-fit&#x27;).checked=false;$(&#x27;#l8-pc&#x27;).value=50;$(&#x27;#l8-q&#x27;).value=250;$(&#x27;#l8-c&#x27;).value=95;$(&#x27;#l8-phi&#x27;).value=38;$(&#x27;#l8-envelope&#x27;).checked=false;$(&#x27;#l8-envelope-controls&#x27;).hidden=true;$$(&#x27;.l8-circle-check&#x27;).forEach(x=&gt;x.checked=[&#x27;50&#x27;,&#x27;200&#x27;].includes(x.value));setMode(false);tab(&#x27;data&#x27;)});
+const ro=new ResizeObserver(()=&gt;{if(dataMode&amp;&amp;!$(&#x27;#l8-data-workspace&#x27;).hidden)drawStrength();if(!dataMode)drawAllMohr()});ro.observe(root);drawAllMohr();
+})();
+&lt;/script&gt;
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+  let lastPointerWasTouch = false;
+  let pinnedByTouch = false;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    pinnedByTouch = false;
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handlePointer = (event) =&gt; {
+    lastPointerWasTouch =
+      event.type === &quot;pointerdown&quot; &amp;&amp; event.pointerType === &quot;touch&quot;;
+  };
+  const handleTouchClick = (event) =&gt; {
+    const isTouch = event.pointerType === &quot;touch&quot; || lastPointerWasTouch;
+    lastPointerWasTouch = false;
+    if (!isTouch || event.detail === 0) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (
+      trigger == null ||
+      !trigger.isConnected ||
+      getContent(trigger).length === 0 ||
+      (pinnedByTouch &amp;&amp; activeTrigger === trigger)
+    ) {
+      if (pinnedByTouch) {
+        closeTooltip();
+      }
+      return;
+    }
+    openTooltip(trigger);
+    pinnedByTouch = activeTrigger === trigger;
+    window.setTimeout(() =&gt; {
+      if (activeTrigger === trigger &amp;&amp; !trigger.isConnected) {
+        closeTooltip(false);
+      }
+    }, 0);
+  };
+  const handleLeave = (event) =&gt; {
+    if (pinnedByTouch) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    lastPointerWasTouch = false;
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    lastPointerWasTouch = false;
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerdown&quot;, handlePointer);
+    document.removeEventListener(&quot;pointercancel&quot;, handlePointer);
+    document.removeEventListener(&quot;click&quot;, handleTouchClick);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerdown&quot;, handlePointer);
+  document.addEventListener(&quot;pointercancel&quot;, handlePointer);
+  document.addEventListener(&quot;click&quot;, handleTouchClick);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-tabs&quot;&gt;
+(() =&gt; {
+  const selector = &#x27;.nav[role=&quot;tablist&quot;] [role=&quot;tab&quot;]&#x27;;
+  const disabled = &#x27;:disabled,[aria-disabled=&quot;true&quot;]&#x27;;
+  const selectTab = (selected) =&gt; {
+    const panelId = selected.getAttribute(&quot;aria-controls&quot;);
+    for (const tab of selected.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;)) {
+      const active = tab === selected;
+      tab.classList.toggle(&quot;active&quot;, active);
+      tab.setAttribute(&quot;aria-selected&quot;, String(active));
+      const id = tab.getAttribute(&quot;aria-controls&quot;);
+      const panel = id &amp;&amp; document.getElementById(id);
+      if (panel != null) {
+        panel.hidden = id !== panelId;
+        if (!panel.hidden &amp;&amp; selected.id) {
+          panel.setAttribute(&quot;aria-labelledby&quot;, selected.id);
+        }
+      }
+    }
+  };
+  const interact = (event) =&gt; {
+    const tab = event.target?.closest?.(selector);
+    if (event.defaultPrevented || tab == null || tab.matches(disabled)) {
+      return;
+    }
+    if (event.type === &quot;click&quot;) {
+      selectTab(tab);
+      return;
+    }
+    const tabs = Array.from(
+      tab.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;),
+    ).filter((candidate) =&gt; !candidate.matches(disabled));
+    const current = tabs.indexOf(tab);
+    let next;
+    if (event.key === &quot;ArrowRight&quot; || event.key === &quot;ArrowDown&quot;) {
+      next = (current + 1) % tabs.length;
+    } else if (event.key === &quot;ArrowLeft&quot; || event.key === &quot;ArrowUp&quot;) {
+      next = (current + tabs.length - 1) % tabs.length;
+    } else if (event.key === &quot;Home&quot;) {
+      next = 0;
+    } else if (event.key === &quot;End&quot;) {
+      next = tabs.length - 1;
+    } else {
+      return;
+    }
+    event.preventDefault();
+    tabs[next].focus();
+    selectTab(tabs[next]);
+  };
+
+  for (const list of document.querySelectorAll(&#x27;.nav[role=&quot;tablist&quot;]&#x27;)) {
+    const selected =
+      list.querySelector(&#x27;[role=&quot;tab&quot;][aria-selected=&quot;true&quot;]&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;].active&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;]&#x27;);
+    if (selected != null) {
+      selectTab(selected);
+    }
+  }
+  document.addEventListener(&quot;click&quot;, interact);
+  document.addEventListener(&quot;keydown&quot;, interact);
+  window.addEventListener(&quot;pagehide&quot;, () =&gt; {
+    document.removeEventListener(&quot;click&quot;, interact);
+    document.removeEventListener(&quot;keydown&quot;, interact);
+  }, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+<script>(() => {
+  const frame = document.getElementById("codex-visualization");
+  if (!(frame instanceof HTMLIFrameElement)) {
+    return;
+  }
+  let viewportHeight = globalThis.innerHeight;
+  const storageKey = `codex:visualization-widget-state-v2:${JSON.stringify([
+    globalThis.location.pathname,
+    globalThis.location.search,
+  ])}`;
+  const parseState = (serializedState) => {
+    if (
+      typeof serializedState !== "string" ||
+      new TextEncoder().encode(serializedState).length > 16 * 1024
+    ) {
+      throw new TypeError(
+        "Widget state must be a JSON object of at most 16 KiB",
+      );
+    }
+    /** @type {unknown} */
+    const state = JSON.parse(serializedState);
+    if (
+      state == null ||
+      typeof state !== "object" ||
+      Array.isArray(state) ||
+      ("imageIds" in state &&
+        (!Array.isArray(state.imageIds) || state.imageIds.length > 0))
+    ) {
+      throw new TypeError("Widget state must be a JSON object");
+    }
+    const storedState = { modelContent: null, privateContent: null, ...state };
+    const canonicalState = JSON.stringify(
+      storedState,
+      (_key, /** @type {unknown} */ value) => {
+        if (typeof value === "number" && !Number.isFinite(value)) {
+          throw new TypeError("Widget state must contain finite numbers");
+        }
+        return value;
+      },
+    );
+    if (new TextEncoder().encode(canonicalState).length > 16 * 1024) {
+      throw new TypeError(
+        "Widget state must be a JSON object of at most 16 KiB",
+      );
+    }
+    return storedState;
+  };
+  let storage = null;
+  let state = null;
+  try {
+    const localStorage = globalThis.localStorage;
+    const probeKey = `${storageKey}:probe`;
+    localStorage.setItem(probeKey, "1");
+    localStorage.removeItem(probeKey);
+    storage = localStorage;
+    const savedState = storage.getItem(storageKey);
+    if (savedState != null) {
+      try {
+        state = parseState(savedState);
+      } catch {
+        // Invalid saved state does not disable future writes.
+      }
+    }
+  } catch {
+    storage = null;
+  }
+  const initialGlobals = {
+    widgetState: state,
+    statePersistence: storage == null ? "none" : "local",
+  };
+
+  const channel = new MessageChannel();
+  channel.port1.addEventListener("message", (event) => {
+    const data = event.data;
+    if (typeof data !== "object" || data == null) {
+      return;
+    }
+    if (data.type === "widget-state-write") {
+      if (!Number.isSafeInteger(data.id) || data.id <= 0) {
+        return;
+      }
+      let ok = false;
+      try {
+        if (storage != null) {
+          const state = parseState(data.state);
+          storage.setItem(storageKey, JSON.stringify(state));
+          ok = true;
+        }
+      } catch {
+        // Storage denial, quota limits, and invalid state return a failed receipt.
+      }
+      channel.port1.postMessage({
+        type: "widget-state-result",
+        id: data.id,
+        ok,
+      });
+      return;
+    }
+    if (data.type === "height") {
+      const height = data.height;
+      if (
+        typeof height === "number" &&
+        Number.isFinite(height) &&
+        height >= 0 &&
+        height <= 10_000
+      ) {
+        frame.style.height = Math.ceil(height) + "px";
+      }
+      return;
+    }
+    if (data.type === "scroll-to") {
+      const top = data.top;
+      if (
+        typeof top === "number" &&
+        Number.isFinite(top) &&
+        top >= 0 &&
+        globalThis.navigator.userActivation?.isActive === true
+      ) {
+        globalThis.scrollTo({
+          top: Math.ceil(
+            globalThis.scrollY + frame.getBoundingClientRect().top + top,
+          ),
+        });
+      }
+      return;
+    }
+    if (data.type === "open-external") {
+      const rawHref = data.href;
+      if (typeof rawHref !== "string") {
+        return;
+      }
+      let href;
+      try {
+        const url = new URL(rawHref, document.baseURI);
+        if (url.protocol !== "https:") {
+          return;
+        }
+        href = url.href;
+      } catch {
+        return;
+      }
+      if (globalThis.navigator.userActivation?.isActive === true) {
+        const anchor = document.createElement("a");
+        anchor.href = href;
+        anchor.rel = "noopener noreferrer";
+        anchor.target = "_blank";
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+      }
+      return;
+    }
+    if (data.type === "follow-up") {
+      const prompt = data.prompt;
+      if (
+        typeof prompt !== "string" ||
+        globalThis.navigator.userActivation?.isActive !== true
+      ) {
+        return;
+      }
+      const title = data.title;
+      globalThis.prompt(typeof title === "string" ? title : prompt, prompt);
+    }
+  });
+  channel.port1.start();
+  const srcdoc = frame.dataset.srcdoc;
+  if (srcdoc == null) {
+    return;
+  }
+  globalThis.addEventListener("resize", () => {
+    const height = Number.parseFloat(frame.style.height);
+    if (!Number.isFinite(height) || height <= viewportHeight) {
+      frame.style.removeProperty("height");
+    }
+    viewportHeight = globalThis.innerHeight;
+    channel.port1.postMessage({ type: "measure" });
+  });
+  frame.addEventListener(
+    "load",
+    () => {
+      frame.contentWindow?.postMessage(
+        { type: "codex-visualization-initialize" },
+        "*",
+        [channel.port2],
+      );
+    },
+    { once: true },
+  );
+  // Match the trusted bootstrap element, not the same text in an authored title.
+  frame.srcdoc = srcdoc.replace(
+    '<script type="application/json" id="codex-visualization-widget-state">__CODEX_VISUALIZATION_WIDGET_STATE__<\/script>',
+    () =>
+      '<script type="application/json" id="codex-visualization-widget-state">' +
+      JSON.stringify(initialGlobals).replaceAll("<", "\\u003c") +
+      "<\/script>",
+  );
+  delete frame.dataset.srcdoc;
+})();
+</script>
+</body>
+</html>

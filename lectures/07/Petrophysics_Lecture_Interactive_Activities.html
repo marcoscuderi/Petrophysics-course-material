@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>What does an ultrasonic wave really measure?</title>
+<style>
+:root{
+  --navy:#18323f;--teal:#087e8b;--orange:#c7652f;--blue:#2878b5;
+  --slate:#62727a;--line:#dbe5e7;--pale:#f4f7f6;--warm:#fff5ec;
+  --green:#3a8d76;--red:#b74b4b;--white:#fff;--shadow:0 8px 24px rgba(24,50,63,.10)
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eef3f3;color:var(--navy);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{width:100%;height:100vh;height:100dvh;min-height:0;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:10px;padding:14px 18px 10px;overflow:hidden}
+header{display:flex;align-items:center;justify-content:space-between;gap:18px;background:white;border-radius:14px;padding:12px 18px;box-shadow:var(--shadow)}
+.title h1{font-size:clamp(22px,2.2vw,34px);line-height:1.1;margin:0}.title p{margin:4px 0 0;color:var(--slate);font-size:14px}
+.banner{max-width:620px;padding:9px 14px;border-left:5px solid var(--orange);background:var(--warm);border-radius:8px;font-weight:700;font-size:14px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tab{border:1px solid #bfd0d4;background:white;color:var(--navy);border-radius:10px;padding:10px 14px;font-weight:750;box-shadow:0 2px 7px rgba(24,50,63,.05)}
+.tab.active{background:var(--teal);color:white;border-color:var(--teal)}
+.panel{display:none;min-height:0;overflow:hidden}.panel.active{display:grid}
+.activity{display:grid;grid-template-columns:280px minmax(0,1fr) 320px;gap:12px;width:100%;height:100%;min-height:0}
+.card{background:white;border:1px solid #d9e3e5;border-radius:14px;padding:14px;box-shadow:0 3px 12px rgba(24,50,63,.06);min-width:0;overflow:hidden}
+.controls,.inference{height:100%;min-height:0;overflow:auto;max-height:none}
+h2{font-size:20px;margin:0 0 3px}h3{font-size:15px;margin:0 0 9px;color:var(--teal);text-transform:uppercase;letter-spacing:.04em}
+.question{font-weight:750;color:var(--orange);margin:0 0 12px;font-size:15px}
+.control{margin:0 0 13px}.control label{display:flex;justify-content:space-between;gap:8px;font-size:13px;font-weight:700;margin-bottom:5px}.value{color:var(--teal);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--teal)}
+select{width:100%;border:1px solid #b9cbd0;border-radius:8px;padding:8px;background:white;color:var(--navy)}
+.btnrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.btn{border:0;border-radius:8px;padding:8px 11px;font-weight:750;background:var(--teal);color:white}.btn.orange{background:var(--orange)}.btn.ghost{background:#e8eff0;color:var(--navy)}.btn:focus-visible,.tab:focus-visible,.choice:focus-visible{outline:3px solid #f2b485;outline-offset:2px}
+.predict{background:var(--pale);border-radius:10px;padding:10px;margin:10px 0}.predict strong{font-size:13px;display:block;margin-bottom:7px}
+.choices{display:flex;gap:6px;flex-wrap:wrap}.choice{border:1px solid #b9cbd0;border-radius:999px;background:white;color:var(--navy);padding:6px 10px;font-size:12px;font-weight:700}.choice.selected{background:var(--navy);color:white;border-color:var(--navy)}
+.stage{height:100%;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:9px}
+.visual-grid{display:grid;grid-template-columns:minmax(250px,.85fr) minmax(330px,1.35fr);gap:10px;width:100%;height:100%;max-height:420px;min-height:0;align-self:center}
+.vizbox{border:1px solid var(--line);border-radius:10px;background:#fbfdfd;position:relative;overflow:hidden;width:100%;height:100%;min-height:0}
+canvas{display:block;width:100%;height:100%}
+.viztitle{position:absolute;top:7px;left:10px;z-index:2;font-size:12px;font-weight:800;color:var(--slate);background:rgba(255,255,255,.85);padding:3px 6px;border-radius:5px}
+.readouts{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.readouts.five{grid-template-columns:repeat(5,1fr)}.readout{background:var(--pale);border-radius:9px;padding:8px;text-align:center}.readout span{display:block;color:var(--slate);font-size:11px}.readout b{display:block;font-size:18px;color:var(--teal);font-variant-numeric:tabular-nums}
+.explain{border-left:5px solid var(--teal);background:#edf7f7;border-radius:9px;padding:10px 12px;font-size:13px;line-height:1.4}.explain.hidden{filter:blur(5px);user-select:none}.explain .headline{font-weight:800;color:var(--teal);margin-bottom:3px}
+.formula{background:var(--navy);color:white;border-radius:9px;padding:9px;text-align:center;font-size:17px;margin:9px 0}.small{font-size:12px;color:var(--slate);line-height:1.4}.tag{display:inline-block;padding:3px 7px;border-radius:999px;background:#e8eff0;font-size:11px;font-weight:750;color:var(--navy)}
+.regime{border-radius:10px;padding:10px;margin:9px 0;background:var(--warm);border:1px solid #efd4c0}.regime b{color:var(--orange)}
+.meter{height:18px;background:linear-gradient(90deg,#dceeee 0 28%,#f8e3c8 28% 68%,#efd0cc 68%);border-radius:999px;position:relative;margin:18px 5px 23px}.marker{position:absolute;top:-6px;width:4px;height:30px;background:var(--navy);border-radius:3px}.marker:after{content:attr(data-label);position:absolute;top:31px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10px;font-weight:750}
+.stage-buttons{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}.stage-btn{border:1px solid #bdcdd1;border-radius:8px;padding:7px 4px;background:white;color:var(--navy);font-size:11px;font-weight:750}.stage-btn.active{background:var(--orange);border-color:var(--orange);color:white}
+.pred-grid{display:grid;grid-template-columns:1fr auto auto auto;gap:5px;align-items:center;font-size:12px}.pred-grid .choice{padding:4px 7px}.pred-grid .metric{font-weight:700}
+.comparison{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}.comparison th,.comparison td{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left}.comparison th{color:var(--slate)}
+.correct{color:var(--green);font-weight:800}.incorrect{color:var(--red);font-weight:800}
+details{margin-top:9px;border-top:1px solid var(--line);padding-top:8px}summary{cursor:pointer;font-weight:750;color:var(--teal);font-size:12px}details p,details li{font-size:12px;line-height:1.4;color:var(--slate)}
+footer{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--slate);padding:0 5px}.key{border:1px solid #bac9cc;border-bottom-width:2px;border-radius:4px;padding:1px 5px;background:white}
+@media(max-width:1050px){html,body{height:auto;min-height:100%;overflow:auto}.app{height:auto;min-height:100vh;overflow:visible}.panel{overflow:visible}.panel.active{display:block}.activity{display:grid;height:auto;grid-template-columns:240px 1fr}.controls,.inference{height:auto;max-height:none}.inference{grid-column:1/-1}.visual-grid{grid-template-columns:1fr 1fr;height:clamp(280px,42vw,390px);max-height:390px}}
+@media(max-width:720px){header{display:block}.banner{margin-top:8px}.tabs{grid-template-columns:1fr}.activity,.visual-grid{grid-template-columns:1fr}.visual-grid{height:auto;max-height:none}.vizbox{height:clamp(240px,65vw,360px)}.readouts,.readouts.five{grid-template-columns:repeat(2,1fr)}.stage-buttons{grid-template-columns:repeat(3,1fr)}}
+@media(max-height:700px) and (min-width:1051px){.app{gap:7px;padding-top:8px;padding-bottom:6px}header{padding-top:8px;padding-bottom:8px}.tab{padding-top:7px;padding-bottom:7px}.card{padding:10px}.visual-grid{max-height:330px}.readout{padding:5px}.explain{padding-top:7px;padding-bottom:7px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header>
+    <div class="title"><h1>What does an ultrasonic wave really measure?</h1><p>Interactive synthesis · Petrophysics Lectures 4–5</p></div>
+    <div class="banner">Static tests measure finite deformation. Waves probe small-strain effective stiffness along a propagation path.</div>
+  </header>
+
+  <nav class="tabs" aria-label="Activities">
+    <button class="tab active" data-tab="a1">1 · One rock, two moduli</button>
+    <button class="tab" data-tab="a2">2 · Wavelength as a scale filter</button>
+    <button class="tab" data-tab="a3">3 · Diagnose the evolving rock</button>
+  </nav>
+
+  <section id="a1" class="panel active">
+    <div class="activity">
+      <aside class="card controls">
+        <h2>One rock, two measurements</h2>
+        <p class="question">Why can the two tests return different moduli?</p>
+        <div class="control"><label>Material</label><select id="rock1"><option value="cracked">Cracked rock</option><option value="ideal">Ideal linear solid</option></select></div>
+        <div class="control"><label>Current stress <span class="value" id="stress1v"></span></label><input id="stress1" type="range" min="0" max="60" step="1" value="25"></div>
+        <div class="control"><label>Static interval start <span class="value" id="low1v"></span></label><input id="low1" type="range" min="0" max="55" step="1" value="5"></div>
+        <div class="control"><label>Static interval end <span class="value" id="high1v"></span></label><input id="high1" type="range" min="5" max="60" step="1" value="35"></div>
+        <div class="formula">E<sub>static</sub> = Δσ / Δε</div>
+        <div class="predict">
+          <strong>Predict: for this measurement, E<sub>dyn</sub> will be…</strong>
+          <div class="choices" data-predict="p1"><button class="choice" data-value="less">smaller</button><button class="choice" data-value="same">similar</button><button class="choice" data-value="greater">greater</button></div>
+        </div>
+        <div class="btnrow"><button class="btn" id="staticBtn">Apply static load</button><button class="btn orange" id="pulseBtn">Send pulse</button><button class="btn ghost" id="reveal1">Reveal</button></div>
+        <details><summary>Instructor prompt</summary><p>First select the ideal solid. Then switch to cracked rock and widen the static fitting interval across the crack-closure region. Ask what changes physically, not only numerically.</p></details>
+      </aside>
+
+      <div class="card stage">
+        <div><span class="tag">SIMULATED PEDAGOGICAL MODEL</span></div>
+        <div class="visual-grid">
+          <div class="vizbox"><span class="viztitle">Axial P- and S-wave pulses through closing cracks</span><canvas id="sample1"></canvas></div>
+          <div class="vizbox"><span class="viztitle">Stress–strain and velocity anisotropy during closure</span><canvas id="curve1"></canvas></div>
+        </div>
+        <div class="readouts">
+          <div class="readout"><span>E<sub>static</sub></span><b id="estat1">—</b></div>
+          <div class="readout"><span>E<sub>dynamic</sub></span><b id="edyn1">—</b></div>
+          <div class="readout"><span>Axial V<sub>p</sub></span><b id="vp1">—</b></div>
+          <div class="readout"><span>Axial V<sub>s</sub></span><b id="vs1">—</b></div>
+        </div>
+      </div>
+
+      <aside class="card inference">
+        <h3>Interpretation</h3>
+        <div id="explain1" class="explain hidden"><div class="headline">The tests sample different deformation regimes.</div><div id="explain1text">Make a prediction, run both measurements, then reveal the interpretation.</div></div>
+        <table class="comparison"><tr><th>Static test</th><th>Wave test</th></tr><tr><td>Finite Δσ and Δε</td><td>Tiny oscillation</td></tr><tr><td>May include closure and sliding</td><td>Mainly reversible response</td></tr><tr><td>Bulk specimen response</td><td>Effective stiffness along a path</td></tr></table>
+        <div class="regime"><b>Watch the interval:</b> changing the fitted portion of a nonlinear curve changes E<sub>static</sub>, even though the rock has not changed.</div>
+        <details><summary>Model assumptions</summary><p>Isotropic density 2650 kg m⁻³ and ν = 0.25. The cracked-rock curve contains a compliant crack-closure component. The dynamic value represents a high-frequency, very-small-strain stiffness. Values are illustrative.</p></details>
+      </aside>
+    </div>
+  </section>
+
+  <section id="a2" class="panel">
+    <div class="activity">
+      <aside class="card controls">
+        <h2>Wavelength as a scale filter</h2>
+        <p class="question">Does the wave “see” every pore, grain and crack?</p>
+        <div class="control"><label>Frequency <span class="value" id="freq2v"></span></label><input id="freq2" type="range" min="0.1" max="5" step="0.1" value="1"></div>
+        <div class="control"><label>Wave velocity <span class="value" id="vel2v"></span></label><input id="vel2" type="range" min="2" max="6" step="0.1" value="4"></div>
+        <div class="control"><label>Feature type</label><select id="feature2"><option value="pore">Pores</option><option value="grain">Grains</option><option value="crack" selected>Cracks</option><option value="fracture">Large fracture</option></select></div>
+        <div class="control"><label>Feature size d <span class="value" id="size2v"></span></label><input id="size2" type="range" min="-2" max="1.5" step="0.02" value="0.3"></div>
+        <div class="formula">λ = V / f</div>
+        <div class="predict"><strong>Predict the strongest response as d approaches λ:</strong><div class="choices" data-predict="p2"><button class="choice" data-value="time">arrival time</button><button class="choice" data-value="amplitude">amplitude</button><button class="choice" data-value="coda">scattered coda</button></div></div>
+        <div class="btnrow"><button class="btn orange" id="pulse2">Send pulse</button><button class="btn ghost" id="reveal2">Reveal regime</button></div>
+        <details><summary>Instructor prompt</summary><p>Set λ ≫ d, then λ ≈ d. Ask whether “sensitive to” means “able to image.” Emphasize that a single travel-time measurement is a path average.</p></details>
+      </aside>
+
+      <div class="card stage">
+        <div><span class="tag">SIMULATED PEDAGOGICAL MODEL</span></div>
+        <div class="visual-grid">
+          <div class="vizbox"><span class="viztitle">Realistic feature size compared with wavelength</span><canvas id="sample2"></canvas></div>
+          <div class="vizbox"><span class="viztitle">Received coherent pulse and scattered coda</span><canvas id="wave2"></canvas></div>
+        </div>
+        <div class="readouts">
+          <div class="readout"><span>Wavelength λ</span><b id="lambda2">—</b></div>
+          <div class="readout"><span>Feature size d</span><b id="d2">—</b></div>
+          <div class="readout"><span>d / λ</span><b id="ratio2">—</b></div>
+          <div class="readout"><span>Coherent amplitude</span><b id="amp2">—</b></div>
+        </div>
+      </div>
+
+      <aside class="card inference">
+        <h3>Scale comparison</h3>
+        <div class="meter"><span id="marker2" class="marker" data-label="d/λ"></span></div>
+        <div id="explain2" class="explain hidden"><div class="headline" id="regime2">Choose parameters and reveal the regime.</div><div id="explain2text"></div></div>
+        <div class="regime"><b>d ≪ λ:</b> effective-medium averaging<br><b>d ≈ λ:</b> strong scattering and coda<br><b>d &gt; λ:</b> individual interfaces can dominate the path</div>
+        <p class="small"><b>Crucial distinction:</b> sensitivity is not the same as spatial resolution. A transmitted pulse can respond to a feature without uniquely locating or imaging it.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="a3" class="panel">
+    <div class="activity">
+      <aside class="card controls">
+        <h2>Diagnose the evolving rock</h2>
+        <p class="question">What becomes visible when we combine both tests?</p>
+        <div class="control"><label>Propagation path</label><select id="path3"><option value="axial">Axial path</option><option value="transverse">Transverse path</option></select></div>
+        <div class="control"><label>Ultrasonic frequency <span class="value" id="freq3v"></span></label><input id="freq3" type="range" min="0.2" max="3" step="0.1" value="1"></div>
+        <p class="small" id="freqImpact3">Frequency changes wavelength and pulse spacing; damaged rock also produces frequency-dependent attenuation.</p>
+        <div class="predict"><strong>Predict change from the previous stage:</strong><div class="pred-grid" id="pred3">
+          <span></span><span>↑</span><span>≈</span><span>↓</span>
+          <span class="metric">E<sub>static</sub></span><button class="choice" data-metric="estat" data-value="up">↑</button><button class="choice" data-metric="estat" data-value="same">≈</button><button class="choice" data-metric="estat" data-value="down">↓</button>
+          <span class="metric">E<sub>dynamic</sub></span><button class="choice" data-metric="edyn" data-value="up">↑</button><button class="choice" data-metric="edyn" data-value="same">≈</button><button class="choice" data-metric="edyn" data-value="down">↓</button>
+          <span class="metric">Wave velocity</span><button class="choice" data-metric="velocity" data-value="up">↑</button><button class="choice" data-metric="velocity" data-value="same">≈</button><button class="choice" data-metric="velocity" data-value="down">↓</button>
+          <span class="metric">Amplitude</span><button class="choice" data-metric="amplitude" data-value="up">↑</button><button class="choice" data-metric="amplitude" data-value="same">≈</button><button class="choice" data-metric="amplitude" data-value="down">↓</button>
+        </div></div>
+        <div class="btnrow"><button class="btn orange" id="reveal3">Reveal measurements</button><button class="btn ghost" id="reset3">Reset predictions</button></div>
+        <details><summary>Instructor prompt</summary><p>Move stage by stage. Have students commit to arrows before revealing. Compare axial and transverse paths during dilatancy to expose anisotropy.</p></details>
+      </aside>
+
+      <div class="card stage">
+        <div class="stage-buttons" id="stageBtns"></div>
+        <div class="visual-grid">
+          <div class="vizbox"><span class="viztitle">Microstructure and propagation path</span><canvas id="sample3"></canvas></div>
+          <div class="vizbox"><span class="viztitle">Mechanical and ultrasonic evolution</span><canvas id="plots3"></canvas></div>
+        </div>
+        <div class="readouts five">
+          <div class="readout"><span>E<sub>static</sub></span><b id="estat3">—</b></div>
+          <div class="readout"><span>Selected E<sub>dynamic</sub></span><b id="edyn3">—</b></div>
+          <div class="readout"><span>Selected V<sub>p</sub></span><b id="vp3">—</b></div>
+          <div class="readout"><span>Coherent amplitude</span><b id="amp3">—</b></div>
+          <div class="readout"><span>Wavelength λ</span><b id="lambda3">—</b></div>
+        </div>
+      </div>
+
+      <aside class="card inference">
+        <h3>Evidence-based interpretation</h3>
+        <div id="explain3" class="explain hidden"><div class="headline" id="stageTitle3">Select a stage.</div><div id="explain3text"></div></div>
+        <table class="comparison"><thead><tr><th>Observable</th><th>Your prediction</th><th>Model</th></tr></thead><tbody id="results3"></tbody></table>
+        <div class="regime"><b>Strong inference requires:</b><br>observation + physical model + directional/frequency controls + stated uncertainty.</div>
+        <p class="small">The plotted trends are illustrative and synthesize established rock-physics behaviour; they are not a specific experimental dataset.</p>
+      </aside>
+    </div>
+  </section>
+
+  <footer><span>Keyboard: <span class="key">1</span>–<span class="key">3</span> switch activities · <span class="key">R</span> resets current activity</span><span>Petrophysics · Ultrasonic synthesis</span></footer>
+</main>
+
+<script>
+const C={navy:'#18323f',teal:'#087e8b',orange:'#c7652f',blue:'#2878b5',slate:'#62727a',line:'#dbe5e7',pale:'#f4f7f6',green:'#3a8d76',red:'#b74b4b'};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+function fitCanvas(c){const r=c.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);if(c.width!==Math.round(r.width*d)||c.height!==Math.round(r.height*d)){c.width=Math.round(r.width*d);c.height=Math.round(r.height*d)}const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return{x,w:r.width,h:r.height}}
+function line(x,x1,y1,x2,y2,color=C.navy,w=2,dash=[]){x.save();x.strokeStyle=color;x.lineWidth=w;x.setLineDash(dash);x.beginPath();x.moveTo(x1,y1);x.lineTo(x2,y2);x.stroke();x.restore()}
+function text(x,s,px,py,size=12,color=C.slate,align='left',weight=500){x.save();x.font=`${weight} ${size}px -apple-system,Segoe UI,Arial`;x.fillStyle=color;x.textAlign=align;x.textBaseline='middle';x.fillText(s,px,py);x.restore()}
+function arrow(x,x1,y1,x2,y2,color=C.orange,w=2){line(x,x1,y1,x2,y2,color,w);const a=Math.atan2(y2-y1,x2-x1),l=8;x.fillStyle=color;x.beginPath();x.moveTo(x2,y2);x.lineTo(x2-l*Math.cos(a-.45),y2-l*Math.sin(a-.45));x.lineTo(x2-l*Math.cos(a+.45),y2-l*Math.sin(a+.45));x.fill()}
+function axes(x,L,T,R,B,xlab,ylab){line(x,L,B,R,B,C.navy,1.4);line(x,L,T,L,B,C.navy,1.4);text(x,xlab,(L+R)/2,B+22,11,C.slate,'center',650);x.save();x.translate(L-34,(T+B)/2);x.rotate(-Math.PI/2);text(x,ylab,0,0,11,C.slate,'center',650);x.restore();for(let i=1;i<5;i++)line(x,L,T+(B-T)*i/5,R,T+(B-T)*i/5,C.line,1)}
+function gaussian(t,c,w){return Math.exp(-Math.pow((t-c)/w,2))}
+function choose(group,value,metric){const q=metric?`[data-metric="${metric}"]`:'button';group.querySelectorAll(q).forEach(b=>b.classList.toggle('selected',b.dataset.value===value))}
+$$('.choices').forEach(g=>g.addEventListener('click',e=>{if(e.target.matches('.choice'))choose(g,e.target.dataset.value)}));
+$('#pred3').addEventListener('click',e=>{if(e.target.matches('.choice'))choose($('#pred3'),e.target.dataset.value,e.target.dataset.metric)});
+
+function switchTab(id){$$('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));$$('.panel').forEach(p=>p.classList.toggle('active',p.id===id));requestAnimationFrame(drawAll)}
+$$('.tab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+
+// Activity 1
+let pulsePhase1=0,pulseAnim1=false,staticDone1=false,pulseDone1=false;
+function eps1(s,rock){return rock==='ideal'?s/55000:s/55000+0.00060*(1-Math.exp(-s/12))}
+function eStatic1(a,b,rock){return (b-a)/(eps1(b,rock)-eps1(a,rock))/1000}
+function waveState1(s,rock){if(rock==='ideal')return{vpa:5.00,vsa:2.89,vpt:5.00,vst:2.89,closure:1,anis:0,ed:55};const closure=1-Math.exp(-s/14),vpa=4.45+.55*closure,vsa=2.58+.30*closure,vpt=3.90+1.00*closure,vst=2.18+.66*closure,anis=100*(vpa-vpt)/((vpa+vpt)/2),rho=2650,nu=.25,ed=2*rho*Math.pow(vsa*1000,2)*(1+nu)/1e9;return{vpa,vsa,vpt,vst,closure,anis,ed}}
+function eDyn1(s,rock){return waveState1(s,rock).ed}
+function update1(){let lo=+$('#low1').value,hi=+$('#high1').value;if(hi<=lo+2){hi=lo+3;$('#high1').value=hi}$('#stress1v').textContent=$('#stress1').value+' MPa';$('#low1v').textContent=lo+' MPa';$('#high1v').textContent=hi+' MPa';draw1();if(staticDone1||pulseDone1)showRead1()}
+function showRead1(){const r=$('#rock1').value,s=+$('#stress1').value,lo=+$('#low1').value,hi=+$('#high1').value,m=waveState1(s,r);$('#estat1').textContent=staticDone1?eStatic1(lo,hi,r).toFixed(1)+' GPa':'—';$('#edyn1').textContent=pulseDone1?m.ed.toFixed(1)+' GPa':'—';$('#vp1').textContent=pulseDone1?m.vpa.toFixed(2)+' km/s':'—';$('#vs1').textContent=pulseDone1?m.vsa.toFixed(2)+' km/s':'—'}
+function drawPulseVertical(x,cx,y,kind,color,amp=1){x.save();x.strokeStyle=color;x.lineWidth=3;x.beginPath();for(let i=0;i<54;i++){const yy=y-27+i,g=gaussian(i,27,12),xx=kind==='P'?cx+Math.sin(i*.72)*4*g*amp:cx+Math.sin(i*.72)*14*g*amp;i?x.lineTo(xx,yy):x.moveTo(xx,yy)}x.stroke();x.restore()}
+function drawSample1(){const c=$('#sample1'),{x,w,h}=fitCanvas(c);x.clearRect(0,0,w,h);const cx=w*.5,top=54,bottom=h-30,r=Math.min(w*.20,64),rock=$('#rock1').value,s=+$('#stress1').value,m=waveState1(s,rock),open=rock==='ideal'?0:Math.max(.7,5.5*(1-m.closure));x.fillStyle='#e9ddca';x.strokeStyle=C.navy;x.lineWidth=2;x.beginPath();x.roundRect(cx-r,top,r*2,bottom-top,18);x.fill();x.stroke();x.save();x.beginPath();x.roundRect(cx-r,top,r*2,bottom-top,18);x.clip();for(let i=0;i<28;i++){const gx=cx-r+12+(i*37%(2*r-24)),gy=top+16+(i*53%(bottom-top-30));x.fillStyle=i%3?'#c9b99f':'#b9a68a';x.beginPath();x.arc(gx,gy,4+(i%4),0,Math.PI*2);x.fill()}if(rock==='cracked')for(let i=0;i<7;i++){const yy=top+27+i*(bottom-top-53)/6,xx=cx-r+12+(i*29%(2*r-48));x.strokeStyle=C.orange;x.lineWidth=open;x.beginPath();x.moveTo(xx,yy);x.quadraticCurveTo(xx+15,yy-5,xx+34,yy+1);x.stroke()}x.restore();arrow(x,cx-18,30,cx-18,top-4,C.navy,3);arrow(x,cx+18,h-6,cx+18,bottom+4,C.navy,3);text(x,'σ₁',cx+31,31,13,C.navy,'left',750);const pX=cx-27,sX=cx+27;line(x,pX,top+4,pX,bottom-4,C.orange,1,[4,4]);line(x,sX,top+4,sX,bottom-4,C.blue,1,[4,4]);text(x,'P',pX,top-12,12,C.orange,'center',850);text(x,'S',sX,top-12,12,C.blue,'center',850);if(pulseAnim1){const py=top+(bottom-top)*pulsePhase1,sy=top+(bottom-top)*Math.min(1,pulsePhase1*m.vsa/m.vpa);drawPulseVertical(x,pX,py,'P',C.orange,.9);drawPulseVertical(x,sX,sy,'S',C.blue,.9)}else{drawPulseVertical(x,pX,top+30,'P',C.orange,.55);drawPulseVertical(x,sX,top+30,'S',C.blue,.55)}text(x,`axial Vp ${m.vpa.toFixed(2)}`,8,h-28,10,C.orange,'left',750);text(x,`axial Vs ${m.vsa.toFixed(2)}`,8,h-14,10,C.blue,'left',750);text(x,`anisotropy ${m.anis.toFixed(1)}%`,w-8,h-20,10,C.slate,'right',750)}
+function drawCurve1(){const c=$('#curve1'),{x,w,h}=fitCanvas(c);x.clearRect(0,0,w,h);const L=52,R=w-16,T=27,M=h*.57,B=h-31,rock=$('#rock1').value,lo=+$('#low1').value,hi=+$('#high1').value,s=+$('#stress1').value;axes(x,L,T,R,M-14,'axial strain (%)','stress (MPa)');const exMax=eps1(60,rock)*100,X=e=>L+e/exMax*(R-L),Y=q=>M-14-q/60*(M-T-14);x.strokeStyle=C.teal;x.lineWidth=3;x.beginPath();for(let q=0;q<=60;q++){const xx=X(eps1(q,rock)*100),yy=Y(q);q?x.lineTo(xx,yy):x.moveTo(xx,yy)}x.stroke();line(x,X(eps1(lo,rock)*100),Y(lo),X(eps1(hi,rock)*100),Y(hi),C.orange,4);[lo,hi].forEach(q=>{x.fillStyle=C.orange;x.beginPath();x.arc(X(eps1(q,rock)*100),Y(q),4,0,7);x.fill()});x.fillStyle=C.navy;x.beginPath();x.arc(X(eps1(s,rock)*100),Y(s),5,0,7);x.fill();text(x,'selected static slope',L+7,T+10,10,C.orange,'left',750);const T2=M+14;axes(x,L,T2,R,B,'confining stress (MPa)','velocity (km/s)');const X2=q=>L+q/60*(R-L),Y2=v=>B-(v-2)/(5.2-2)*(B-T2);const series=[['vpa',C.orange,[]],['vpt',C.orange,[6,4]],['vsa',C.blue,[]],['vst',C.blue,[6,4]]];series.forEach(([k,col,dash])=>{x.save();x.strokeStyle=col;x.lineWidth=2;x.setLineDash(dash);x.beginPath();for(let q=0;q<=60;q++){const xx=X2(q),yy=Y2(waveState1(q,rock)[k]);q?x.lineTo(xx,yy):x.moveTo(xx,yy)}x.stroke();x.restore()});line(x,X2(s),T2,X2(s),B,C.navy,1,[3,3]);text(x,'Vp axial',L+7,T2+10,9,C.orange,'left',750);text(x,'Vp transverse',L+66,T2+10,9,C.orange,'left',600);text(x,'Vs axial',R-94,T2+10,9,C.blue,'left',750);text(x,'dashed = transverse',R,T2+23,9,C.slate,'right',600)}
+function draw1(){drawSample1();drawCurve1()}
+['rock1','stress1','low1','high1'].forEach(id=>$('#'+id).addEventListener('input',update1));
+$('#staticBtn').onclick=()=>{staticDone1=true;showRead1();draw1()};
+$('#pulseBtn').onclick=()=>{pulseDone1=true;pulseAnim1=true;pulsePhase1=0;showRead1();const go=()=>{pulsePhase1+=.025;draw1();if(pulsePhase1<1)requestAnimationFrame(go);else{pulseAnim1=false;draw1()}};go()};
+$('#reveal1').onclick=()=>{const r=$('#rock1').value,s=+$('#stress1').value,lo=+$('#low1').value,hi=+$('#high1').value,es=eStatic1(lo,hi,r),m=waveState1(s,r);$('#explain1').classList.remove('hidden');$('#explain1text').innerHTML=r==='ideal'?`The curve is linear and direction independent, so changing the fitting interval does not change its slope. Here E<sub>static</sub> ≈ E<sub>dynamic</sub> ≈ ${m.ed.toFixed(0)} GPa.`:`Initially, open cracks make transverse velocity lower than axial velocity. As stress closes the cracks, V<sub>p</sub>, V<sub>s</sub> and the wave-derived modulus increase while anisotropy falls to ${m.anis.toFixed(1)}%. The static interval still includes finite crack closure, giving ${es.toFixed(1)} GPa, whereas the pulse probes the tiny, reversible stiffness at the current state (${m.ed.toFixed(1)} GPa).`};
+
+// Activity 2
+let pulsePhase2=0;
+function params2(){const f=+$('#freq2').value,v=+$('#vel2').value,d=Math.pow(10,+$('#size2').value),lam=v/f,ratio=d/lam,scatter=Math.exp(-Math.pow(Math.log10(Math.max(ratio,.001))/.55,2)),interaction=1-Math.exp(-2.2*ratio),amp=.95-.55*interaction;return{f,v,d,lam,ratio,scatter,interaction,amp}}
+function update2(){const p=params2();$('#freq2v').textContent=p.f.toFixed(1)+' MHz';$('#vel2v').textContent=p.v.toFixed(1)+' km/s';$('#size2v').textContent=p.d<.1?(p.d*1000).toFixed(0)+' μm':p.d.toFixed(2)+' mm';$('#lambda2').textContent=p.lam.toFixed(2)+' mm';$('#d2').textContent=p.d<.1?(p.d*1000).toFixed(0)+' μm':p.d.toFixed(2)+' mm';$('#ratio2').textContent=p.ratio.toFixed(2);$('#amp2').textContent=Math.round(p.amp*100)+'%';const pos=Math.max(2,Math.min(98,(Math.log10(p.ratio)+2)/3.5*100));$('#marker2').style.left=`calc(${pos}% - 2px)`;draw2()}
+function drawJaggedCrack(x,cx,cy,len,angle,aperture,color=C.slate){const pts=9;x.save();x.strokeStyle=color;x.lineWidth=Math.max(1,aperture);x.lineCap='round';x.beginPath();for(let i=0;i<pts;i++){const u=i/(pts-1)-.5,along=u*len,off=Math.sin(i*2.7+len)*Math.min(4,len*.07),xx=cx+along*Math.cos(angle)-off*Math.sin(angle),yy=cy+along*Math.sin(angle)+off*Math.cos(angle);i?x.lineTo(xx,yy):x.moveTo(xx,yy)}x.stroke();x.restore()}
+function dimensionLine(x,x1,y1,x2,y2,label,color){line(x,x1,y1,x2,y2,color,2);const a=Math.atan2(y2-y1,x2-x1),nx=-Math.sin(a)*5,ny=Math.cos(a)*5;line(x,x1-nx,y1-ny,x1+nx,y1+ny,color,2);line(x,x2-nx,y2-ny,x2+nx,y2+ny,color,2);text(x,label,(x1+x2)/2,(y1+y2)/2-9,11,color,'center',850)}
+function visualScales2(p,width){const pxPerMm=width*.58/60;return{featurePx:Math.max(3,p.d*pxPerMm),wavePx:Math.max(8,p.lam*pxPerMm),pxPerMm}}
+function drawSample2(){const c=$('#sample2'),{x,w,h}=fitCanvas(c),p=params2(),type=$('#feature2').value;x.clearRect(0,0,w,h);const L=22,R=w-22,T=48,B=h-42,cx=(L+R)/2,cy=(T+B)/2,{featurePx,wavePx}=visualScales2(p,R-L);x.fillStyle='#e5d7c1';x.strokeStyle=C.navy;x.lineWidth=2;x.fillRect(L,T,R-L,B-T);x.strokeRect(L,T,R-L,B-T);for(let i=0;i<38;i++){const xx=L+8+(i*67%(R-L-16)),yy=T+7+(i*43%(B-T-14)),rr=2+i%5;x.fillStyle=i%3?'rgba(151,128,96,.22)':'rgba(96,111,112,.14)';x.beginPath();x.arc(xx,yy,rr,0,7);x.fill()}const n=type==='fracture'?3:type==='crack'?8:10;for(let i=0;i<n;i++){const xx=L+18+(i*71%(R-L-36)),yy=T+16+(i*47%(B-T-32)),ang=-.55+(i%4)*.33,sz=Math.max(4,featurePx*(type==='fracture'?.55:.24));if(type==='crack'||type==='fracture')drawJaggedCrack(x,xx,yy,sz,ang,type==='fracture'?3:1.4,type==='fracture'?C.orange:C.slate);else{x.beginPath();x.arc(xx,yy,Math.max(2,sz*.55),0,7);x.fillStyle=type==='pore'?'#fffaf1':'rgba(121,101,75,.22)';x.strokeStyle=C.slate;type==='pore'?x.fill():x.stroke()}}const mainAngle=-.35,fx=cx,fy=cy+4;if(type==='crack'||type==='fracture')drawJaggedCrack(x,fx,fy,featurePx,mainAngle,type==='fracture'?5:3,C.orange);else{x.beginPath();x.arc(fx,fy,featurePx/2,0,7);x.fillStyle=type==='pore'?'white':'rgba(199,101,47,.23)';x.strokeStyle=C.orange;x.lineWidth=3;x.fill();x.stroke()}const px=L+(R-L)*pulsePhase2;x.save();x.beginPath();x.rect(L,T,R-L,B-T);x.clip();x.strokeStyle=C.teal;x.lineWidth=3;x.beginPath();for(let i=0;i<150;i++){const xx=px-75+i,phase=(xx-px)/wavePx*2*Math.PI,yy=cy+Math.sin(phase)*18*gaussian(i,75,34);i?x.lineTo(xx,yy):x.moveTo(xx,yy)}x.stroke();x.restore();dimensionLine(x,L,B+15,Math.min(R,L+wavePx),B+15,`λ = ${p.lam.toFixed(2)} mm`,C.teal);const dx=Math.cos(mainAngle)*featurePx/2,dy=Math.sin(mainAngle)*featurePx/2;dimensionLine(x,fx-dx,fy-dy-12,fx+dx,fy+dy-12,`d = ${p.d.toFixed(2)} mm`,C.orange);text(x,p.ratio<.1?'wave averages many small features':p.ratio<2?'feature and wavelength interact strongly':'feature behaves as a distinct interface',cx,T-17,11,C.slate,'center',750)}
+function drawWave2(){const c=$('#wave2'),{x,w,h}=fitCanvas(c),p=params2();x.clearRect(0,0,w,h);const L=48,T=28,R=w-15,B=h-38;axes(x,L,T,R,B,'time','normalized amplitude');line(x,L,(T+B)/2,R,(T+B)/2,C.line,1);x.strokeStyle=C.blue;x.lineWidth=2.5;x.beginPath();const center=.32,width=.055;for(let i=0;i<500;i++){const tt=i/499,coh=p.amp*Math.sin((tt-center)*105)*gaussian(tt,center,width),coda=.42*p.scatter*Math.sin((tt-.48)*170+1.5)*Math.exp(-Math.max(0,tt-.43)*5)*(tt>.43?1:0),y=coh+coda,xx=L+tt*(R-L),yy=(T+B)/2-y*(B-T)*.34;i?x.lineTo(xx,yy):x.moveTo(xx,yy)}x.stroke();text(x,'direct arrival',L+(R-L)*.32,T+15,11,C.teal,'center',750);if(p.scatter>.18)text(x,'scattered coda',L+(R-L)*.65,T+34,11,C.orange,'center',750)}
+function draw2(){drawSample2();drawWave2()}
+['freq2','vel2','size2','feature2'].forEach(id=>$('#'+id).addEventListener('input',update2));
+$('#pulse2').onclick=()=>{pulsePhase2=0;const go=()=>{pulsePhase2+=.018;draw2();if(pulsePhase2<1.15)requestAnimationFrame(go);else{pulsePhase2=0;draw2()}};go()};
+$('#reveal2').onclick=()=>{const p=params2();let title,body;if(p.ratio<.1){title='Effective-medium regime: d ≪ λ';body='The coherent arrival averages many small features. Travel time can still change because the effective stiffness changes, but individual features are not resolved and scattering is weak.'}else if(p.ratio<.5){title='Transition regime: d approaches λ';body='The feature begins to perturb the wavefield. Amplitude and frequency content become increasingly sensitive, while interpretation remains path averaged.'}else if(p.ratio<2){title='Strong-scattering regime: d ≈ λ';body='Scattering is strongest: coherent amplitude falls and the coda grows. This is high sensitivity, but it is not a unique image of the feature.'}else{title='Interface-dominated regime: d > λ';body='Large interfaces can reflect, refract or redirect the wave. Geometry and propagation direction now strongly control the recorded signal.'}$('#regime2').textContent=title;$('#explain2text').textContent=body;$('#explain2').classList.remove('hidden')};
+
+// Activity 3
+const stages=[
+ {name:'Initial',stress:0,strain:0,estat:22,edyn:47,vpa:4.70,vpt:4.65,amp:.68,desc:'Open compliant cracks make the finite-strain response soft. The wave already samples the connected elastic framework, so the dynamic modulus is higher.'},
+ {name:'Crack closure',stress:25,strain:.13,estat:36,edyn:51,vpa:4.98,vpt:4.94,amp:.84,desc:'Pre-existing cracks close. Static stiffness, velocities and coherent amplitude increase; scattering decreases.'},
+ {name:'Linear elastic',stress:55,strain:.32,estat:45,edyn:53,vpa:5.10,vpt:5.07,amp:.92,desc:'Most compliant cracks are closed. Static and dynamic moduli are closest and directional differences are small.'},
+ {name:'Dilatancy',stress:82,strain:.62,estat:41,edyn:50,vpa:5.04,vpt:4.82,amp:.72,desc:'New stress-aligned cracks begin to grow. The transverse path crosses their compliant opening and responds more strongly.'},
+ {name:'Near peak',stress:108,strain:1.02,estat:29,edyn:43,vpa:4.88,vpt:4.35,amp:.43,desc:'Damage localizes. Static tangent stiffness falls, anisotropy increases, and scattering strongly reduces coherent amplitude.'},
+ {name:'Post-failure',stress:54,strain:1.45,estat:10,edyn:34,vpa:4.55,vpt:3.92,amp:.24,desc:'A connected fracture zone produces permanent deformation, low stiffness, strong anisotropy and a long scattered coda.'}
+];
+let stage3=0,revealed3=false;
+function makeStageBtns(){const g=$('#stageBtns');g.innerHTML='';stages.forEach((s,i)=>{const b=document.createElement('button');b.className='stage-btn'+(i===0?' active':'');b.textContent=`${i+1} · ${s.name}`;b.onclick=()=>{stage3=i;revealed3=false;$$('.stage-btn').forEach((q,j)=>q.classList.toggle('active',j===i));$('#explain3').classList.add('hidden');$('#results3').innerHTML='';update3()};g.appendChild(b)})}
+function trend(a,b,tol=.025){const d=(b-a)/Math.max(Math.abs(a),.001);return d>tol?'up':d<-tol?'down':'same'}
+function arrowChar(v){return v==='up'?'↑':v==='down'?'↓':'≈'}
+function modelAt3(i,path,f){const s=stages[i],baseVp=path==='axial'?s.vpa:s.vpt,damage=Math.max(0,(i-1)/4),norm=(f-.2)/2.8,pathFactor=path==='transverse'?1.25:1,freqLoss=(.015+.24*damage*pathFactor)*Math.pow(Math.max(0,norm),1.15),amp=Math.max(.06,s.amp-freqLoss),dispersion=(.002+.012*damage)*Math.log(f/.2)/Math.log(3/.2),vp=baseVp*(1+dispersion),directionFactor=Math.pow(baseVp/s.vpa,2),edyn=s.edyn*directionFactor*Math.pow(1+dispersion,2),lambda=vp/f,scatter=Math.min(1,(1-amp)+.16*norm);return{...s,baseEdyn:s.edyn,edyn,amp,vp,lambda,scatter,f,path}}
+function model3(){return modelAt3(stage3,$('#path3').value,+$('#freq3').value)}
+function update3(){const s=model3();$('#freq3v').textContent=s.f.toFixed(1)+' MHz';$('#freqImpact3').textContent=`At ${s.f.toFixed(1)} MHz, λ = ${s.lambda.toFixed(2)} mm. ${stage3<2?'Pulse spacing changes; weak velocity dispersion produces only a small change in wave-derived modulus.':'Shorter wavelengths interact more strongly with damage: dispersion changes the dynamic modulus, while attenuation reduces coherent amplitude.'} With fixed density and Poisson ratio, the displayed dynamic modulus scales with Vp².`;$('#estat3').textContent=revealed3?s.estat+' GPa':'—';$('#edyn3').textContent=revealed3?s.edyn.toFixed(1)+' GPa':'—';$('#vp3').textContent=revealed3?s.vp.toFixed(2)+' km/s':'—';$('#amp3').textContent=revealed3?Math.round(s.amp*100)+'%':'—';$('#lambda3').textContent=s.lambda.toFixed(2)+' mm';draw3()}
+function drawWavePath3(x,s,cx,top,bottom,r){const axial=s.path==='axial',len=axial?bottom-top:2*r,lambdaPx=Math.max(8,Math.min(58,s.lambda/22*len)),ampPx=5+13*s.amp,start=axial?top:cx-r,end=axial?bottom:cx+r,steps=150;x.save();x.strokeStyle=axial?C.teal:C.blue;x.lineWidth=3;x.beginPath();for(let i=0;i<steps;i++){const u=i/(steps-1),along=start+u*(end-start),env=.55+.45*gaussian(u,.5,.42),osc=Math.sin(u*len/lambdaPx*2*Math.PI)*ampPx*env,xx=axial?cx+osc:along,yy=axial?along:(top+bottom)/2+osc;i?x.lineTo(xx,yy):x.moveTo(xx,yy)}x.stroke();x.restore()}
+function drawSample3(){const c=$('#sample3'),{x,w,h}=fitCanvas(c),s=model3(),cx=w*.5,top=48,bottom=h-45,r=Math.min(w*.22,68);x.clearRect(0,0,w,h);x.fillStyle='#e9ddca';x.strokeStyle=C.navy;x.lineWidth=2;x.beginPath();x.roundRect(cx-r,top,r*2,bottom-top,16);x.fill();x.stroke();x.save();x.beginPath();x.roundRect(cx-r,top,r*2,bottom-top,16);x.clip();for(let i=0;i<24;i++){const xx=cx-r+12+(i*39%(2*r-24)),yy=top+18+(i*49%(bottom-top-35));x.fillStyle=i%2?'#c8b89e':'#b9a68b';x.beginPath();x.arc(xx,yy,5+i%4,0,7);x.fill()}const open=Math.max(.5,4-stage3*1.1);for(let i=0;i<6;i++){const yy=top+26+i*(bottom-top-50)/5,xx=cx-r+17+(i*29%(2*r-38));drawJaggedCrack(x,xx+15,yy,30,-.2,open,C.slate)}if(stage3>=3){const n=(stage3-2)*3;for(let i=0;i<n;i++){const xx=cx-r+20+(i*27%(2*r-40)),yy=top+25+(i*41%(bottom-top-50));drawJaggedCrack(x,xx,yy,34+(i%3)*8,1.48,stage3>=5?3:2,C.orange)}}drawWavePath3(x,s,cx,top,bottom,r);if(s.scatter>.35)for(let k=0;k<4;k++){x.strokeStyle=`rgba(199,101,47,${.12+.3*s.scatter})`;x.lineWidth=1.5;x.beginPath();x.arc(cx,top+(bottom-top)*.58,12+k*10,-1.2,1.2);x.stroke()}x.restore();const y=(top+bottom)/2;if(s.path==='axial')arrow(x,cx,top-5,cx,bottom+5,C.teal,3);else arrow(x,cx-r-38,y,cx+r+38,y,C.blue,3);text(x,`${s.path} path · ${s.f.toFixed(1)} MHz`,cx,25,11,s.path==='axial'?C.teal:C.blue,'center',800);text(x,`λ ${s.lambda.toFixed(2)} mm · coherent amplitude ${Math.round(s.amp*100)}%`,cx,h-28,10,C.slate,'center',750);text(x,s.name,cx,h-12,11,C.orange,'center',800)}
+function drawPlots3(){const c=$('#plots3'),{x,w,h}=fitCanvas(c),cur=model3();x.clearRect(0,0,w,h);const L=48,R=w-18,T=22,mid=h*.52,B=h-31;axes(x,L,T,R,mid-13,'axial strain (%)','stress');axes(x,L,mid+15,R,B,'loading stage','Vₚ (km/s)');const maxStr=1.5,X=e=>L+e/maxStr*(R-L),Y=q=>mid-13-q/115*(mid-T-13);x.strokeStyle=C.navy;x.lineWidth=3;x.beginPath();stages.forEach((s,i)=>{const xx=X(s.strain),yy=Y(s.stress);i?x.lineTo(xx,yy):x.moveTo(xx,yy)});x.stroke();let cs=stages[stage3];x.fillStyle=C.orange;x.beginPath();x.arc(X(cs.strain),Y(cs.stress),6,0,7);x.fill();const X2=i=>L+i/(stages.length-1)*(R-L),Y2=v=>B-(v-3.7)/(5.35-3.7)*(B-mid-15);[['vpa',C.teal],['vpt',C.blue]].forEach(([k,col])=>{x.strokeStyle=col;x.lineWidth=2.5;x.beginPath();stages.forEach((s,i)=>{i?x.lineTo(X2(i),Y2(s[k])):x.moveTo(X2(i),Y2(s[k]))});x.stroke()});x.fillStyle=cur.path==='axial'?C.teal:C.blue;x.beginPath();x.arc(X2(stage3),Y2(cur.vp),6,0,7);x.fill();text(x,'axial',R-55,mid+26,10,C.teal,'left',750);text(x,'transverse',R-55,mid+42,10,C.blue,'left',750);text(x,`${cur.f.toFixed(1)} MHz → λ ${cur.lambda.toFixed(2)} mm`,L+8,mid+27,10,C.orange,'left',750)}
+function draw3(){drawSample3();drawPlots3()}
+$('#path3').oninput=update3;$('#freq3').oninput=update3;
+$('#reset3').onclick=()=>{$$('#pred3 .choice').forEach(b=>b.classList.remove('selected'));revealed3=false;$('#explain3').classList.add('hidden');$('#results3').innerHTML='';update3()};
+$('#reveal3').onclick=()=>{revealed3=true;const cur=model3(),prev=stage3?modelAt3(stage3-1,cur.path,cur.f):cur;const actual={estat:stage3?trend(prev.estat,cur.estat):'same',edyn:stage3?trend(prev.edyn,cur.edyn):'same',velocity:stage3?trend(prev.vp,cur.vp):'same',amplitude:stage3?trend(prev.amp,cur.amp):'same'};$('#stageTitle3').textContent=`${stage3+1} · ${cur.name}`;$('#explain3text').textContent=cur.desc+` At ${cur.f.toFixed(1)} MHz (λ = ${cur.lambda.toFixed(2)} mm), the modeled coherent amplitude is ${Math.round(cur.amp*100)}%.`;$('#explain3').classList.remove('hidden');const names={estat:'Estatic',edyn:'Edynamic',velocity:'Wave velocity',amplitude:'Amplitude'},rows=[];Object.keys(actual).forEach(k=>{const sel=$(`#pred3 [data-metric="${k}"].selected`),pred=sel?sel.dataset.value:'—',ok=pred===actual[k];rows.push(`<tr><td>${names[k]}</td><td>${pred==='—'?'—':arrowChar(pred)}</td><td class="${pred==='—'?'':ok?'correct':'incorrect'}">${arrowChar(actual[k])}${pred==='—'?'':ok?' ✓':' ✕'}</td></tr>`)});$('#results3').innerHTML=rows.join('');update3()};
+
+function resetCurrent(){const id=$('.panel.active').id;if(id==='a1'){staticDone1=pulseDone1=false;$('#explain1').classList.add('hidden');$('#estat1').textContent=$('#edyn1').textContent=$('#vp1').textContent=$('#vs1').textContent='—';$$('[data-predict="p1"] .choice').forEach(b=>b.classList.remove('selected'));draw1()}else if(id==='a2'){$('#explain2').classList.add('hidden');$$('[data-predict="p2"] .choice').forEach(b=>b.classList.remove('selected'));update2()}else $('#reset3').click()}
+document.addEventListener('keydown',e=>{if(['INPUT','SELECT'].includes(document.activeElement.tagName))return;if(['1','2','3'].includes(e.key))switchTab('a'+e.key);if(e.key.toLowerCase()==='r')resetCurrent()});
+window.addEventListener('resize',drawAll);
+function drawAll(){if($('#a1').classList.contains('active'))draw1();if($('#a2').classList.contains('active'))draw2();if($('#a3').classList.contains('active'))draw3()}
+makeStageBtns();update1();update2();update3();requestAnimationFrame(drawAll);
+</script>
+</body>
+</html>

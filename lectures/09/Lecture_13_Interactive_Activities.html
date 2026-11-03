@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture 10 Interactive Activities · Microcracks to Failure</title>
+<style>
+:root{
+  --navy:#153246;--teal:#1699a6;--orange:#e8703a;--purple:#72507d;
+  --ink:#2d3e49;--muted:#71808a;--line:#dbe6ea;--pale:#eef5f7;
+  --peach:#f8eee8;--lav:#f4eef6;--white:#fff;--soft:#f8fafb;
+  --ok:#3b8468;--danger:#bf4b50;--shadow:0 10px 28px rgba(21,50,70,.10)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#edf2f4;color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.38}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:1480px;margin:0 auto;background:var(--white);min-height:100vh}
+.topbar{padding:24px 32px 18px;border-bottom:1px solid var(--line);background:var(--white);position:sticky;top:0;z-index:20}
+.course{font-size:12px;font-weight:700;letter-spacing:.09em;color:var(--teal);text-transform:uppercase}
+h1{font-size:clamp(26px,3vw,42px);line-height:1.08;margin:6px 0 6px;color:var(--navy)}
+.subtitle{margin:0;color:var(--muted);font-size:16px}
+.top-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:14px}
+.switch{display:flex;align-items:center;gap:8px;color:var(--navy);font-weight:700}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;padding:16px 32px;border-bottom:1px solid var(--line);background:var(--soft)}
+.tab{border:1px solid var(--line);background:var(--white);color:var(--navy);padding:10px 14px;border-radius:7px;font-weight:700}
+.tab[aria-selected="true"]{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.panel{display:none;padding:28px 32px 38px}
+.panel.active{display:block}
+.activity-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:20px}
+.activity-head h2{font-size:clamp(24px,2.5vw,34px);margin:0;color:var(--navy)}
+.activity-head p{margin:6px 0 0;color:var(--muted);max-width:860px}
+.phase{font-size:12px;color:var(--teal);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);gap:26px;align-items:start}
+.grid.equal{grid-template-columns:1fr 1fr}
+.controls{background:var(--soft);border-left:5px solid var(--teal);padding:18px}
+.control{margin-bottom:17px}
+.control:last-child{margin-bottom:0}
+.control label{display:flex;justify-content:space-between;gap:12px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.value{font-variant-numeric:tabular-nums;color:var(--teal)}
+input[type=range]{width:100%;accent-color:var(--teal)}
+select{width:100%;padding:9px;border:1px solid var(--line);border-radius:5px;background:var(--white);color:var(--ink)}
+.button-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn{border:1px solid var(--line);background:var(--white);color:var(--navy);padding:9px 13px;border-radius:6px;font-weight:700}
+.btn.primary{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.btn.reveal{background:var(--purple);color:var(--white);border-color:var(--purple)}
+.btn.active{background:var(--teal);color:var(--white);border-color:var(--teal)}
+.prompt{border-left:5px solid var(--purple);background:var(--lav);padding:14px 18px;margin-bottom:20px;color:var(--navy);font-size:18px;font-weight:700}
+.viz{min-width:0}
+.viz svg{display:block;width:100%;height:auto;background:var(--white)}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+.metric{padding:12px 14px;background:var(--pale);min-height:76px}
+.metric .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.metric .num{font-size:25px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.metric .small{font-size:12px;color:var(--muted)}
+.status{padding:12px 14px;font-weight:700;border-left:5px solid var(--muted);background:var(--soft)}
+.status.locked{border-color:var(--purple);background:var(--lav)}
+.status.ready{border-color:var(--orange);background:var(--peach)}
+.status.growing{border-color:var(--teal);background:var(--pale)}
+.status.failed{border-color:var(--danger);background:#fbefef}
+.equations{font-family:Georgia,'Times New Roman',serif;font-size:17px;background:var(--white);padding:12px;border:1px solid var(--line);margin-top:14px}
+.equations div+div{margin-top:7px}
+.note{font-size:13px;color:var(--muted);margin-top:12px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;font-size:13px;color:var(--muted)}
+.key{display:inline-flex;align-items:center;gap:6px}
+.swatch{width:18px;height:4px;background:var(--teal);display:inline-block}
+.swatch.orange{background:var(--orange)}
+.swatch.purple{background:var(--purple)}
+.swatch.gray{background:var(--muted)}
+.reveal-box{display:none;margin-top:16px;padding:14px 18px;border-left:5px solid var(--orange);background:var(--peach)}
+.reveal-box.show{display:block}
+.reveal-box h3{margin:0 0 7px;color:var(--orange);font-size:17px}
+.instructor{display:none;margin-top:22px;padding:16px 18px;border-top:4px solid var(--purple);background:var(--lav)}
+body.authoring .instructor{display:block}
+body.authoring [data-authorable]{outline:1px dashed var(--purple);outline-offset:3px}
+.instructor h3{margin:0 0 7px;color:var(--purple)}
+.instructor p{margin:4px 0}
+.two-viz{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start}
+.subhead{font-weight:700;color:var(--navy);margin:0 0 8px}
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.choice-grid{display:grid;grid-template-columns:repeat(5,minmax(110px,1fr));gap:8px;margin:14px 0}
+.choice{border:1px solid var(--line);background:var(--white);padding:10px;border-radius:6px;color:var(--navy);font-weight:700;min-height:54px}
+.choice.selected{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.evidence-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.evidence-step{border:1px solid var(--line);background:var(--white);padding:8px 11px;border-radius:5px;color:var(--navy)}
+.evidence-step.active{background:var(--teal);color:var(--white);border-color:var(--teal)}
+.evidence-step:disabled{opacity:.45;cursor:not-allowed}
+.case-title{font-size:19px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.observed{padding:12px 14px;background:var(--pale);margin-top:12px}
+.observed b{color:var(--teal)}
+.answer-columns{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.answer-columns>div{padding:12px;background:var(--white);border-top:4px solid var(--line)}
+.answer-columns b{display:block;color:var(--navy);margin-bottom:5px}
+.footer{padding:18px 32px 30px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+.hidden{display:none!important}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:900px){
+ .grid,.grid.equal,.two-viz{grid-template-columns:1fr}
+ .choice-grid{grid-template-columns:repeat(2,1fr)}
+ .metrics{grid-template-columns:1fr 1fr}
+ .topbar{position:static}
+}
+@media(max-width:560px){
+ .topbar,.tabs,.panel,.footer{padding-left:18px;padding-right:18px}
+ .metrics,.answer-columns{grid-template-columns:1fr}
+ .choice-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="topbar">
+    <div class="course">Petrophysics · Lecture 10</div>
+    <h1>From microcracks to macroscopic failure</h1>
+    <p class="subtitle">Four interactive activities: activation, wing cracks, localization and evidence</p>
+    <div class="top-actions">
+      <label class="switch"><input id="authorMode" type="checkbox"> Authoring mode</label>
+      <button class="btn" id="resetEdits">Reset authored text</button>
+      <span class="note">Runs offline. Changes to authorable text are saved in this browser.</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Interactive activities">
+    <button class="tab" role="tab" aria-selected="true" data-target="act1">1 · Flaw activation</button>
+    <button class="tab" role="tab" aria-selected="false" data-target="act2">2 · Wing-crack growth</button>
+    <button class="tab" role="tab" aria-selected="false" data-target="act3">3 · Damage localization</button>
+    <button class="tab" role="tab" aria-selected="false" data-target="act4">4 · Failure detective</button>
+  </nav>
+
+  <section class="panel active" id="act1" role="tabpanel">
+    <div class="activity-head">
+      <div><div class="phase">Exact traction calculation</div><h2>Which flaw activates first?</h2><p>Resolve the applied stresses on a closed flaw and test the friction criterion.</p></div>
+    </div>
+    <div class="prompt" data-authorable contenteditable="false">Prediction first: rank flaws at β = 15°, 45° and 75°. Then identify the stress component that controls your ranking.</div>
+    <div class="grid">
+      <aside class="controls">
+        <div class="control"><label for="a1beta">Flaw angle β <span class="value" id="a1betaV"></span></label><input id="a1beta" type="range" min="1" max="89" value="30" step="1"></div>
+        <div class="control"><label for="a1s1">Maximum stress σ₁ <span class="value" id="a1s1V"></span></label><input id="a1s1" type="range" min="20" max="350" value="180" step="5"></div>
+        <div class="control"><label for="a1s3">Confinement σ₃ <span class="value" id="a1s3V"></span></label><input id="a1s3" type="range" min="0" max="120" value="20" step="5"></div>
+        <div class="control"><label for="a1mu">Friction μ <span class="value" id="a1muV"></span></label><input id="a1mu" type="range" min="0.15" max="1.0" value="0.60" step="0.05"></div>
+        <div class="button-row">
+          <button class="btn" data-beta="15">β = 15°</button><button class="btn" data-beta="45">β = 45°</button><button class="btn" data-beta="75">β = 75°</button>
+        </div>
+        <div class="equations" aria-label="Resolved traction equations">
+          <div>σ<sub>n</sub> = (σ₁+σ₃)/2 − (σ₁−σ₃)cos(2β)/2</div>
+          <div>τ = (σ₁−σ₃)sin(2β)/2</div>
+          <div>Sliding when |τ| ≥ μσ<sub>n</sub></div>
+        </div>
+        <div class="button-row"><button class="btn reveal" data-reveal="a1answer">Reveal explanation</button><button class="btn" id="a1reset">Reset</button></div>
+      </aside>
+      <div class="viz">
+        <div class="two-viz">
+          <div><p class="subhead">Specimen and resolved traction</p><svg id="a1specimen" viewBox="0 0 500 430" role="img" aria-label="Specimen with inclined flaw and traction vectors"></svg></div>
+          <div><p class="subhead">Mohr circle</p><svg id="a1mohr" viewBox="0 0 560 430" role="img" aria-label="Mohr circle with the selected flaw stress point"></svg></div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="label">Normal traction</div><div class="num" id="a1sn"></div><div class="small">MPa</div></div>
+          <div class="metric"><div class="label">Shear traction</div><div class="num" id="a1tau"></div><div class="small">MPa</div></div>
+          <div class="metric"><div class="label">Activation ratio</div><div class="num" id="a1ratio"></div><div class="small">|τ| / μσₙ</div></div>
+        </div>
+        <div class="status" id="a1status" aria-live="polite"></div>
+        <div class="reveal-box" id="a1answer"><h3>Explanation</h3><div data-authorable contenteditable="false">Resolved shear is zero for flaws parallel or normal to σ₁ and reaches its maximum at 45°. Friction also depends on normal traction, so the easiest sliding orientation lies below 45° when μ &gt; 0. For the current μ, the analytical optimum is shown on the Mohr circle.</div></div>
+      </div>
+    </div>
+    <div class="instructor"><h3>Instructor notes</h3><p><b>Sequence:</b> prediction → three preset angles → continuous angle scan → increase μ → increase σ₃.</p><p><b>Expected:</b> students separate “largest shear traction” from “first frictional activation.”</p></div>
+  </section>
+
+  <section class="panel" id="act2" role="tabpanel">
+    <div class="activity-head"><div><div class="phase">Semi-quantitative teaching model</div><h2>How can a tensile wing crack grow during compression?</h2><p>Follow the sequence from locked flaw to sliding, nucleation, stable growth and arrest.</p></div></div>
+    <div class="prompt" data-authorable contenteditable="false">Prediction first: hold σ₁ fixed and increase σ₃. What happens to sliding, wing-crack nucleation and stable wing length?</div>
+    <div class="grid">
+      <aside class="controls">
+        <div class="control"><label for="a2s1">Maximum stress σ₁ <span class="value" id="a2s1V"></span></label><input id="a2s1" type="range" min="30" max="450" value="220" step="5"></div>
+        <div class="control"><label for="a2s3">Confinement σ₃ <span class="value" id="a2s3V"></span></label><input id="a2s3" type="range" min="0" max="140" value="20" step="5"></div>
+        <div class="control"><label for="a2beta">Parent-flaw angle β <span class="value" id="a2betaV"></span></label><input id="a2beta" type="range" min="5" max="80" value="30" step="1"></div>
+        <div class="control"><label for="a2mu">Friction μ <span class="value" id="a2muV"></span></label><input id="a2mu" type="range" min="0.15" max="1" value="0.60" step="0.05"></div>
+        <div class="control"><label for="a2c">Flaw half-length c <span class="value" id="a2cV"></span></label><input id="a2c" type="range" min="0.2" max="5" value="2" step="0.1"></div>
+        <div class="control"><label for="a2kic">Toughness K<sub>Ic</sub> <span class="value" id="a2kicV"></span></label><input id="a2kic" type="range" min="0.5" max="3" value="1.5" step="0.1"></div>
+        <div class="button-row"><button class="btn" id="a2compare">Compare low/high confinement</button><button class="btn" id="a2reset">Reset</button></div>
+        <div class="button-row"><button class="btn reveal" data-reveal="a2answer">Reveal explanation</button></div>
+        <p class="note">The graph preserves the declining wedging term and increasing clamping term of the wing-crack model. It is a teaching approximation, not a parameter-inversion tool.</p>
+      </aside>
+      <div class="viz">
+        <div class="two-viz">
+          <div><p class="subhead">Crack geometry</p><svg id="a2crack" viewBox="0 0 560 430" role="img" aria-label="Sliding flaw and tensile wing cracks"></svg></div>
+          <div><p class="subhead">Opening drive during extension</p><svg id="a2plot" viewBox="0 0 600 430" role="img" aria-label="Normalized stress intensity versus normalized wing length"></svg></div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="label">Tip drive at nucleation</div><div class="num" id="a2drive"></div><div class="small">Kᵢ / Kᵢc at ℓ = 0</div></div>
+          <div class="metric"><div class="label">Stable wing length</div><div class="num" id="a2length"></div><div class="small">ℓ / c</div></div>
+          <div class="metric"><div class="label">Long-wing direction</div><div class="num" id="a2gamma"></div><div class="small">angle to parent flaw</div></div>
+        </div>
+        <div class="status" id="a2status" aria-live="polite"></div>
+        <div class="reveal-box" id="a2answer"><h3>Explanation</h3><div data-authorable contenteditable="false">Confinement works twice. It raises normal traction and therefore friction on the parent flaw. It also contributes a closing term on the wing crack. Once a wing has nucleated, the wedging influence weakens as the tip moves away, while clamping becomes more important, so an isolated wing tends to grow stably and arrest.</div></div>
+      </div>
+    </div>
+    <div class="instructor"><h3>Instructor notes</h3><p><b>Suggested comparison:</b> σ₃ = 10 MPa versus 80 MPa with all other controls fixed.</p><p><b>Emphasis:</b> crack initiation does not imply runaway failure. Interaction is still missing.</p></div>
+  </section>
+
+  <section class="panel" id="act3" role="tabpanel">
+    <div class="activity-head"><div><div class="phase">Schematic population model</div><h2>When does distributed damage become a fault?</h2><p>Compare independent wing cracks with an interacting crack population.</p></div></div>
+    <div class="prompt" data-authorable contenteditable="false">Prediction first: can a population of stable, noninteracting wing cracks produce a system-spanning fault?</div>
+    <div class="grid">
+      <aside class="controls">
+        <div class="control"><label for="a3load">Normalized loading <span class="value" id="a3loadV"></span></label><input id="a3load" type="range" min="0" max="100" value="45" step="1"></div>
+        <div class="control"><label for="a3damage">Initial damage D₀ <span class="value" id="a3damageV"></span></label><input id="a3damage" type="range" min="1" max="10" value="4" step="1"></div>
+        <div class="toggle-row"><button class="btn active" id="a3on">Interaction on</button><button class="btn" id="a3off">Interaction off</button></div>
+        <div class="button-row"><button class="btn" id="a3step">Advance loading</button><button class="btn" id="a3reset">Reset population</button></div>
+        <div class="button-row"><button class="btn reveal" data-reveal="a3answer">Reveal explanation</button></div>
+        <p class="note">Crack locations and thresholds are deterministic. The interaction rule is deliberately schematic and only represents stress amplification, linkage and coalescence.</p>
+      </aside>
+      <div class="viz">
+        <div class="two-viz">
+          <div><p class="subhead">Crack population</p><svg id="a3network" viewBox="0 0 560 500" role="img" aria-label="Population of flaws evolving toward a localized fault"></svg></div>
+          <div><p class="subhead">Macroscopic response</p><svg id="a3curve" viewBox="0 0 600 310" role="img" aria-label="Schematic stress strain curve with current load state"></svg><p class="subhead">Synthetic ultrasonic paths</p><svg id="a3vp" viewBox="0 0 600 185" role="img" aria-label="Synthetic P wave velocity changes on three ray paths"></svg></div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="label">Active flaws</div><div class="num" id="a3active"></div><div class="small">of 42</div></div>
+          <div class="metric"><div class="label">Largest connected cluster</div><div class="num" id="a3cluster"></div><div class="small">fraction of active cracks</div></div>
+          <div class="metric"><div class="label">Localization index</div><div class="num" id="a3loc"></div><div class="small">damage in preferred band</div></div>
+        </div>
+        <div class="status" id="a3status" aria-live="polite"></div>
+        <div class="reveal-box" id="a3answer"><h3>Explanation</h3><div data-authorable contenteditable="false">Without interaction, many isolated cracks can accumulate while the specimen continues to harden. Interaction changes the local driving force, promotes linkage and concentrates damage into a connected band. Localization depends on spatial organization and connectivity, not only on the total number of cracks.</div></div>
+      </div>
+    </div>
+    <div class="instructor"><h3>Instructor notes</h3><p><b>Run twice:</b> first with interaction off, then reset and repeat with interaction on.</p><p><b>Ask:</b> which measurement detects localization better: mean crack density, the largest cluster, or path-dependent velocity?</p></div>
+  </section>
+
+  <section class="panel" id="act4" role="tabpanel">
+    <div class="activity-head"><div><div class="phase">Evidence integration</div><h2>Failure detective</h2><p>Build an interpretation progressively and keep observation, interpretation and mechanism separate.</p></div></div>
+    <div class="prompt" data-authorable contenteditable="false">Commit after each evidence step. You may change your answer, but explain which new observation changed your interpretation.</div>
+    <div class="grid">
+      <aside class="controls">
+        <div class="control"><label for="a4case">Challenge case</label><select id="a4case"><option value="A">Case A · early loading</option><option value="B">Case B · pre-peak damage</option><option value="C" selected>Case C · near peak</option><option value="D">Case D · post-peak</option></select></div>
+        <div class="control"><label for="a4confidence">Confidence <span class="value" id="a4confidenceV"></span></label><input id="a4confidence" type="range" min="1" max="5" value="3" step="1"></div>
+        <div class="button-row"><button class="btn" id="a4next">Reveal next evidence</button><button class="btn" id="a4reset">Reset case</button></div>
+        <div class="button-row"><button class="btn reveal" id="a4reveal">Reveal interpretation</button></div>
+        <div class="observed"><b>Rule:</b> describe what the instrument records before naming the process that caused it.</div>
+      </aside>
+      <div class="viz">
+        <div class="case-title" id="a4title"></div>
+        <div class="evidence-nav" id="a4steps"></div>
+        <div class="two-viz">
+          <div><p class="subhead" id="a4plotTitle"></p><svg id="a4plot" viewBox="0 0 600 420" role="img" aria-label="Progressively revealed experimental evidence"></svg></div>
+          <div>
+            <p class="subhead">Your current interpretation</p>
+            <div class="choice-grid" id="a4choices">
+              <button class="choice" data-stage="Closure">Closure</button><button class="choice" data-stage="Elastic loading">Elastic loading</button><button class="choice" data-stage="Distributed damage">Distributed damage</button><button class="choice" data-stage="Localization">Localization</button><button class="choice" data-stage="Fault sliding">Fault sliding</button>
+            </div>
+            <div class="status locked" id="a4status" aria-live="polite">Choose the stage that best fits the available evidence.</div>
+            <div class="reveal-box" id="a4answer">
+              <h3 id="a4answerTitle"></h3>
+              <div class="answer-columns"><div><b>Observation</b><span id="a4obs"></span></div><div><b>Interpretation</b><span id="a4int"></span></div><div><b>Mechanism</b><span id="a4mech"></span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="instructor"><h3>Instructor notes</h3><p><b>Do not reveal all evidence immediately.</b> Ask for a stage and confidence after each step.</p><p><b>Debrief:</b> emphasize that strain constrains timing, velocity adds spatial sensitivity, and imaging provides direct geometric evidence.</p></div>
+  </section>
+
+  <footer class="footer">Teaching models based on Paterson &amp; Wong (2005), Bernabé &amp; Pec (2022), Aben et al. (2020), Renard et al. (2018), McBeck et al. (2021) and Kandula et al. (2022). The localization simulation and detective datasets are schematic syntheses for instruction.</footer>
+</main>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const C={navy:'#153246',teal:'#1699a6',orange:'#e8703a',purple:'#72507d',ink:'#2d3e49',muted:'#71808a',line:'#dbe6ea',pale:'#eef5f7',peach:'#f8eee8',lav:'#f4eef6',white:'#ffffff',danger:'#bf4b50',ok:'#3b8468'};
+const $=id=>document.getElementById(id);
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const rad=d=>d*Math.PI/180;
+const fmt=(x,n=1)=>Number(x).toFixed(n);
+function el(name,attrs={},parent){const n=document.createElementNS(NS,name);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(parent)parent.appendChild(n);return n}
+function txt(svg,x,y,text,attrs={}){const t=el('text',{x,y,fill:C.ink,'font-size':14,'font-family':'Arial',...attrs},svg);t.textContent=text;return t}
+function line(svg,x1,y1,x2,y2,attrs={}){return el('line',{x1,y1,x2,y2,stroke:C.line,'stroke-width':2,...attrs},svg)}
+function clear(svg){while(svg.firstChild)svg.removeChild(svg.firstChild)}
+function arrow(svg,x1,y1,x2,y2,color=C.navy,width=3){line(svg,x1,y1,x2,y2,{stroke:color,'stroke-width':width});const a=Math.atan2(y2-y1,x2-x1),s=10;const p=[[x2,y2],[x2-s*Math.cos(a-.45),y2-s*Math.sin(a-.45)],[x2-s*Math.cos(a+.45),y2-s*Math.sin(a+.45)]];el('polygon',{points:p.map(q=>q.join(',')).join(' '),fill:color},svg)}
+function axes(svg,{x0=64,y0=360,w=460,h=290,xLabel='',yLabel='',xTicks=[],yTicks=[]}){line(svg,x0,y0,x0+w,y0,{stroke:C.ink});line(svg,x0,y0,x0,y0-h,{stroke:C.ink});xTicks.forEach(([p,l])=>{line(svg,x0+p*w,y0,x0+p*w,y0+5,{stroke:C.ink,'stroke-width':1});txt(svg,x0+p*w,y0+22,l,{'text-anchor':'middle','font-size':12,fill:C.muted})});yTicks.forEach(([p,l])=>{line(svg,x0-5,y0-p*h,x0,y0-p*h,{stroke:C.ink,'stroke-width':1});txt(svg,x0-10,y0-p*h+4,l,{'text-anchor':'end','font-size':12,fill:C.muted})});txt(svg,x0+w/2,y0+46,xLabel,{'text-anchor':'middle','font-size':13});const yl=txt(svg,18,y0-h/2,yLabel,{'text-anchor':'middle','font-size':13});yl.setAttribute('transform',`rotate(-90 18 ${y0-h/2})`)}
+
+// Tabs and authoring
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected','false'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.setAttribute('aria-selected','true');$(b.dataset.target).classList.add('active')}));
+document.querySelectorAll('[data-reveal]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.reveal).classList.toggle('show')));
+const authored=[...document.querySelectorAll('[data-authorable]')];
+authored.forEach((n,i)=>{const saved=localStorage.getItem('l10author'+i);if(saved)n.innerHTML=saved;n.addEventListener('input',()=>localStorage.setItem('l10author'+i,n.innerHTML))});
+$('authorMode').addEventListener('change',e=>{document.body.classList.toggle('authoring',e.target.checked);authored.forEach(n=>n.contentEditable=e.target.checked?'true':'false')});
+$('resetEdits').addEventListener('click',()=>{authored.forEach((n,i)=>localStorage.removeItem('l10author'+i));location.reload()});
+
+// Activity 1
+const a1ids=['a1beta','a1s1','a1s3','a1mu'];
+function a1calc(){
+ let beta=+$('a1beta').value,s1=+$('a1s1').value,s3=+$('a1s3').value,mu=+$('a1mu').value;
+ if(s3>=s1){s3=s1-5;$('a1s3').value=s3}
+ const sn=(s1+s3)/2-(s1-s3)*Math.cos(2*rad(beta))/2;
+ const tau=(s1-s3)*Math.sin(2*rad(beta))/2;
+ const res=mu*sn,ratio=res>0?Math.abs(tau)/res:9.99;
+ $('a1betaV').textContent=beta+'°';$('a1s1V').textContent=s1+' MPa';$('a1s3V').textContent=s3+' MPa';$('a1muV').textContent=fmt(mu,2);
+ $('a1sn').textContent=fmt(sn);$('a1tau').textContent=fmt(tau);$('a1ratio').textContent=fmt(ratio,2);
+ const st=$('a1status');st.className='status '+(ratio>=1?'growing':'locked');st.textContent=ratio>=1?'Sliding criterion exceeded: this flaw is active.':'Locked flaw: frictional resistance exceeds the resolved shear traction.';
+ drawA1Spec(beta,s1,s3,sn,tau);drawA1Mohr(beta,s1,s3,mu,sn,tau);
+}
+function drawA1Spec(beta,s1,s3,sn,tau){const svg=$('a1specimen');clear(svg);el('rect',{x:135,y:65,width:230,height:300,rx:18,fill:C.pale,stroke:C.line,'stroke-width':2},svg);arrow(svg,250,15,250,63,C.navy,4);arrow(svg,250,415,250,367,C.navy,4);arrow(svg,80,215,133,215,C.purple,4);arrow(svg,420,215,367,215,C.purple,4);txt(svg,265,35,'σ₁',{'font-weight':700});txt(svg,265,408,'σ₁',{'font-weight':700});txt(svg,83,200,'σ₃',{'font-weight':700,fill:C.purple});txt(svg,402,200,'σ₃',{'font-weight':700,fill:C.purple});const cx=250,cy=215,L=95,dx=L*Math.sin(rad(beta)),dy=L*Math.cos(rad(beta));line(svg,cx-dx,cy-dy,cx+dx,cy+dy,{stroke:C.orange,'stroke-width':9,'stroke-linecap':'round'});line(svg,cx,cy-105,cx,cy+105,{stroke:C.line,'stroke-width':2,'stroke-dasharray':'5 5'});txt(svg,275,118,`β = ${beta}°`,{'font-weight':700,fill:C.orange});const nx=Math.cos(rad(beta)),ny=-Math.sin(rad(beta)),tx=Math.sin(rad(beta)),ty=Math.cos(rad(beta));arrow(svg,cx,cy,cx+nx*clamp(sn,25,90),cy+ny*clamp(sn,25,90),C.purple,4);arrow(svg,cx,cy,cx+tx*clamp(tau,20,90),cy+ty*clamp(tau,20,90),C.teal,4);txt(svg,cx+nx*82+5,cy+ny*82,'σₙ',{'font-weight':700,fill:C.purple});txt(svg,cx+tx*86+6,cy+ty*86,'τ',{'font-weight':700,fill:C.teal})}
+function drawA1Mohr(beta,s1,s3,mu,sn,tau){const svg=$('a1mohr');clear(svg);const maxX=Math.max(100,s1*1.08),x0=62,y0=358,w=460,h=280,scale=w/maxX,maxY=h/scale;axes(svg,{x0,y0,w,h,xLabel:'Normal stress σₙ (MPa)',yLabel:'Shear stress τ (MPa)',xTicks:[[0,'0'],[.5,fmt(maxX/2,0)],[1,fmt(maxX,0)]],yTicks:[[0,'0'],[.5,fmt(maxY/2,0)],[1,fmt(maxY,0)]]});const X=v=>x0+v*scale,Y=v=>y0-v*scale,center=(s1+s3)/2,r=(s1-s3)/2;el('circle',{cx:X(center),cy:Y(0),r:r*scale,fill:'none',stroke:C.navy,'stroke-width':3},svg);const frictionEnd=Math.min(maxX,maxY/mu);line(svg,X(0),Y(0),X(frictionEnd),Y(mu*frictionEnd),{stroke:C.orange,'stroke-width':3});txt(svg,X(frictionEnd*.72),Y(mu*frictionEnd*.72)-8,'τ = μσₙ',{'font-size':12,fill:C.orange});el('circle',{cx:X(sn),cy:Y(tau),r:8,fill:C.teal,stroke:C.white,'stroke-width':2},svg);txt(svg,X(sn)+10,Y(tau)-10,`β ${beta}°`,{'font-weight':700,fill:C.teal});const opt=.5*Math.atan(1/mu)*180/Math.PI;txt(svg,x0+w-4,y0-h+18,`frictional optimum β ≈ ${fmt(opt,1)}°`,{'text-anchor':'end','font-size':12,fill:C.purple});txt(svg,X(s3),y0+18,'σ₃',{'text-anchor':'middle','font-size':12});txt(svg,X(s1),y0+18,'σ₁',{'text-anchor':'middle','font-size':12})}
+a1ids.forEach(id=>$(id).addEventListener('input',a1calc));document.querySelectorAll('[data-beta]').forEach(b=>b.addEventListener('click',()=>{$('a1beta').value=b.dataset.beta;a1calc()}));$('a1reset').addEventListener('click',()=>{[['a1beta',30],['a1s1',180],['a1s3',20],['a1mu',.6]].forEach(x=>$(x[0]).value=x[1]);a1calc()});
+
+// Activity 2
+const a2ids=['a2s1','a2s3','a2beta','a2mu','a2c','a2kic'];
+function wingModel(){let s1=+$('a2s1').value,s3=+$('a2s3').value,beta=+$('a2beta').value,mu=+$('a2mu').value,c=+$('a2c').value,kic=+$('a2kic').value;if(s3>=s1){s3=s1-5;$('a2s3').value=s3}const sn=(s1+s3)/2-(s1-s3)*Math.cos(2*rad(beta))/2,tau=(s1-s3)*Math.sin(2*rad(beta))/2,ex=Math.max(0,tau-mu*sn),root=Math.sqrt(Math.PI*c/1000),P=ex*root/kic,cl=.65*s3*root/kic;const drive=x=>P/Math.sqrt(1+x)-cl*Math.sqrt(x);let length=0;if(P>=1){for(let x=0;x<=4;x+=.01){if(drive(x)>=1)length=x;else if(x>0)break}}const gamma=.5*Math.atan(1/mu)*180/Math.PI;return{s1,s3,beta,mu,c,kic,sn,tau,ex,P,cl,drive,length,gamma}}
+function a2calc(){const m=wingModel();$('a2s1V').textContent=m.s1+' MPa';$('a2s3V').textContent=m.s3+' MPa';$('a2betaV').textContent=m.beta+'°';$('a2muV').textContent=fmt(m.mu,2);$('a2cV').textContent=fmt(m.c,1)+' mm';$('a2kicV').textContent=fmt(m.kic,1)+' MPa√m';$('a2drive').textContent=fmt(m.P,2);$('a2length').textContent=fmt(m.length,2);$('a2gamma').textContent=fmt(m.gamma,1)+'°';let state,cl;if(m.ex<=0){state='Locked parent flaw: resolved shear does not overcome friction.';cl='locked'}else if(m.P<1){state='The parent flaw slides, but the tip drive remains below toughness.';cl='ready'}else if(m.length<.05){state='Wing crack at nucleation: Kᵢ has just reached Kᵢc.';cl='ready'}else{state='Stable wing-crack growth followed by arrest at ℓ/c ≈ '+fmt(m.length,2)+'.';cl='growing'}const st=$('a2status');st.className='status '+cl;st.textContent=state;drawA2Crack(m);drawA2Plot(m)}
+function drawA2Crack(m){const svg=$('a2crack');clear(svg);el('rect',{x:115,y:48,width:330,height:335,rx:20,fill:C.pale,stroke:C.line,'stroke-width':2},svg);arrow(svg,280,5,280,45,C.navy,4);arrow(svg,280,425,280,386,C.navy,4);arrow(svg,65,215,112,215,C.purple,4);arrow(svg,495,215,448,215,C.purple,4);txt(svg,295,28,'σ₁',{'font-weight':700});txt(svg,295,417,'σ₁',{'font-weight':700});txt(svg,66,200,'σ₃',{'font-weight':700,fill:C.purple});txt(svg,478,200,'σ₃',{'font-weight':700,fill:C.purple});const cx=280,cy=220,L=82,dx=L*Math.sin(rad(m.beta)),dy=L*Math.cos(rad(m.beta)),x1=cx-dx,y1=cy-dy,x2=cx+dx,y2=cy+dy;line(svg,x1,y1,x2,y2,{stroke:C.navy,'stroke-width':9,'stroke-linecap':'round'});if(m.ex>0){arrow(svg,cx-dx*.55,cy-dy*.55,cx-dx*.08,cy-dy*.08,C.orange,4);arrow(svg,cx+dx*.55,cy+dy*.55,cx+dx*.08,cy+dy*.08,C.orange,4)}const wingPx=clamp(m.length*74,0,150),theta=rad(m.gamma),wx=wingPx*Math.sin(theta),wy=wingPx*Math.cos(theta);if(m.P>=1){el('path',{d:`M ${x1} ${y1} Q ${x1-wx*.25} ${y1-wy*.65} ${x1-wx} ${y1-wy}`,fill:'none',stroke:C.orange,'stroke-width':5,'stroke-linecap':'round'},svg);el('path',{d:`M ${x2} ${y2} Q ${x2+wx*.25} ${y2+wy*.65} ${x2+wx} ${y2+wy}`,fill:'none',stroke:C.orange,'stroke-width':5,'stroke-linecap':'round'},svg)}txt(svg,135,405,'orange: sliding and tensile wings',{'font-size':12,fill:C.orange});txt(svg,326,78,`β ${m.beta}°`,{'font-size':12,'font-weight':700,fill:C.teal})}
+function drawA2Plot(m){const svg=$('a2plot');clear(svg);const x0=66,y0=356,w=492,h=285;axes(svg,{x0,y0,w,h,xLabel:'Normalized wing length ℓ/c',yLabel:'Opening drive Kᵢ/Kᵢc',xTicks:[[0,'0'],[.25,'1'],[.5,'2'],[.75,'3'],[1,'4']],yTicks:[[0,'0'],[.33,'1'],[.66,'2'],[1,'3']]});const X=x=>x0+x/4*w,Y=y=>y0-clamp(y,0,3)/3*h;line(svg,x0,Y(1),x0+w,Y(1),{stroke:C.orange,'stroke-width':2,'stroke-dasharray':'7 5'});txt(svg,x0+w-5,Y(1)-7,'Kᵢ = Kᵢc',{'text-anchor':'end','font-size':12,fill:C.orange});let d='';for(let x=0;x<=4.001;x+=.05){const y=m.drive(x);d+=(x===0?'M':'L')+X(x)+' '+Y(y)+' '}el('path',{d,fill:'none',stroke:C.teal,'stroke-width':4},svg);if(m.P>=1){el('circle',{cx:X(m.length),cy:Y(1),r:7,fill:C.purple},svg);txt(svg,X(m.length)+10,Y(1)+20,'arrest',{'font-size':12,fill:C.purple})}txt(svg,x0+8,y0-h+18,'wedging weakens; clamping grows',{'font-size':12,fill:C.muted})}
+a2ids.forEach(id=>$(id).addEventListener('input',a2calc));$('a2reset').addEventListener('click',()=>{[['a2s1',220],['a2s3',20],['a2beta',30],['a2mu',.6],['a2c',2],['a2kic',1.5]].forEach(x=>$(x[0]).value=x[1]);a2calc()});$('a2compare').addEventListener('click',()=>{$('a2s3').value=+$('a2s3').value<45?80:10;a2calc()});
+
+// Activity 3 deterministic population
+let interact=true;let seedOffset=0;const flaws=[];
+function seeded(i){const x=Math.sin((i+1+seedOffset)*12.9898)*43758.5453;return x-Math.floor(x)}
+function makeFlaws(){flaws.length=0;for(let i=0;i<42;i++){const y=45+seeded(i*5)*395,x=55+seeded(i*5+1)*380,beta=10+seeded(i*5+2)*70,len=10+seeded(i*5+3)*16;const band=Math.abs(x-(82+.68*y));const favorable=Math.abs(beta-32);let th=.30+.34*(favorable/38)+.12*seeded(i*5+4);if(band<42)th-=.10;flaws.push({x,y,beta,len,band,th:clamp(th,.18,.86)})}}
+function a3state(){const load=+$('a3load').value/100,d0=+$('a3damage').value;const active=flaws.map((f,i)=>{let threshold=f.th-.016*(d0-4);if(interact&&load>.60&&f.band<60)threshold-=.36*(load-.60)*(1-f.band/60);const a=load>threshold;const grow=a?Math.min(1.7,(load-threshold)*5.0):0;return{...f,a,grow,i}});const act=active.filter(f=>f.a);const bandAct=act.filter(f=>f.band<55);let links=[];for(let i=0;i<act.length;i++)for(let j=i+1;j<act.length;j++){const d=Math.hypot(act[i].x-act[j].x,act[i].y-act[j].y),lim=interact?24+22*(act[i].grow+act[j].grow):9;if(d<lim)links.push([act[i].i,act[j].i])}const parent={};act.forEach(f=>parent[f.i]=f.i);const find=a=>parent[a]===a?a:(parent[a]=find(parent[a]));const uni=(a,b)=>{a=find(a);b=find(b);if(a!==b)parent[b]=a};links.forEach(l=>uni(...l));const counts={};act.forEach(f=>counts[find(f.i)]=(counts[find(f.i)]||0)+1);const largest=Math.max(0,...Object.values(counts));const cluster=act.length?largest/act.length:0,loc=act.length?bandAct.length/act.length:0;return{load,d0,active,act,links,cluster,loc}}
+function a3calc(){const s=a3state();$('a3loadV').textContent=Math.round(s.load*100)+'%';$('a3damageV').textContent=fmt(s.d0/40,3);$('a3active').textContent=s.act.length;$('a3cluster').textContent=Math.round(s.cluster*100)+'%';$('a3loc').textContent=Math.round(s.loc*100)+'%';let msg,cl;if(s.load<.35){msg='Crack closure and elastic loading dominate.';cl='locked'}else if(s.loc<.45){msg='Distributed damage: active cracks remain weakly connected.';cl='ready'}else if(s.cluster<.55){msg='Interaction concentrates damage, but no dominant connected cluster exists yet.';cl='growing'}else{msg='A connected damage band spans much of the specimen: localization precedes failure.';cl='failed'}const st=$('a3status');st.className='status '+cl;st.textContent=msg;drawA3Network(s);drawA3Curve(s);drawA3Vp(s)}
+function drawA3Network(s){const svg=$('a3network');clear(svg);el('rect',{x:35,y:25,width:450,height:440,rx:16,fill:C.pale,stroke:C.line,'stroke-width':2},svg);arrow(svg,260,0,260,24,C.navy,4);arrow(svg,260,492,260,467,C.navy,4);if(interact&&s.load>.55)line(svg,90,440,395,55,{stroke:C.orange,'stroke-width':32,opacity:.09});s.links.forEach(([i,j])=>{const a=s.active[i],b=s.active[j];line(svg,a.x,a.y,b.x,b.y,{stroke:C.orange,'stroke-width':1.5,opacity:.45})});s.active.forEach(f=>{const a=rad(f.beta),dx=f.len*Math.sin(a),dy=f.len*Math.cos(a);line(svg,f.x-dx,f.y-dy,f.x+dx,f.y+dy,{stroke:f.a?C.navy:C.muted,'stroke-width':f.a?3:2,opacity:f.a?1:.35});if(f.a){const L=15+30*f.grow;line(svg,f.x-dx,f.y-dy,f.x-dx-Math.sin(rad(25))*L,f.y-dy-Math.cos(rad(25))*L,{stroke:C.teal,'stroke-width':2.5});line(svg,f.x+dx,f.y+dy,f.x+dx+Math.sin(rad(25))*L,f.y+dy+Math.cos(rad(25))*L,{stroke:C.teal,'stroke-width':2.5})}});txt(svg,47,486,interact?'interaction enabled':'interaction disabled',{'font-size':12,fill:interact?C.orange:C.muted})}
+function macroStress(x,interact){let y=1.18*x-0.20*x*x;if(interact&&x>.82)y-=2.8*(x-.82);return Math.max(.08,y)}
+function drawA3Curve(s){const svg=$('a3curve');clear(svg);const x0=58,y0=260,w=500,h=205;axes(svg,{x0,y0,w,h,xLabel:'Axial strain (normalized)',yLabel:'Stress (normalized)',xTicks:[[0,'0'],[.5,'0.5'],[1,'1.0']],yTicks:[[0,'0'],[.5,'0.5'],[1,'1.0']]});let d='';for(let x=0;x<=1;x+=.01){const y=macroStress(x,interact);d+=(x===0?'M':'L')+(x0+x*w)+' '+(y0-clamp(y,0,1)*h)+' '}el('path',{d,fill:'none',stroke:C.teal,'stroke-width':4},svg);const x=s.load,y=macroStress(x,interact);el('circle',{cx:x0+x*w,cy:y0-clamp(y,0,1)*h,r:7,fill:C.orange},svg);txt(svg,x0+8,y0-h+18,interact?'localization produces weakening':'stable isolated damage produces hardening',{'font-size':12,fill:C.muted})}
+function drawA3Vp(s){const svg=$('a3vp');clear(svg);const vals=[1-.12*s.load*(.6+s.loc),1-.28*s.load*(.35+1.4*s.loc),1-.09*s.load*(.7+s.cluster)];const labels=['Path A · outside band','Path B · crosses band','Path C · oblique'];vals.forEach((v,i)=>{const y=30+i*48;txt(svg,8,y+15,labels[i],{'font-size':12});el('rect',{x:170,y,width:360,height:18,fill:C.line},svg);el('rect',{x:170,y,width:360*clamp(v,0,1),height:18,fill:i===1?C.orange:C.teal},svg);txt(svg,540,y+15,Math.round(v*100)+'%',{'font-size':12,'text-anchor':'end','font-weight':700})});txt(svg,170,176,'Relative P-wave velocity',{'font-size':12,fill:C.muted})}
+$('a3load').addEventListener('input',a3calc);$('a3damage').addEventListener('input',a3calc);$('a3on').addEventListener('click',()=>{interact=true;$('a3on').classList.add('active');$('a3off').classList.remove('active');a3calc()});$('a3off').addEventListener('click',()=>{interact=false;$('a3off').classList.add('active');$('a3on').classList.remove('active');a3calc()});$('a3step').addEventListener('click',()=>{$('a3load').value=Math.min(100,+$('a3load').value+8);a3calc()});$('a3reset').addEventListener('click',()=>{seedOffset++;makeFlaws();$('a3load').value=35;a3calc()});
+
+// Activity 4
+const cases={
+ A:{title:'Case A · early loading',stage:'Elastic loading',pos:.28,obs:'The initial curvature has ended and the axial curve is nearly linear. Volumetric strain remains compressive and velocity changes are small and similar on every path.',int:'The specimen is dominated by recoverable elastic deformation.',mech:'Most compliant cracks have closed. Stress-induced crack growth remains limited.'},
+ B:{title:'Case B · pre-peak damage',stage:'Distributed damage',pos:.70,obs:'The axial curve departs from linearity, volumetric strain begins to reverse, and all velocity paths decrease modestly.',int:'Damage has begun but remains broadly distributed.',mech:'Many favorably oriented flaws slide and nucleate tensile wings without forming a connected fault zone.'},
+ C:{title:'Case C · near peak',stage:'Localization',pos:.91,obs:'Stress remains close to peak, dilation accelerates, and one ultrasonic path loses much more velocity than the others. Imaging shows a connected zone of large fractures.',int:'Stiffness loss has become spatially concentrated before macroscopic stress collapse.',mech:'Interacting cracks link and coalesce into an emerging fault-scale damage zone.'},
+ D:{title:'Case D · post-peak',stage:'Fault sliding',pos:1.08,obs:'Stress has dropped toward a residual level while displacement continues. Velocity remains path dependent and the throughgoing fracture is already established.',int:'The specimen is no longer forming the fault; it is sliding on it.',mech:'Frictional sliding and wear on a connected fault control the residual response.'}
+};
+let evidence=1,choice='';
+const evidenceNames=['Stress–strain','Volumetric strain','Ultrasonic paths','Fracture map'];
+function a4case(){return cases[$('a4case').value]}
+function a4render(){const c=a4case();$('a4title').textContent=c.title;$('a4confidenceV').textContent=$('a4confidence').value+' / 5';$('a4plotTitle').textContent=evidenceNames[evidence-1];const nav=$('a4steps');nav.innerHTML='';evidenceNames.forEach((n,i)=>{const b=document.createElement('button');b.className='evidence-step'+(i===evidence-1?' active':'');b.textContent=(i+1)+' · '+n;b.disabled=i>=evidence;b.addEventListener('click',()=>{evidence=i+1;a4render()});nav.appendChild(b)});drawA4(c,evidence);$('a4answer').classList.remove('show');const st=$('a4status');st.className='status locked';st.textContent=choice?`Current choice: ${choice}. Confidence ${$('a4confidence').value}/5.`:'Choose the stage that best fits the available evidence.'}
+function drawA4(c,step){const svg=$('a4plot');clear(svg);if(step===1)drawEvidenceStress(svg,c);if(step===2)drawEvidenceVolume(svg,c);if(step===3)drawEvidenceVp(svg,c);if(step===4)drawEvidenceMap(svg,c)}
+function drawEvidenceStress(svg,c){const x0=65,y0=355,w=485,h=285;axes(svg,{x0,y0,w,h,xLabel:'Axial strain',yLabel:'Differential stress',xTicks:[[0,'0'],[.5,'0.5'],[1,'1.0']],yTicks:[[0,'0'],[.5,'0.5'],[1,'peak']]});let d='';for(let x=0;x<=1.15;x+=.01){let y=x<.92?1.08*x-.08*x*x:1-.95*(x-.92);y=Math.max(.48,y);d+=(x===0?'M':'L')+(x0+x/1.15*w)+' '+(y0-y*h)+' '}el('path',{d,fill:'none',stroke:C.teal,'stroke-width':4},svg);const x=clamp(c.pos,0,1.15),y=x<.92?1.08*x-.08*x*x:Math.max(.48,1-.95*(x-.92));el('circle',{cx:x0+x/1.15*w,cy:y0-y*h,r:8,fill:C.orange},svg);txt(svg,x0+10,y0-h+20,'Describe the curve before naming the mechanism.',{'font-size':12,fill:C.muted})}
+function drawEvidenceVolume(svg,c){const x0=65,y0=220,w=485,h=145;axes(svg,{x0,y0,w,h,xLabel:'Axial strain',yLabel:'Volumetric strain',xTicks:[[0,'0'],[.5,'0.5'],[1,'1.0']],yTicks:[[0,'0'],[.5,'compression'],[1,'dilation']]});line(svg,x0,220,x0+w,220,{stroke:C.line});let d='';for(let x=0;x<=1;x+=.01){const y=.55-1.35*Math.max(0,x-.45)**1.5;d+=(x===0?'M':'L')+(x0+x*w)+' '+(220-(.55-y)*115)+' '}el('path',{d,fill:'none',stroke:C.orange,'stroke-width':4},svg);const xp=clamp(c.pos,0,1),y=.55-1.35*Math.max(0,xp-.45)**1.5;el('circle',{cx:x0+xp*w,cy:220-(.55-y)*115,r:8,fill:C.purple},svg);txt(svg,70,390,'Positive plotting direction represents dilation.',{'font-size':12,fill:C.muted})}
+function drawEvidenceVp(svg,c){const base=c.stage==='Localization'?[.94,.73,.91]:c.stage==='Fault sliding'?[.90,.70,.86]:c.stage==='Distributed damage'?[.95,.93,.94]:[.995,.992,.994];['Path A','Path B · fault crossing','Path C'].forEach((l,i)=>{const y=85+i*82;txt(svg,55,y+17,l,{'font-size':13});el('rect',{x:185,y,width:340,height:24,fill:C.line},svg);el('rect',{x:185,y,width:340*base[i],height:24,fill:i===1?C.orange:C.teal},svg);txt(svg,535,y+18,Math.round(base[i]*100)+'%',{'font-size':13,'text-anchor':'end','font-weight':700})});txt(svg,185,350,'Velocity relative to the initial value',{'font-size':12,fill:C.muted})}
+function drawEvidenceMap(svg,c){el('rect',{x:95,y:35,width:390,height:345,rx:18,fill:C.pale,stroke:C.line,'stroke-width':2},svg);for(let i=0;i<36;i++){const r=Math.sin((i+3)*9.13)*10000,u=r-Math.floor(r),q=Math.sin((i+8)*4.27)*10000,v=q-Math.floor(q),x=120+u*340,y=55+v*300;let near=Math.abs(x-(125+.78*y))<42;const show=c.stage==='Localization'||c.stage==='Fault sliding'?near||i%5===0:c.stage==='Distributed damage'?i%3===0:i%9===0;if(show){const col=near?C.orange:C.teal;line(svg,x-12,y-10,x+12,y+10,{stroke:col,'stroke-width':near?4:2})}}if(c.stage==='Fault sliding')line(svg,150,345,400,75,{stroke:C.navy,'stroke-width':7});txt(svg,105,410,'Schematic fracture map: orange marks belong to the connected damage zone.',{'font-size':12,fill:C.muted})}
+$('a4case').addEventListener('change',()=>{evidence=1;choice='';document.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));a4render()});$('a4confidence').addEventListener('input',a4render);$('a4next').addEventListener('click',()=>{evidence=Math.min(4,evidence+1);a4render()});$('a4reset').addEventListener('click',()=>{evidence=1;choice='';$('a4confidence').value=3;document.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));a4render()});document.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>{choice=b.dataset.stage;document.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');a4render()}));$('a4reveal').addEventListener('click',()=>{const c=a4case();$('a4answerTitle').textContent='Best-supported stage: '+c.stage;$('a4obs').textContent=c.obs;$('a4int').textContent=c.int;$('a4mech').textContent=c.mech;$('a4answer').classList.add('show');const st=$('a4status');st.className='status '+(choice===c.stage?'growing':'ready');st.textContent=choice===c.stage?'Your classification matches the complete evidence.':'Compare your choice with the complete evidence and identify which observation changes the interpretation.'});
+
+// initialize
+makeFlaws();a1calc();a2calc();a3calc();a4render();
+</script>
+</body>
+</html>

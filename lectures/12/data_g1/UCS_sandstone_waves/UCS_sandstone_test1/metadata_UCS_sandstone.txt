@@ -1,0 +1,36 @@
+            Info experiment"
+
+   Operators name     : marco
+   Experiment name    :  UCS_sandstone
+   Sample material    :  sandstone
+   Normal stress      : 1 MPa
+            INPUT PARAMETERS
+
+   Measure mode              :  Streaming
+   Selected voltage range    :  [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2] V
+   Selected Sample frequency :  3.125 MHz
+   Chunks length             :  3125000sa
+   Chunks number             :  1000
+   Time recorded per chunk   :  1.0 s
+   Total time recoded        :  1000.0 s - 
+
+
+            OSCILLOSCOPE INFO 
+
+   Channel count             : 4
+   Selected Resolution       : 16 bit
+
+
+            CHANNELS 
+
+   Number of channels        : 4
+   Differential              : False
+   Impedance                 : 1000000.0
+   Bandwidth                 : 250000000.0
+   Pulser amplitude                 : nan
+   Pulser width                 : nan
+
+
+            ADDITIONAL INFO 
+
+   Info                      : ch1 PB11 - ch8: PB21 - ch16: PB31 - ch20: SB21 - ch24: PU11 - ch28: tau - ch29: side camera_to_window - ch30: camera_to_window2 - ch31: camera_to_window3 - ch32: camera_to_piston4 - ch33: camera_up_to_window - ch34: camera_up_to_piston  

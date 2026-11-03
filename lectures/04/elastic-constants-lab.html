@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Elastic Constants Lab</title>
+  <style>
+    :root{--ink:#17233b;--muted:#65738c;--paper:#f6f7fb;--card:#fff;--line:#d7ddea;--blue:#2463eb;--cyan:#0f9cb4;--orange:#e0762f;--green:#288a63;--red:#c84d59;--violet:#7357c7;--soft:#eef3ff;--shadow:0 8px 28px rgba(29,44,75,.10)}
+    *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.38}
+    button,input{font:inherit} button{cursor:pointer}.shell{max-width:1360px;margin:auto;padding:18px 22px 28px}
+    header{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:14px}h1{font-size:clamp(25px,3vw,40px);line-height:1.06;margin:0;letter-spacing:-.03em}h1 span{color:var(--blue)}
+    .subtitle{margin:.35rem 0 0;color:var(--muted);font-size:15px}.sign{font-size:12px;color:var(--muted);white-space:nowrap}
+    .constants{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:center;background:var(--ink);color:white;padding:13px 16px;border-radius:14px;box-shadow:var(--shadow)}
+    .control label{display:flex;justify-content:space-between;gap:12px;font-size:13px;margin-bottom:6px}.control output{font-weight:700;font-variant-numeric:tabular-nums}.control input[type=range]{width:100%;accent-color:#7ca7ff}.derived{display:flex;gap:8px}.chip{min-width:112px;background:rgba(255,255,255,.11);padding:8px 10px;border-radius:9px}.chip b{display:block;font-size:18px}.chip small{color:#cbd5e1}
+    .tabs{display:flex;gap:7px;margin:14px 0 12px;flex-wrap:wrap}.tab{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 14px;border-radius:999px}.tab[aria-selected=true]{background:var(--blue);color:white;border-color:var(--blue)}
+    .panel{display:none}.panel.active{display:block}.layout{display:grid;grid-template-columns:minmax(225px,.75fr) minmax(540px,2.25fr);gap:14px}.side,.visual,.prompt,.challenge-card{background:var(--card);border-radius:14px;box-shadow:var(--shadow)}
+    .side{padding:15px}.side h2,.visual h2{font-size:19px;margin:0 0 4px}.lead{font-size:14px;color:var(--muted);margin:0 0 14px}.side .control{margin:0 0 13px}.side input[type=range]{width:100%;accent-color:var(--blue)}
+    .formula{background:var(--soft);border-left:4px solid var(--blue);padding:10px 11px;border-radius:8px;margin:10px 0;font-family:Cambria,"Times New Roman",serif;font-size:16px}.formula div+div{margin-top:4px}.notice{margin:12px 0 0;padding:10px 11px;background:#fff6e9;border-radius:8px;font-size:13px}.notice strong{color:#a95216}.visual{padding:13px 14px 10px;min-width:0}.visual-top{display:flex;justify-content:space-between;gap:10px;align-items:start}.metric-row{display:flex;gap:8px;flex-wrap:wrap}.metric{background:#f4f6fa;border-radius:8px;padding:6px 9px;min-width:105px}.metric small{display:block;color:var(--muted);font-size:11px}.metric b{font-size:15px;font-variant-numeric:tabular-nums}
+    svg{display:block;width:100%;height:auto}.axis{stroke:#77839a;stroke-width:1}.grid{stroke:#e3e7ef;stroke-width:1}.axis-label{fill:#526078;font-size:12px}.plot-label{fill:var(--ink);font-size:12px;font-weight:650}.curve{fill:none;stroke:var(--blue);stroke-width:3}.curve2{fill:none;stroke:var(--orange);stroke-width:3}.point{fill:var(--blue);stroke:white;stroke-width:2}.specimen{fill:#dbe6ff;stroke:var(--blue);stroke-width:2}.original{fill:none;stroke:#a7b0c0;stroke-width:1.5;stroke-dasharray:5 4}.arrow{stroke:var(--orange);stroke-width:2}.arrow-head{fill:var(--orange)}
+    .prompt{margin-top:14px;padding:12px 15px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}.prompt .number{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:white;font-weight:700}.prompt p{margin:0;font-size:14px}.answer{border:0;background:#e9eef8;color:var(--ink);border-radius:8px;padding:8px 11px}.answer-text{display:none;margin-top:7px;color:var(--green);font-weight:600}.answer-text.show{display:block}
+    .challenge-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.challenge-card{padding:18px}.challenge-card h2{margin:0 0 6px}.measurement{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}.measurement div{background:#f4f6fa;padding:10px;border-radius:9px}.measurement small{display:block;color:var(--muted)}.measurement b{font-size:18px}.entry{display:grid;grid-template-columns:1fr 1fr;gap:12px}.entry label{font-size:13px}.entry input{width:100%;margin-top:5px;border:1px solid var(--line);border-radius:8px;padding:9px}.check{margin-top:13px;border:0;border-radius:9px;padding:9px 14px;background:var(--blue);color:white}.feedback{min-height:24px;margin:10px 0 0;font-weight:650}.feedback.ok{color:var(--green)}.feedback.no{color:var(--red)}
+    .prediction{display:grid;grid-template-columns:1fr 1fr;gap:9px}.prediction div{background:var(--soft);padding:11px;border-radius:9px}.prediction small{display:block;color:var(--muted)}.prediction b{font-size:19px}.reveal{filter:blur(6px);user-select:none}.reveal.shown{filter:none}.footer-note{text-align:right;color:var(--muted);font-size:11px;margin-top:8px}
+    @media(max-width:850px){header{align-items:start;flex-direction:column}.constants{grid-template-columns:1fr 1fr}.derived{grid-column:1/-1}.layout,.challenge-wrap{grid-template-columns:1fr}.prompt{grid-template-columns:auto 1fr}.prompt .answer{grid-column:2}.measurement{grid-template-columns:1fr}.visual-top{display:block}.metric-row{margin-top:8px}}
+    @media(max-width:520px){.shell{padding:12px}.constants,.entry{grid-template-columns:1fr}.derived{flex-wrap:wrap}.prompt{grid-template-columns:auto 1fr}.tabs{gap:5px}.tab{padding:8px 10px}.prediction{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<main class="shell">
+  <header>
+    <div><h1>One material, <span>three experiments</span></h1><p class="subtitle">Explore how two elastic constants predict axial, volumetric and shear response.</p></div>
+    <div class="sign">Sign convention: compression is positive</div>
+  </header>
+
+  <section class="constants" aria-label="Material constants">
+    <div class="control"><label for="E">Young's modulus, E <output id="Eout">40.0 GPa</output></label><input id="E" type="range" min="5" max="100" step="1" value="40"></div>
+    <div class="control"><label for="nu">Poisson's ratio, ν <output id="nuout">0.25</output></label><input id="nu" type="range" min="0.05" max="0.49" step="0.01" value="0.25"></div>
+    <div class="derived"><div class="chip"><small>Bulk modulus</small><b id="Ktop">26.7 GPa</b></div><div class="chip"><small>Shear modulus</small><b id="Gtop">16.0 GPa</b></div></div>
+  </section>
+
+  <nav class="tabs" role="tablist" aria-label="Experiments">
+    <button class="tab" role="tab" aria-selected="true" data-tab="uniaxial">1 · Uniaxial</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="hydro">2 · Hydrostatic</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="shear">3 · Shear</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="challenge">Final challenge</button>
+  </nav>
+
+  <section class="panel active" id="uniaxial" role="tabpanel">
+    <div class="layout">
+      <aside class="side"><h2>Uniaxial compression</h2><p class="lead">Axial stress changes both length and diameter. Geometry controls specimen stiffness; the material modulus does not depend on specimen size.</p>
+        <div class="control"><label for="sigma">Axial stress, σ<sub>a</sub> <output id="sigmaout">40 MPa</output></label><input id="sigma" type="range" min="0" max="100" step="1" value="40"></div>
+        <div class="control"><label for="length">Initial length, L<sub>0</sub> <output id="lengthout">100 mm</output></label><input id="length" type="range" min="50" max="200" step="5" value="100"></div>
+        <div class="control"><label for="diameter">Initial diameter, D<sub>0</sub> <output id="diameterout">40 mm</output></label><input id="diameter" type="range" min="20" max="80" step="2" value="40"></div>
+        <div class="formula"><div>ε<sub>a</sub> = σ<sub>a</sub> / E</div><div>ε<sub>l</sub> = −ν ε<sub>a</sub></div><div>ε<sub>v</sub> = ε<sub>a</sub> + 2ε<sub>l</sub></div><div>k = EA<sub>0</sub> / L<sub>0</sub></div></div>
+        <p class="notice"><strong>Try:</strong> double L<sub>0</sub>, then double D<sub>0</sub>. Which outputs change?</p>
+      </aside>
+      <div class="visual"><div class="visual-top"><div><h2>Response at the selected stress</h2><p class="lead">Deformation of the specimen is magnified ×120.</p></div><div class="metric-row"><div class="metric"><small>Axial strain</small><b id="ea">1.000×10⁻³</b></div><div class="metric"><small>Lateral strain</small><b id="el">−0.250×10⁻³</b></div><div class="metric"><small>Specimen stiffness</small><b id="stiff">502.7 kN/mm</b></div></div></div>
+        <svg id="uniSvg" viewBox="0 0 900 420" role="img" aria-label="Deforming cylindrical specimen and linked stress-strain and force-displacement plots"></svg>
+      </div>
+    </div>
+    <div class="prompt"><div class="number">?</div><div><p><strong>Prediction:</strong> at fixed E and σ<sub>a</sub>, will a longer specimen have a larger axial strain?</p><div class="answer-text" id="ans1">No. Its strain is unchanged, but its shortening is larger and its stiffness k is smaller.</div></div><button class="answer" data-answer="ans1">Reveal</button></div>
+  </section>
+
+  <section class="panel" id="hydro" role="tabpanel">
+    <div class="layout">
+      <aside class="side"><h2>Hydrostatic compression</h2><p class="lead">Equal pressure acts in every direction. Shape is preserved while volume decreases.</p>
+        <div class="control"><label for="pressure">Confining pressure, p <output id="pressureout">40 MPa</output></label><input id="pressure" type="range" min="0" max="100" step="1" value="40"></div>
+        <div class="formula"><div>K = E / [3(1 − 2ν)]</div><div>ε<sub>v</sub> = p / K</div><div>ε<sub>1</sub> = ε<sub>2</sub> = ε<sub>3</sub> = ε<sub>v</sub> / 3</div></div>
+        <p class="notice"><strong>Try:</strong> keep E fixed and move ν toward 0.49. Notice what happens to K and ε<sub>v</sub>.</p>
+      </aside>
+      <div class="visual"><div class="visual-top"><div><h2>Pressure–volume response</h2><p class="lead">Size change is magnified ×40; the dashed outline is the initial specimen.</p></div><div class="metric-row"><div class="metric"><small>Bulk modulus</small><b id="Kmetric">26.7 GPa</b></div><div class="metric"><small>Volumetric strain</small><b id="evh">1.500×10⁻³</b></div></div></div>
+        <svg id="hydroSvg" viewBox="0 0 900 420" role="img" aria-label="Specimen under hydrostatic pressure and pressure-volumetric strain plot"></svg>
+      </div>
+    </div>
+    <div class="prompt"><div class="number">?</div><div><p><strong>Prediction:</strong> why does ε<sub>v</sub> tend to zero as ν tends to 0.5?</p><div class="answer-text" id="ans2">The material approaches incompressibility: lateral expansion compensates axial shortening, so K becomes very large.</div></div><button class="answer" data-answer="ans2">Reveal</button></div>
+  </section>
+
+  <section class="panel" id="shear" role="tabpanel">
+    <div class="layout">
+      <aside class="side"><h2>Simple shear</h2><p class="lead">Shear changes shape. For small elastic strains, it does not change volume.</p>
+        <div class="control"><label for="tau">Shear stress, τ <output id="tauout">20 MPa</output></label><input id="tau" type="range" min="0" max="60" step="1" value="20"></div>
+        <div class="formula"><div>G = E / [2(1 + ν)]</div><div>γ = τ / G</div><div>ε<sub>v</sub> ≈ 0</div></div>
+        <p class="notice"><strong>Try:</strong> vary ν across its full range. Compare the change in G with the much stronger change in K.</p>
+      </aside>
+      <div class="visual"><div class="visual-top"><div><h2>Shape change under shear</h2><p class="lead">Distortion is magnified ×80; the dashed square is the initial shape.</p></div><div class="metric-row"><div class="metric"><small>Shear modulus</small><b id="Gmetric">16.0 GPa</b></div><div class="metric"><small>Shear strain</small><b id="gamma">1.250×10⁻³</b></div></div></div>
+        <svg id="shearSvg" viewBox="0 0 900 420" role="img" aria-label="Block deforming in simple shear and shear stress-strain plot"></svg>
+      </div>
+    </div>
+    <div class="prompt"><div class="number">?</div><div><p><strong>Prediction:</strong> can two materials have the same E but different resistance to volume change and shear?</p><div class="answer-text" id="ans3">Yes. If ν differs, then K and G also differ even when E is identical.</div></div><button class="answer" data-answer="ans3">Reveal</button></div>
+  </section>
+
+  <section class="panel" id="challenge" role="tabpanel">
+    <div class="challenge-wrap">
+      <div class="challenge-card"><h2>Infer the material</h2><p class="lead">A uniaxial compression test gives the following measurements. Determine E and ν.</p>
+        <div class="measurement"><div><small>Axial stress</small><b>40 MPa</b></div><div><small>Axial strain</small><b>1.000×10⁻³</b></div><div><small>Lateral strain</small><b>−0.250×10⁻³</b></div></div>
+        <div class="entry"><label>Young's modulus E (GPa)<input id="guessE" type="number" min="1" max="150" step="0.1" placeholder="Your value"></label><label>Poisson's ratio ν<input id="guessNu" type="number" min="0" max="0.5" step="0.01" placeholder="Your value"></label></div>
+        <button class="check" id="check">Check answer</button><p class="feedback" id="feedback" aria-live="polite"></p>
+      </div>
+      <div class="challenge-card"><h2>Predict two new experiments</h2><p class="lead">Once E and ν are known, the same material law determines K and G.</p>
+        <div class="prediction reveal" id="predictions"><div><small>K</small><b>26.7 GPa</b></div><div><small>G</small><b>16.0 GPa</b></div><div><small>ε<sub>v</sub> at p = 40 MPa</small><b>1.500×10⁻³</b></div><div><small>γ at τ = 20 MPa</small><b>1.250×10⁻³</b></div></div>
+        <div class="formula"><div>Measurements → E, ν</div><div>E, ν → K, G → any small-strain elastic test</div></div>
+      </div>
+    </div>
+  </section>
+  <div class="footer-note">Ideal, homogeneous, isotropic, linear elasticity · strains are dimensionless</div>
+</main>
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const state={E:40,nu:.25,sigma:40,L:100,D:40,p:40,tau:20};
+const fmtStrain=x=>`${x<0?'−':''}${Math.abs(x*1000).toFixed(3)}×10⁻³`;
+const line=(x1,y1,x2,y2,cls='axis')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${cls}"/>`;
+const text=(x,y,t,cls='axis-label',anchor='start')=>`<text x="${x}" y="${y}" class="${cls}" text-anchor="${anchor}">${t}</text>`;
+function axes(x,y,w,h,xlab,ylab){let s='';for(let i=1;i<5;i++){s+=line(x,y+h-i*h/5,x+w,y+h-i*h/5,'grid')}s+=line(x,y,x,y+h)+line(x,y+h,x+w,y+h);s+=text(x+w/2,y+h+34,xlab,'axis-label','middle');s+=`<text x="${x-45}" y="${y+h/2}" class="axis-label" text-anchor="middle" transform="rotate(-90 ${x-45} ${y+h/2})">${ylab}</text>`;return s}
+function values(){const E=state.E*1000,nu=state.nu;const K=E/(3*(1-2*nu)),G=E/(2*(1+nu));return{E,nu,K,G,ea:state.sigma/E,el:-nu*state.sigma/E,ev:(1-2*nu)*state.sigma/E,evh:state.p/K,gamma:state.tau/G}}
+function drawUni(v){
+  const A=Math.PI*state.D**2/4,k=v.E*A/state.L,F=state.sigma*A/1000,u=v.ea*state.L;
+  $('#ea').textContent=fmtStrain(v.ea);$('#el').textContent=fmtStrain(v.el);$('#stiff').textContent=`${k.toFixed(1)} kN/mm`;
+  const cx=135,top=62,w0=105,h0=245,mag=120,w=w0*(1-v.el*mag),h=h0*Math.max(.25,1-v.ea*mag),x=cx-w/2,y=top+(h0-h)/2;
+  let s=`<defs><marker id="ah" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" class="arrow-head"/></marker></defs>`;
+  s+=`<rect x="${cx-w0/2}" y="${top}" width="${w0}" height="${h0}" rx="18" class="original"/><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="18" class="specimen"/>`;
+  s+=line(cx,22,cx,y-7,'arrow')+line(cx,y+h+7,cx,353,'arrow');s=s.replace(/class="arrow"/g,'class="arrow" marker-end="url(#ah)"');
+  s+=text(cx,382,`F = ${F.toFixed(1)} kN`,'plot-label','middle')+text(cx,402,`ΔL = ${u.toFixed(3)} mm`,'axis-label','middle');
+  const x1=300,y1=45,pw=245,ph=280;s+=axes(x1,y1,pw,ph,'axial strain, εₐ','stress, σₐ (MPa)');const px=x1+v.ea/.02*pw,py=y1+ph-state.sigma/100*ph;const epsTop=100/v.E,xe=epsTop<=.02?x1+epsTop/.02*pw:x1+pw,ye=epsTop<=.02?y1:y1+ph-v.E*.02/100*ph;s+=`<path d="M${x1},${y1+ph} L${xe},${ye}" class="curve"/>`;s+=`<circle cx="${px}" cy="${py}" r="6" class="point"/>`;s+=text(px+10,py-10,`(${fmtStrain(v.ea)}, ${state.sigma} MPa)`,'plot-label');
+  const x2=630;s+=axes(x2,y1,pw,ph,'displacement, ΔL (mm)','force, F (kN)');const umax=.02*state.L,Fmax=100*A/1000,px2=x2+u/umax*pw,py2=y1+ph-F/Fmax*ph;s+=`<path d="M${x2},${y1+ph} L${x2+pw},${y1}" class="curve2"/><circle cx="${px2}" cy="${py2}" r="6" class="point" style="fill:var(--orange)"/>`;s+=text(x2+pw-4,y1+18,`slope k = ${k.toFixed(1)} kN/mm`,'plot-label','end');$('#uniSvg').innerHTML=s;
+}
+function drawHydro(v){
+  $('#Kmetric').textContent=`${(v.K/1000).toFixed(1)} GPa`;$('#evh').textContent=fmtStrain(v.evh);
+  const cx=155,cy=190,r0=112,mag=40,r=r0*(1-v.evh*mag/3);let s=`<defs><marker id="ah2" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" class="arrow-head"/></marker></defs><circle cx="${cx}" cy="${cy}" r="${r0}" class="original"/><circle cx="${cx}" cy="${cy}" r="${r}" class="specimen"/>`;
+  [[cx,32,cx,cy-r-8],[cx,348,cx,cy+r+8],[22,cy,cx-r-8,cy],[288,cy,cx+r+8,cy]].forEach(a=>s+=`<line x1="${a[0]}" y1="${a[1]}" x2="${a[2]}" y2="${a[3]}" class="arrow" marker-end="url(#ah2)"/>`);s+=text(cx,392,`p = ${state.p} MPa`,'plot-label','middle');
+  const x=400,y=45,w=430,h=280;s+=axes(x,y,w,h,'volumetric strain, εᵥ','pressure, p (MPa)');const evmax=.06,ev100=100/v.K,px=x+Math.min(1,v.evh/evmax)*w,py=y+h-state.p/100*h,xe=ev100<=evmax?x+ev100/evmax*w:x+w,ye=ev100<=evmax?y:y+h-v.K*evmax/100*h;s+=`<path d="M${x},${y+h} L${xe},${ye}" class="curve"/><circle cx="${px}" cy="${py}" r="6" class="point"/>`;s+=text(px+10,py-10,fmtStrain(v.evh),'plot-label');$('#hydroSvg').innerHTML=s;
+}
+function drawShear(v){
+  $('#Gmetric').textContent=`${(v.G/1000).toFixed(1)} GPa`;$('#gamma').textContent=fmtStrain(v.gamma);
+  const x0=55,y0=87,w0=220,h0=220,shift=Math.min(95,v.gamma*80*w0);let s=`<defs><marker id="ah3" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" class="arrow-head"/></marker></defs><rect x="${x0}" y="${y0}" width="${w0}" height="${h0}" class="original"/><path d="M${x0+shift},${y0} L${x0+w0+shift},${y0} L${x0+w0},${y0+h0} L${x0},${y0+h0} Z" class="specimen"/>`;
+  s+=`<line x1="${x0+30}" y1="${y0-25}" x2="${x0+w0+shift-10}" y2="${y0-25}" class="arrow" marker-end="url(#ah3)"/>`;s+=text(x0+w0/2,y0+h0+42,'shape changes; area ≈ constant','plot-label','middle');
+  const x=400,y=45,w=430,h=280;s+=axes(x,y,w,h,'shear strain, γ','shear stress, τ (MPa)');const gammax=.035,gam60=60/v.G,px=x+Math.min(1,v.gamma/gammax)*w,py=y+h-state.tau/60*h,xe=gam60<=gammax?x+gam60/gammax*w:x+w,ye=gam60<=gammax?y:y+h-v.G*gammax/60*h;s+=`<path d="M${x},${y+h} L${xe},${ye}" class="curve2"/><circle cx="${px}" cy="${py}" r="6" class="point" style="fill:var(--orange)"/>`;s+=text(px+10,py-10,fmtStrain(v.gamma),'plot-label');$('#shearSvg').innerHTML=s;
+}
+function update(){const v=values();$('#Eout').textContent=`${state.E.toFixed(1)} GPa`;$('#nuout').textContent=state.nu.toFixed(2);$('#Ktop').textContent=`${(v.K/1000).toFixed(1)} GPa`;$('#Gtop').textContent=`${(v.G/1000).toFixed(1)} GPa`;$('#sigmaout').textContent=`${state.sigma} MPa`;$('#lengthout').textContent=`${state.L} mm`;$('#diameterout').textContent=`${state.D} mm`;$('#pressureout').textContent=`${state.p} MPa`;$('#tauout').textContent=`${state.tau} MPa`;drawUni(v);drawHydro(v);drawShear(v)}
+[['E','E'],['nu','nu'],['sigma','sigma'],['length','L'],['diameter','D'],['pressure','p'],['tau','tau']].forEach(([id,key])=>$('#'+id).addEventListener('input',e=>{state[key]=+e.target.value;update()}));
+$$('.tab').forEach(b=>b.addEventListener('click',()=>{$$('.tab').forEach(x=>x.setAttribute('aria-selected','false'));$$('.panel').forEach(x=>x.classList.remove('active'));b.setAttribute('aria-selected','true');$('#'+b.dataset.tab).classList.add('active')}));
+$$('.answer').forEach(b=>b.addEventListener('click',()=>{const a=$('#'+b.dataset.answer);a.classList.toggle('show');b.textContent=a.classList.contains('show')?'Hide':'Reveal'}));
+$('#check').addEventListener('click',()=>{const e=+$('#guessE').value,n=+$('#guessNu').value,f=$('#feedback');if(Math.abs(e-40)<=.5&&Math.abs(n-.25)<=.01){f.textContent='Correct — E = 40 GPa and ν = 0.25.';f.className='feedback ok';$('#predictions').classList.add('shown')}else{f.textContent='Not yet. Use E = σₐ/εₐ and ν = −εₗ/εₐ.';f.className='feedback no'}});
+update();
+</script>
+</body>
+</html>

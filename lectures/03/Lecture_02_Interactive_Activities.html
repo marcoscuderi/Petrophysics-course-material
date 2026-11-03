@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Petrophysics Lecture 2 · Interactive Activities</title>
+<style>
+:root{
+  color-scheme:light;
+  --background:#f7f9fb;--foreground:#16232c;--card:#ffffff;--card-foreground:#16232c;
+  --popover:#ffffff;--popover-foreground:#16232c;--primary:#0878b9;--primary-foreground:#ffffff;
+  --secondary:#e8eef2;--secondary-foreground:#183447;--muted:#dfe7ec;--muted-foreground:#5c6d78;
+  --accent:#e6f4fb;--accent-foreground:#075f91;--destructive:#bd2f38;--border:#cbd6dd;
+  --input:#b9c8d1;--ring:#0878b9;--blue:#0878b9;--orange:#dd7f22;--green:#31865b;
+  --red:#bd2f38;--purple:#7856a8;--yellow:#d9a41c;
+  --viz-series-1:#0878b9;--viz-series-2:#dd6b38;--viz-series-3:#31865b;
+  --viz-series-4:#7856a8;--viz-series-5:#d9a41c;--viz-series-6:#247d87;
+  --font-size-base:16px;
+}
+*{box-sizing:border-box}html{background:var(--background);scroll-behavior:smooth}body{margin:0;color:var(--foreground);background:var(--background);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:var(--font-size-base);line-height:1.42}
+button,input,select{font:inherit}.lecture-shell{min-height:100vh;display:flex;flex-direction:column}.lecture-header{background:var(--card);border-bottom:1px solid var(--border);padding:14px clamp(16px,3vw,38px) 12px;position:sticky;top:0;z-index:20}.lecture-kicker{color:var(--primary);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.lecture-topline{display:flex;align-items:center;justify-content:space-between;gap:16px}.lecture-topline h1{font-size:clamp(1.25rem,2.4vw,2rem);line-height:1.15;margin:3px 0 0}.lecture-actions{display:flex;gap:8px;flex-shrink:0}.activity-nav{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:7px;margin-top:12px}.activity-nav button{appearance:none;border:1px solid var(--border);background:var(--background);color:var(--foreground);border-radius:8px;padding:8px 10px;min-height:48px;text-align:left;cursor:pointer}.activity-nav button:hover{background:var(--accent)}.activity-nav button[aria-selected="true"]{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}.activity-nav .nav-number{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;opacity:.8}.activity-nav .nav-title{display:block;font-size:.84rem;font-weight:650;line-height:1.15}.lecture-main{width:min(1480px,100%);margin:0 auto;padding:clamp(15px,2.2vw,30px)}.activity-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:clamp(14px,2vw,28px);box-shadow:0 10px 30px rgba(29,53,67,.06)}.activity-panel[hidden]{display:none!important}.activity-panel h2{font-size:clamp(1.2rem,2vw,1.75rem);line-height:1.2;margin:0 0 4px!important}.activity-question{color:var(--muted-foreground);margin:0 0 15px}.lecture-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;width:min(1480px,100%);margin:0 auto;padding:0 clamp(15px,2.2vw,30px) 22px;color:var(--muted-foreground);font-size:.84rem}.footer-nav{display:flex;gap:8px}.btn{appearance:none;border:1px solid var(--border);border-radius:7px;background:var(--card);color:var(--foreground);padding:7px 11px;cursor:pointer}.btn:hover{background:var(--accent)}.btn:disabled{opacity:.38;cursor:default}.btn-primary,.btn[aria-pressed="true"]{background:var(--primary);color:var(--primary-foreground);border-color:var(--primary)}.btn-ghost{background:transparent}.form-label{display:block;color:var(--foreground)}.form-range{width:100%;accent-color:var(--primary);min-height:28px}.form-select{display:block;width:100%;margin-top:4px;border:1px solid var(--input);border-radius:6px;background:var(--card);color:var(--card-foreground);padding:7px 9px}.viz-controls{display:flex;gap:12px;flex-wrap:wrap}.viz-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.tabular-nums{font-variant-numeric:tabular-nums}.nav{display:flex}.nav-pills{gap:7px}.nav-link{appearance:none;border:1px solid var(--border);border-radius:7px;background:var(--card);color:var(--foreground);padding:7px 11px;cursor:pointer}.nav-link.active{background:var(--primary);color:var(--primary-foreground);border-color:var(--primary)}.card{background:var(--card);color:var(--card-foreground);border:1px solid var(--border);border-radius:9px;padding:12px}.text-small{font-size:.82rem}.text-muted{color:var(--muted-foreground)}
+#panel-foundations #stress-strain-preview>.sim-tabs{display:none}#stress-strain-preview .plot svg{height:auto!important;min-height:280px}#stress-strain-preview .sample svg{height:180px!important}.spq-grid svg,.pm-grid svg,.cf-grid svg{max-height:420px}.spq-root,.pm-root,.cf-root{max-width:100%}
+.tooltip-floating{position:fixed;z-index:100;pointer-events:none;max-width:280px;background:var(--popover);color:var(--popover-foreground);border:1px solid var(--border);border-radius:6px;padding:7px 9px;font-size:.78rem;box-shadow:0 7px 24px rgba(0,0,0,.16)}
+@media(max-width:900px){.activity-nav{grid-template-columns:repeat(3,1fr)}.lecture-header{position:static}}
+@media(max-width:620px){.activity-nav{grid-template-columns:1fr 1fr}.lecture-topline{align-items:flex-start}.lecture-actions .label{display:none}.activity-panel{border-radius:0;border-left:0;border-right:0}.lecture-main{padding-left:0;padding-right:0}.lecture-footer{padding-left:14px;padding-right:14px}}
+@media print{.lecture-header,.lecture-footer{display:none}.lecture-main{padding:0}.activity-panel{box-shadow:none;border:0}.activity-panel[hidden]{display:block!important;page-break-after:always}}
+</style>
+</head>
+<body>
+<div class="lecture-shell">
+  <header class="lecture-header">
+    <div class="lecture-topline">
+      <div><div class="lecture-kicker">Petrophysics · Lecture 2</div><h1>Stress, strain and laboratory loading</h1></div>
+      <div class="lecture-actions"><button type="button" class="btn btn-ghost" id="fullscreen"><span class="label">Full screen</span> ⛶</button></div>
+    </div>
+    <nav class="activity-nav" aria-label="Interactive activities">
+      <button type="button" data-activity="1" aria-selected="true"><span class="nav-number">ACTIVITY 1</span><span class="nav-title">Area and stress</span></button>
+      <button type="button" data-activity="2" aria-selected="false"><span class="nav-number">ACTIVITY 2</span><span class="nav-title">Length and strain</span></button>
+      <button type="button" data-activity="3" aria-selected="false"><span class="nav-number">ACTIVITY 3</span><span class="nav-title">Stress paths</span></button>
+      <button type="button" data-activity="4" aria-selected="false"><span class="nav-number">ACTIVITY 4</span><span class="nav-title">Mohr circle</span></button>
+      <button type="button" data-activity="5" aria-selected="false"><span class="nav-number">ACTIVITY 5</span><span class="nav-title">Failure</span></button>
+    </nav>
+  </header>
+  <main class="lecture-main">
+    <section class="activity-panel" id="panel-foundations" data-panel="foundation"><div id="stress-strain-preview">
+  <style>
+    #stress-strain-preview{color:var(--foreground);font-family:inherit;display:grid;gap:18px}
+    #stress-strain-preview .sim-tabs{display:flex;gap:8px;flex-wrap:wrap}
+    #stress-strain-preview .sim{display:grid;gap:16px}
+    #stress-strain-preview .controls{display:grid;grid-template-columns:minmax(230px,1fr) auto;gap:14px;align-items:end}
+    #stress-strain-preview .control-value{font-weight:500;min-width:150px;text-align:right}
+    #stress-strain-preview .samples{display:grid;grid-template-columns:repeat(2,minmax(150px,1fr));gap:14px}
+    #stress-strain-preview .sample{display:grid;grid-template-columns:92px 1fr;gap:12px;align-items:center}
+    #stress-strain-preview .sample svg{width:92px;height:180px;overflow:visible}
+    #stress-strain-preview .sample-values{display:grid;gap:5px}
+    #stress-strain-preview .sample-name{font-weight:500}
+    #stress-strain-preview .plots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    #stress-strain-preview .plot h3{margin:0 0 4px;font-weight:500}
+    #stress-strain-preview .plot svg{display:block;width:100%;height:280px;overflow:visible}
+    #stress-strain-preview .frame{fill:none;stroke:var(--border);stroke-width:1}
+    #stress-strain-preview .axis{stroke:var(--foreground);stroke-width:1}
+    #stress-strain-preview .grid{stroke:var(--border);stroke-width:1}
+    #stress-strain-preview .s1{stroke:var(--viz-series-1);fill:var(--viz-series-1)}
+    #stress-strain-preview .s2{stroke:var(--viz-series-2);fill:var(--viz-series-2)}
+    #stress-strain-preview .curve{fill:none;stroke-width:2.5}
+    #stress-strain-preview .mark{stroke-width:2;stroke:var(--background)}
+    #stress-strain-preview .plate{fill:var(--muted);stroke:var(--muted-foreground)}
+    #stress-strain-preview .specimen-a{fill:color-mix(in srgb,var(--viz-series-1) 22%,transparent);stroke:var(--viz-series-1);stroke-width:2}
+    #stress-strain-preview .specimen-b{fill:color-mix(in srgb,var(--viz-series-2) 22%,transparent);stroke:var(--viz-series-2);stroke-width:2}
+    #stress-strain-preview text{fill:var(--foreground);font-family:inherit;font-size:12px}
+    #stress-strain-preview .muted{color:var(--muted-foreground)}
+    #stress-strain-preview .result{font-weight:500}
+    #stress-strain-preview [hidden]{display:none!important}
+    @media(max-width:680px){#stress-strain-preview .plots,#stress-strain-preview .samples{grid-template-columns:1fr}#stress-strain-preview .controls{grid-template-columns:1fr}#stress-strain-preview .control-value{text-align:left}}
+  </style>
+
+  <div class="nav nav-pills sim-tabs" role="tablist" aria-label="Simulator">
+    <button class="nav-link active" id="tab-area" role="tab" aria-controls="panel-area" aria-selected="true" type="button">1 · Different area</button>
+    <button class="nav-link" id="tab-length" role="tab" aria-controls="panel-length" aria-selected="false" type="button">2 · Different length</button>
+  </div>
+
+  <section class="sim" id="panel-area" role="tabpanel" aria-labelledby="tab-area"><h2>Activity 1 · Area normalizes force</h2><p class="activity-question">How does specimen area change stress and strain under the same applied force?</p>
+    <div class="controls">
+      <label class="form-label">Applied force: <span id="force-value" class="tabular-nums result">40.0 kN</span>
+        <input class="form-range" id="force-slider" type="range" min="0" max="60" step="1" value="40">
+      </label>
+      <span class="muted">E = 40 GPa · L₀ = 50 mm</span>
+    </div>
+    <div class="samples" aria-live="polite">
+      <div class="sample"><svg id="area-sample-a" role="img" aria-label="Narrow specimen"></svg><div class="sample-values"><span class="sample-name">Sample A · 500 mm²</span><span id="area-a-stress"></span><span id="area-a-strain"></span><span id="area-a-short"></span></div></div>
+      <div class="sample"><svg id="area-sample-b" role="img" aria-label="Wide specimen"></svg><div class="sample-values"><span class="sample-name">Sample B · 1000 mm²</span><span id="area-b-stress"></span><span id="area-b-strain"></span><span id="area-b-short"></span></div></div>
+    </div>
+    <div class="plots">
+      <div class="plot"><h3>Force response</h3><svg id="area-force-chart" role="img" aria-label="Force versus axial strain for two specimen areas"></svg></div>
+      <div class="plot"><h3>After normalization by area</h3><svg id="area-stress-chart" role="img" aria-label="Stress versus axial strain for two specimen areas"></svg></div>
+    </div>
+  </section>
+
+  <section class="sim" id="panel-length" role="tabpanel" aria-labelledby="tab-length" hidden><h2>Activity 2 · Length, strain and shortening</h2><p class="activity-question">How do reference length, strain and absolute shortening differ?</p>
+    <div class="controls">
+      <label class="form-label">Controlled quantity
+        <select class="form-select" id="length-mode"><option value="shortening">Common shortening</option><option value="stress">Common stress</option></select>
+      </label>
+      <label class="form-label"><span id="length-slider-label">Shortening</span>: <span id="length-value" class="tabular-nums result">0.10 mm</span>
+        <input class="form-range" id="length-slider" type="range" min="0" max="0.2" step="0.005" value="0.1">
+      </label>
+    </div>
+    <div class="samples" aria-live="polite">
+      <div class="sample"><svg id="length-sample-a" role="img" aria-label="Short specimen"></svg><div class="sample-values"><span class="sample-name">Sample A · L₀ = 50 mm</span><span id="length-a-force"></span><span id="length-a-stress"></span><span id="length-a-strain"></span><span id="length-a-short"></span></div></div>
+      <div class="sample"><svg id="length-sample-b" role="img" aria-label="Long specimen"></svg><div class="sample-values"><span class="sample-name">Sample B · L₀ = 100 mm</span><span id="length-b-force"></span><span id="length-b-stress"></span><span id="length-b-strain"></span><span id="length-b-short"></span></div></div>
+    </div>
+    <div class="plots">
+      <div class="plot"><h3>Same area: force and stress are proportional</h3><svg id="length-chart" role="img" aria-label="Force and stress versus axial strain for specimens of different length"></svg></div>
+      <div class="plot"><h3>Length controls absolute shortening</h3><svg id="shortening-chart" role="img" aria-label="Axial shortening versus axial strain for specimens of different length"></svg></div>
+    </div>
+  </section>
+
+  <script>
+  (()=>{
+    const root=document.getElementById('stress-strain-preview');
+    const E=40000, areaA=500, areaB=1000, commonArea=500;
+    const $=id=>root.querySelector('#'+id);
+    const ns='http://www.w3.org/2000/svg';
+    const node=(tag,attrs={},txt='')=>{const n=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(txt)n.textContent=txt;return n};
+    const fmt=(v,n=2)=>Number(v).toFixed(n);
+    function sample(svg,width,height,shortening,cls){
+      svg.replaceChildren();svg.setAttribute('viewBox','0 0 92 180');
+      const cx=46,w=width,h=Math.max(42,height-shortening*180),y=152-h;
+      svg.append(node('rect',{x:cx-w/2,y,width:w,height:h,rx:Math.min(10,w/5),class:cls}));
+      svg.append(node('rect',{x:8,y:y-10,width:76,height:9,class:'plate'}));
+      svg.append(node('rect',{x:8,y:152,width:76,height:9,class:'plate'}));
+      svg.append(node('line',{x1:46,y1:8,x2:46,y2:y-14,class:'axis','stroke-width':3}));
+      svg.append(node('polygon',{points:`40,${y-20} 52,${y-20} 46,${y-11}`,fill:'var(--foreground)'}));
+    }
+    function chart(svg,{xMax,yMax,y2Max=null,yDecimals=0,y2Decimals=0,series,markers,xLabel,yLabel,y2Label=''}){
+      const W=Math.max(320,svg.parentElement.clientWidth||520),H=280,m={l:62,r:y2Max?64:18,t:16,b:50},iw=W-m.l-m.r,ih=H-m.t-m.b;
+      svg.replaceChildren();svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+      const X=x=>m.l+x/xMax*iw,Y=y=>m.t+ih-y/yMax*ih;
+      svg.append(node('rect',{x:m.l,y:m.t,width:iw,height:ih,class:'frame','data-chart-frame':''}));
+      for(let i=0;i<=4;i++){const x=i*xMax/4,px=X(x);svg.append(node('line',{x1:px,y1:m.t,x2:px,y2:m.t+ih,class:'grid'}));svg.append(node('text',{x:px,y:H-29,'text-anchor':'middle'},fmt(x,2)));}
+      for(let i=0;i<=4;i++){const y=i*yMax/4,py=Y(y);svg.append(node('line',{x1:m.l,y1:py,x2:m.l+iw,y2:py,class:'grid'}));svg.append(node('text',{x:m.l-8,y:py+4,'text-anchor':'end'},fmt(y,yDecimals)));if(y2Max!==null)svg.append(node('text',{x:W-m.r+8,y:py+4,'text-anchor':'start'},fmt(i*y2Max/4,y2Decimals)));}
+      series.forEach(s=>{svg.append(node('line',{x1:X(0),y1:Y(0),x2:X(s.x),y2:Y(s.y),class:`curve ${s.cls}`}));});
+      markers.forEach(p=>{svg.append(node('circle',{cx:X(p.x),cy:Y(p.y),r:6,class:`mark ${p.cls}`,'data-tooltip':p.tip}));});
+      svg.append(node('text',{x:m.l+iw/2,y:H-5,'text-anchor':'middle',class:'axis-title','data-axis':'x'},xLabel));
+      const yl=node('text',{x:15,y:m.t+ih/2,'text-anchor':'middle',transform:`rotate(-90 15 ${m.t+ih/2})`,class:'axis-title','data-axis':'y'},yLabel);svg.append(yl);
+      if(y2Max!==null)svg.append(node('text',{x:W-12,y:m.t+ih/2,'text-anchor':'middle',transform:`rotate(90 ${W-12} ${m.t+ih/2})`,class:'axis-title','data-axis':'y'},y2Label));
+    }
+    function updateArea(){
+      const F=+$('force-slider').value;$('force-value').textContent=fmt(F,1)+' kN';
+      const vals=[{a:areaA,k:'a',cls:'specimen-a'},{a:areaB,k:'b',cls:'specimen-b'}].map(o=>{const stress=F*1000/o.a,strain=stress/E,short=strain*50;sample($('area-sample-'+o.k),o.a===areaA?42:60,118,short,o.cls);$('area-'+o.k+'-stress').textContent=`σ = ${fmt(stress,1)} MPa`;$('area-'+o.k+'-strain').textContent=`εₐ = ${fmt(strain*100,3)}%`;$('area-'+o.k+'-short').textContent=`ΔL = ${fmt(short,3)} mm`;return{...o,stress,strain};});
+      const fMax=60;
+      chart($('area-force-chart'),{xMax:.32,yMax:60,series:[{x:fMax*1000/areaA/E*100,y:fMax,cls:'s1'},{x:fMax*1000/areaB/E*100,y:fMax,cls:'s2'}],markers:vals.map(v=>({x:v.strain*100,y:F,cls:v.k==='a'?'s1':'s2',tip:`Sample ${v.k.toUpperCase()}: ${fmt(F,1)} kN, ${fmt(v.strain*100,3)}%`})),xLabel:'Axial strain εₐ (%)',yLabel:'Force F (kN)'});
+      chart($('area-stress-chart'),{xMax:.32,yMax:120,series:[{x:.3,y:120,cls:'s1'},{x:.3,y:120,cls:'s2'}],markers:vals.map(v=>({x:v.strain*100,y:v.stress,cls:v.k==='a'?'s1':'s2',tip:`Sample ${v.k.toUpperCase()}: ${fmt(v.stress,1)} MPa`})),xLabel:'Axial strain εₐ (%)',yLabel:'Axial stress σₐ (MPa)'});
+    }
+    function updateLength(){
+      const mode=$('length-mode').value,slider=$('length-slider');
+      if(mode==='shortening'&&slider.max!=='0.2'){slider.min='0';slider.max='0.2';slider.step='0.005';slider.value='0.1';}
+      if(mode==='stress'&&slider.max!=='120'){slider.min='0';slider.max='120';slider.step='2';slider.value='80';}
+      const v=+slider.value;$('length-slider-label').textContent=mode==='shortening'?'Shortening':'Stress';$('length-value').textContent=mode==='shortening'?fmt(v,2)+' mm':fmt(v,0)+' MPa';
+      const vals=[{L:50,k:'a',cls:'specimen-a'},{L:100,k:'b',cls:'specimen-b'}].map(o=>{const strain=mode==='shortening'?v/o.L:v/E,stress=E*strain,F=stress*commonArea/1000,short=strain*o.L;sample($('length-sample-'+o.k),46,o.L===50?80:132,short,o.cls);$('length-'+o.k+'-force').textContent=`F = ${fmt(F,1)} kN`;$('length-'+o.k+'-stress').textContent=`σ = ${fmt(stress,1)} MPa`;$('length-'+o.k+'-strain').textContent=`εₐ = ${fmt(strain*100,3)}%`;$('length-'+o.k+'-short').textContent=`ΔL = ${fmt(short,3)} mm`;return{...o,strain,stress,F,short};});
+      chart($('length-chart'),{xMax:.42,yMax:80,y2Max:160,series:[{x:.4,y:80,cls:'s1'},{x:.4,y:80,cls:'s2'}],markers:vals.map(o=>({x:o.strain*100,y:o.F,cls:o.k==='a'?'s1':'s2',tip:`L₀ ${o.L} mm: ${fmt(o.F,1)} kN, ${fmt(o.stress,1)} MPa, ${fmt(o.strain*100,3)}%`})),xLabel:'Axial strain εₐ (%)',yLabel:'Force F (kN)',y2Label:'Axial stress σₐ (MPa)'});
+      chart($('shortening-chart'),{xMax:.42,yMax:.42,yDecimals:2,series:[{x:.4,y:.2,cls:'s1'},{x:.4,y:.4,cls:'s2'}],markers:vals.map(o=>({x:o.strain*100,y:o.short,cls:o.k==='a'?'s1':'s2',tip:`L₀ ${o.L} mm: shortening ${fmt(o.short,3)} mm at strain ${fmt(o.strain*100,3)}%`})),xLabel:'Axial strain εₐ (%)',yLabel:'Shortening ΔL (mm)'});
+    }
+    root.querySelectorAll('[role=tab]').forEach(b=>b.addEventListener('click',()=>{root.querySelectorAll('[role=tab]').forEach(x=>{const on=x===b;x.classList.toggle('active',on);x.setAttribute('aria-selected',on)});$('panel-area').hidden=b.id!=='tab-area';$('panel-length').hidden=b.id!=='tab-length';requestAnimationFrame(()=>b.id==='tab-area'?updateArea():updateLength())}));
+    $('force-slider').addEventListener('input',updateArea);$('length-slider').addEventListener('input',updateLength);$('length-mode').addEventListener('change',updateLength);
+    new ResizeObserver(()=>{if(!$('panel-area').hidden)updateArea();else updateLength()}).observe(root);
+    updateArea();updateLength();
+  })();
+  </script>
+</div>
+</section>
+    <section class="activity-panel" id="panel-stress-paths" data-panel="3" hidden><div id="stress-paths-pq" class="spq-root">
+  <h2>Activity 3 · Stress paths in <i>p</i>-<i>q</i> space</h2><p class="activity-question">How do uniaxial, hydrostatic and triaxial loading follow different paths?</p>
+  <div class="viz-controls" aria-label="Test controls">
+    <div class="viz-row" role="group" aria-label="Test type">
+      <button type="button" class="btn btn-primary" data-mode="uniaxial" aria-pressed="true">Uniaxial</button>
+      <button type="button" class="btn" data-mode="hydrostatic" aria-pressed="false">Hydrostatic</button>
+      <button type="button" class="btn" data-mode="triaxial" aria-pressed="false">Triaxial</button>
+    </div>
+    <label class="form-label spq-load">Loading progress: <strong class="tabular-nums" data-load-value>55%</strong>
+      <input class="form-range" data-load type="range" min="0" max="100" value="55" step="1">
+    </label>
+  </div>
+  <div class="spq-values tabular-nums" aria-live="polite">
+    <span>σ<sub>1</sub> <strong data-s1></strong> MPa</span>
+    <span>σ<sub>3</sub> <strong data-s3></strong> MPa</span>
+    <span><i>p</i> <strong data-p></strong> MPa</span>
+    <span><i>q</i> <strong data-q></strong> MPa</span>
+  </div>
+  <div class="spq-grid">
+    <section><h3 data-response-title>Stress-strain response</h3><svg data-response role="img" aria-label="Stress strain response with current loading point"></svg></section>
+    <section><h3>Loading path</h3><svg data-pq role="img" aria-label="Current stress path in p q space"></svg></section>
+  </div>
+  <div class="spq-path-label" data-path-label aria-live="polite"></div>
+</div>
+<style>
+#stress-paths-pq{color:var(--foreground);width:100%}#stress-paths-pq h2{margin:0 0 .75rem}#stress-paths-pq h3{margin:.4rem 0;text-align:center;font-weight:500}.spq-root .viz-controls{align-items:end;justify-content:space-between}.spq-load{min-width:min(100%,340px);flex:1}.spq-values{display:flex;gap:1.1rem;flex-wrap:wrap;justify-content:center;margin:.5rem 0}.spq-values span{white-space:nowrap}.spq-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.spq-grid section{min-width:0}.spq-grid svg{display:block;width:100%;height:auto}.spq-path-label{text-align:center;color:var(--muted-foreground);margin-top:.25rem}.spq-root .axis{stroke:var(--foreground);stroke-width:1}.spq-root .gridline{stroke:var(--border);stroke-width:1}.spq-root .trace{fill:none;stroke:var(--viz-series-1);stroke-width:3}.spq-root .preload{fill:none;stroke:var(--viz-series-2);stroke-width:3}.spq-root .current{fill:var(--viz-series-1);stroke:var(--background);stroke-width:2}.spq-root .axis-text,.spq-root .tick-text{fill:var(--foreground);font-size:12px}.spq-root .tick-text{fill:var(--muted-foreground)}.spq-root .guide{stroke:var(--border);stroke-dasharray:4 4}.spq-root rect[data-chart-frame]{fill:none;stroke:var(--border)}@media(max-width:680px){.spq-grid{grid-template-columns:1fr}.spq-root .viz-controls{align-items:stretch}.spq-load{min-width:100%}}
+</style>
+<script>
+(()=>{const root=document.getElementById('stress-paths-pq');const NS='http://www.w3.org/2000/svg';let mode='uniaxial';
+const load=root.querySelector('[data-load]');const $=s=>root.querySelector(s);const S=(tag,a,p,t)=>{const e=document.createElementNS(NS,tag);Object.entries(a||{}).forEach(([k,v])=>e.setAttribute(k,v));if(t!=null)e.textContent=t;(p||document.body).appendChild(e);return e};
+function state(m,u){if(m==='uniaxial'){const s1=120*u;return{s1,s3:0,p:s1/3,q:s1,x:s1/30000*100,y:s1,xlab:'Axial strain εₐ (%)',ylab:'Differential stress q (MPa)',label:'q = 3p'}}if(m==='hydrostatic'){const P=120*u;return{s1:P,s3:P,p:P,q:0,x:P/20000*100,y:P,xlab:'Volumetric strain εᵥ (%)',ylab:'Mean stress p (MPa)',label:'q = 0'}}const split=.30;if(u<=split){const Pc=30*u/split;return{s1:Pc,s3:Pc,p:Pc,q:0,x:0,y:0,xlab:'Axial strain after confinement εₐ (%)',ylab:'Differential stress q (MPa)',label:'Stage 1: hydrostatic confinement'}}const v=(u-split)/(1-split),q=150*v,Pc=30;return{s1:Pc+q,s3:Pc,p:Pc+q/3,q,x:q/30000*100,y:q,xlab:'Axial strain after confinement εₐ (%)',ylab:'Differential stress q (MPa)',label:'Stage 2: axial loading at constant Pᴄ'}}
+function path(m){return Array.from({length:101},(_,i)=>state(m,i/100))}
+function axes(svg,w,h,xmax,ymax,xlab,ylab){svg.innerHTML='';svg.setAttribute('viewBox',`0 0 ${w} ${h}`);const M={l:65,r:18,t:14,b:52},iw=w-M.l-M.r,ih=h-M.t-M.b;S('rect',{x:M.l,y:M.t,width:iw,height:ih,'data-chart-frame':''},svg);for(let i=0;i<=4;i++){const x=M.l+iw*i/4,y=M.t+ih*(1-i/4);S('line',{x1:x,y1:M.t,x2:x,y2:M.t+ih,class:'gridline'},svg);S('line',{x1:M.l,y1:y,x2:M.l+iw,y2:y,class:'gridline'},svg);S('text',{x,y:M.t+ih+20,'text-anchor':'middle',class:'tick-text'},svg,(xmax*i/4).toFixed(xmax<2?2:0));S('text',{x:M.l-10,y:y+4,'text-anchor':'end',class:'tick-text'},svg,(ymax*i/4).toFixed(0))}S('text',{x:M.l+iw/2,y:h-8,'text-anchor':'middle',class:'axis-text axis-title','data-axis':'x'},svg,xlab);const yt=S('text',{x:16,y:M.t+ih/2,'text-anchor':'middle',class:'axis-text axis-title','data-axis':'y',transform:`rotate(-90 16 ${M.t+ih/2})`},svg,ylab);return{M,iw,ih,X:v=>M.l+iw*v/xmax,Y:v=>M.t+ih*(1-v/ymax)}}
+function line(points,X,Y,keyx,keyy){return points.map((d,i)=>(i?'L':'M')+X(d[keyx]).toFixed(1)+','+Y(d[keyy]).toFixed(1)).join(' ')}
+function draw(){const u=+load.value/100,cur=state(mode,u),pts=path(mode);$('[data-load-value]').textContent=load.value+'%';[['[data-s1]',cur.s1],['[data-s3]',cur.s3],['[data-p]',cur.p],['[data-q]',cur.q]].forEach(([s,v])=>$(s).textContent=v.toFixed(1));$('[data-response-title]').textContent=mode==='hydrostatic'?'Pressure-volume response':'Differential stress-strain response';$('[data-path-label]').textContent=cur.label;
+const a=$('[data-response]'),w=Math.max(320,a.parentElement.clientWidth),h=310;const xmax=mode==='hydrostatic'?.65:.55,ymax=mode==='hydrostatic'?130:160,A=axes(a,w,h,xmax,ymax,cur.xlab,cur.ylab);const response=pts.filter((d,i)=>mode!=='triaxial'||i>=30);S('path',{d:line(response,A.X,A.Y,'x','y'),class:'trace'},a);S('circle',{cx:A.X(cur.x),cy:A.Y(cur.y),r:7,class:'current'},a);
+const b=$('[data-pq]'),B=axes(b,Math.max(320,b.parentElement.clientWidth),h,mode==='hydrostatic'?132:95,165,'Mean stress p (MPa)','Differential stress q (MPa)');if(mode==='triaxial'){const pre=pts.slice(0,31),ax=pts.slice(30);S('path',{d:line(pre,B.X,B.Y,'p','q'),class:'preload'},b);S('path',{d:line(ax,B.X,B.Y,'p','q'),class:'trace'},b)}else S('path',{d:line(pts,B.X,B.Y,'p','q'),class:'trace'},b);S('circle',{cx:B.X(cur.p),cy:B.Y(cur.q),r:7,class:'current'},b)}
+root.querySelectorAll('[data-mode]').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.mode;root.querySelectorAll('[data-mode]').forEach(b=>{const on=b===btn;b.setAttribute('aria-pressed',on);b.classList.toggle('btn-primary',on)});draw()}));load.addEventListener('input',draw);new ResizeObserver(draw).observe(root);draw()})();
+</script>
+</section>
+    <section class="activity-panel" id="panel-plane-mohr" data-panel="4" hidden><div id="plane-mohr" class="pm-root">
+  <h2>Activity 4 · One physical plane, one point on Mohr’s circle</h2><p class="activity-question">How does rotating the plane redistribute normal and shear traction?</p>
+  <div class="viz-controls">
+    <label class="form-label">Plane-normal angle θ: <strong class="tabular-nums" data-theta>60°</strong><input class="form-range" data-theta-range type="range" min="0" max="90" value="60" step="1"></label>
+    <label class="form-label">σ<sub>1</sub>: <strong class="tabular-nums" data-s1v>100 MPa</strong><input class="form-range" data-s1 type="range" min="20" max="180" value="100" step="5"></label>
+    <label class="form-label">σ<sub>3</sub>: <strong class="tabular-nums" data-s3v>20 MPa</strong><input class="form-range" data-s3 type="range" min="0" max="100" value="20" step="5"></label>
+  </div>
+  <div class="pm-values tabular-nums" aria-live="polite"><span>β <strong data-beta></strong></span><span>σ<sub>n</sub> <strong data-sn></strong> MPa</span><span>|τ| <strong data-tau></strong> MPa</span><span>Mohr angle <strong data-double></strong></span></div>
+  <div class="pm-grid"><section><h3>Plane orientation</h3><svg data-body role="img" aria-label="Specimen with rotating internal plane"></svg></section><section><h3>Mohr circle</h3><svg data-circle role="img" aria-label="Mohr circle with point corresponding to the plane orientation"></svg></section></div>
+</div>
+<style>
+#plane-mohr{color:var(--foreground);width:100%}#plane-mohr h2{margin:0 0 .75rem}#plane-mohr h3{margin:.4rem 0;text-align:center;font-weight:500}.pm-root .viz-controls{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:1rem}.pm-values{display:flex;justify-content:center;gap:1.25rem;flex-wrap:wrap;margin:.55rem 0}.pm-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:1rem}.pm-grid section{min-width:0}.pm-grid svg{display:block;width:100%;height:auto}.pm-root .specimen{fill:color-mix(in srgb,var(--muted) 35%,transparent);stroke:var(--border);stroke-width:2}.pm-root .plane{stroke:var(--viz-series-2);stroke-width:5}.pm-root .unit-normal{stroke:var(--muted-foreground);stroke-width:2;stroke-dasharray:5 4}.pm-root .normal-stress{stroke:var(--viz-series-1);fill:var(--viz-series-1);stroke-width:4}.pm-root .shear-stress{stroke:var(--viz-series-2);fill:var(--viz-series-2);stroke-width:4}.pm-root .stress{stroke:var(--foreground);fill:var(--foreground);stroke-width:2}.pm-root .circle-line{fill:none;stroke:var(--viz-series-1);stroke-width:3}.pm-root .radius{stroke:var(--viz-series-2);stroke-width:2}.pm-root .point{fill:var(--viz-series-2);stroke:var(--background);stroke-width:2}.pm-root .axis,.pm-root rect[data-chart-frame]{stroke:var(--foreground);fill:none}.pm-root .gridline{stroke:var(--border)}.pm-root text{fill:var(--foreground);font-size:12px}.pm-root .muted{fill:var(--muted-foreground)}@media(max-width:680px){.pm-root .viz-controls,.pm-grid{grid-template-columns:1fr}}
+</style>
+<script>
+(()=>{const root=document.getElementById('plane-mohr'),NS='http://www.w3.org/2000/svg',$=s=>root.querySelector(s),S=(t,a,p,x)=>{const e=document.createElementNS(NS,t);Object.entries(a||{}).forEach(([k,v])=>e.setAttribute(k,v));if(x!=null)e.textContent=x;(p||document.body).appendChild(e);return e};const th=$('[data-theta-range]'),s1r=$('[data-s1]'),s3r=$('[data-s3]');
+function arrow(svg,x1,y1,x2,y2,cls,label){S('line',{x1,y1,x2,y2,class:cls},svg);const a=Math.atan2(y2-y1,x2-x1),z=8;S('path',{d:`M${x2},${y2} L${x2-z*Math.cos(a-.5)},${y2-z*Math.sin(a-.5)} L${x2-z*Math.cos(a+.5)},${y2-z*Math.sin(a+.5)} Z`,class:cls},svg);if(label)S('text',{x:(x1+x2)/2+7,y:(y1+y2)/2-7},svg,label)}
+function axes(svg,w,h,xmax,ymax){svg.innerHTML='';svg.setAttribute('viewBox',`0 0 ${w} ${h}`);const M={l:62,r:20,t:18,b:48},iw=w-M.l-M.r,ih=h-M.t-M.b,X=v=>M.l+iw*v/xmax,Y=v=>M.t+ih*(1-(v+ymax)/(2*ymax));S('rect',{x:M.l,y:M.t,width:iw,height:ih,'data-chart-frame':''},svg);S('line',{x1:M.l,y1:Y(0),x2:M.l+iw,y2:Y(0),class:'axis'},svg);for(let i=0;i<=4;i++){const v=xmax*i/4,x=X(v);S('line',{x1:x,y1:M.t,x2:x,y2:M.t+ih,class:'gridline'},svg);S('text',{x,y:M.t+ih+20,'text-anchor':'middle',class:'muted'},svg,v.toFixed(0))}for(let i=-2;i<=2;i++){const v=ymax*i/2,y=Y(v);S('line',{x1:M.l,y1:y,x2:M.l+iw,y2:y,class:'gridline'},svg);S('text',{x:M.l-8,y:y+4,'text-anchor':'end',class:'muted'},svg,v.toFixed(0))}S('text',{x:M.l+iw/2,y:h-8,'text-anchor':'middle','data-axis':'x'},svg,'Normal stress σₙ (MPa)');S('text',{x:15,y:M.t+ih/2,'text-anchor':'middle',transform:`rotate(-90 15 ${M.t+ih/2})`,'data-axis':'y'},svg,'Shear stress τ (MPa)');return{X,Y,M,iw,ih}}
+function draw(){let s1=+s1r.value,s3=+s3r.value;if(s3>s1){s3=s1;s3r.value=s3}const theta=+th.value*Math.PI/180,beta=90-+th.value,C=(s1+s3)/2,R=(s1-s3)/2,sn=C+R*Math.cos(2*theta),tau=R*Math.sin(2*theta);$('[data-theta]').textContent=th.value+'°';$('[data-beta]').textContent=beta.toFixed(0)+'°';$('[data-s1v]').textContent=s1.toFixed(0)+' MPa';$('[data-s3v]').textContent=s3.toFixed(0)+' MPa';$('[data-sn]').textContent=sn.toFixed(1);$('[data-tau]').textContent=Math.abs(tau).toFixed(1);$('[data-double]').textContent=(2*+th.value).toFixed(0)+'°';
+const body=$('[data-body]'),bw=Math.max(300,body.parentElement.clientWidth),bh=320;body.innerHTML='';body.setAttribute('viewBox',`0 0 ${bw} ${bh}`);const cx=bw/2,cy=160;S('rect',{x:cx-70,y:35,width:140,height:250,rx:8,class:'specimen'},body);arrow(body,cx,8,cx,55,'stress','σ₁');arrow(body,cx,312,cx,265,'stress','σ₁');arrow(body,cx-120,cy,cx-68,cy,'stress','σ₃');arrow(body,cx+120,cy,cx+68,cy,'stress','σ₃');const pa=theta,ux=Math.cos(pa),uy=-Math.sin(pa),dx=95*ux,dy=95*uy;S('line',{x1:cx-dx,y1:cy-dy,x2:cx+dx,y2:cy+dy,class:'plane'},body);const nx=Math.cos(pa+Math.PI/2),ny=-Math.sin(pa+Math.PI/2);S('line',{x1:cx,y1:cy,x2:cx+55*nx,y2:cy+55*ny,class:'unit-normal'},body);S('text',{x:cx+58*nx,y:cy+58*ny,class:'muted'},body,'n');const ln=18+62*sn/Math.max(s1,1),lt=R>0?62*Math.abs(tau)/R:0;arrow(body,cx-ln*nx,cy-ln*ny,cx,cy,'normal-stress','σₙ');if(lt>2)arrow(body,cx,cy,cx+lt*ux,cy+lt*uy,'shear-stress','τ');else S('text',{x:cx+10,y:cy-10,class:'muted'},body,'τ = 0');S('text',{x:cx+78,y:cy-90,class:'muted'},body,`θ = ${th.value}°`);S('text',{x:cx+78,y:cy-70,class:'muted'},body,`β = ${beta}°`);
+const circ=$('[data-circle]'),cw=Math.max(340,circ.parentElement.clientWidth),ch=320,iw=cw-82,ih=ch-66,xmax=Math.max(200,s1*1.12,2*R*1.25*iw/ih),ymax=xmax*ih/(2*iw),A=axes(circ,cw,ch,xmax,ymax);const pts=Array.from({length:181},(_,i)=>{const a=2*Math.PI*i/180;return[A.X(C+R*Math.cos(a)),A.Y(R*Math.sin(a))]});S('path',{d:pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)).join(' '),class:'circle-line'},circ);S('line',{x1:A.X(C),y1:A.Y(0),x2:A.X(sn),y2:A.Y(tau),class:'radius'},circ);S('circle',{cx:A.X(sn),cy:A.Y(tau),r:7,class:'point'},circ);S('text',{x:A.X(s1),y:A.Y(0)+18,'text-anchor':'middle'},circ,'σ₁');S('text',{x:A.X(s3),y:A.Y(0)+18,'text-anchor':'middle'},circ,'σ₃');S('text',{x:A.X(sn)+10,y:A.Y(tau)-10},circ,'P')}
+[th,s1r,s3r].forEach(x=>x.addEventListener('input',draw));new ResizeObserver(draw).observe(root);draw()})();
+</script>
+</section>
+    <section class="activity-panel" id="panel-failure" data-panel="5" hidden><div id="coulomb-explorer" class="cf-root">
+  <h2>Activity 5 · Confinement, differential stress and failure</h2><p class="activity-question">When does the stress state reach the Coulomb failure envelope?</p>
+  <div class="viz-controls cf-controls">
+    <label class="form-label">Confining pressure P<sub>c</sub>: <strong class="tabular-nums" data-pcv>20 MPa</strong><input class="form-range" data-pc type="range" min="0" max="120" value="20" step="5"></label>
+    <label class="form-label">Differential stress <i>q</i>: <strong class="tabular-nums" data-qv>80 MPa</strong><input class="form-range" data-q type="range" min="0" max="260" value="80" step="5"></label>
+    <label class="form-label">Cohesion τ<sub>0</sub>: <strong class="tabular-nums" data-cv>10 MPa</strong><input class="form-range" data-c type="range" min="0" max="40" value="10" step="2"></label>
+    <label class="form-label">Friction μ<sub>i</sub>: <strong class="tabular-nums" data-muv>0.60</strong><input class="form-range" data-mu type="range" min="0.20" max="1.00" value="0.60" step="0.05"></label>
+  </div>
+  <div class="cf-values tabular-nums"><span>σ<sub>1</sub> <strong data-s1></strong> MPa</span><span><i>p</i> <strong data-p></strong> MPa</span><span>R <strong data-r></strong> MPa</span><span>β<sub>f</sub> <strong data-beta></strong></span></div>
+  <div class="cf-status" data-status aria-live="polite"></div>
+  <div class="cf-grid"><section><h3>Mohr circle and failure envelope</h3><svg data-chart role="img" aria-label="Mohr circle relative to a Coulomb failure envelope"></svg></section><section><h3>Predicted failure plane</h3><svg data-specimen role="img" aria-label="Specimen showing the predicted Coulomb failure plane"></svg></section></div>
+</div>
+<style>
+#coulomb-explorer{color:var(--foreground);width:100%}#coulomb-explorer h2{margin:0 0 .75rem}#coulomb-explorer h3{margin:.4rem 0;text-align:center;font-weight:500}.cf-controls{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem 1rem}.cf-values{display:flex;justify-content:center;gap:1.15rem;flex-wrap:wrap;margin:.5rem 0}.cf-status{text-align:center;font-weight:500;margin:.35rem 0;color:var(--foreground)}.cf-status.fail{color:var(--destructive)}.cf-grid{display:grid;grid-template-columns:1.45fr .55fr;gap:1rem}.cf-grid section{min-width:0}.cf-grid svg{display:block;width:100%;height:auto}.cf-root .circle{fill:none;stroke:var(--viz-series-1);stroke-width:3}.cf-root .envelope{stroke:var(--viz-series-2);stroke-width:3}.cf-root .tangent{fill:var(--viz-series-2);stroke:var(--background);stroke-width:2}.cf-root .axis,.cf-root rect[data-chart-frame]{fill:none;stroke:var(--foreground)}.cf-root .gridline{stroke:var(--border)}.cf-root text{fill:var(--foreground);font-size:12px}.cf-root .muted{fill:var(--muted-foreground)}.cf-root .specimen{fill:color-mix(in srgb,var(--muted) 35%,transparent);stroke:var(--border);stroke-width:2}.cf-root .plane{stroke:var(--viz-series-2);stroke-width:6}.cf-root .stress{stroke:var(--foreground);stroke-width:2}@media(max-width:680px){.cf-controls,.cf-grid{grid-template-columns:1fr}}
+</style>
+<script>
+(()=>{const root=document.getElementById('coulomb-explorer'),NS='http://www.w3.org/2000/svg',$=s=>root.querySelector(s),S=(t,a,p,x)=>{const e=document.createElementNS(NS,t);Object.entries(a||{}).forEach(([k,v])=>e.setAttribute(k,v));if(x!=null)e.textContent=x;(p||document.body).appendChild(e);return e};const pc=$('[data-pc]'),qr=$('[data-q]'),coh=$('[data-c]'),mur=$('[data-mu]');
+function arrow(svg,x1,y1,x2,y2,label){S('line',{x1,y1,x2,y2,class:'stress'},svg);const a=Math.atan2(y2-y1,x2-x1),z=8;S('path',{d:`M${x2},${y2} L${x2-z*Math.cos(a-.5)},${y2-z*Math.sin(a-.5)} L${x2-z*Math.cos(a+.5)},${y2-z*Math.sin(a+.5)} Z`,class:'stress'},svg);if(label)S('text',{x:(x1+x2)/2+5,y:(y1+y2)/2-5},svg,label)}
+function axes(svg,w,h,xmax,ymax){svg.innerHTML='';svg.setAttribute('viewBox',`0 0 ${w} ${h}`);const M={l:62,r:18,t:15,b:48},iw=w-M.l-M.r,ih=h-M.t-M.b,X=v=>M.l+iw*v/xmax,Y=v=>M.t+ih*(1-v/ymax);S('rect',{x:M.l,y:M.t,width:iw,height:ih,'data-chart-frame':''},svg);for(let i=0;i<=4;i++){const x=M.l+iw*i/4,y=M.t+ih*(1-i/4);S('line',{x1:x,y1:M.t,x2:x,y2:M.t+ih,class:'gridline'},svg);S('line',{x1:M.l,y1:y,x2:M.l+iw,y2:y,class:'gridline'},svg);S('text',{x,y:M.t+ih+20,'text-anchor':'middle',class:'muted'},svg,(xmax*i/4).toFixed(0));S('text',{x:M.l-8,y:y+4,'text-anchor':'end',class:'muted'},svg,(ymax*i/4).toFixed(0))}S('text',{x:M.l+iw/2,y:h-8,'text-anchor':'middle','data-axis':'x'},svg,'Normal stress σₙ (MPa)');S('text',{x:15,y:M.t+ih/2,'text-anchor':'middle',transform:`rotate(-90 15 ${M.t+ih/2})`,'data-axis':'y'},svg,'Shear stress |τ| (MPa)');return{X,Y,M,iw,ih}}
+function draw(){const Pc=+pc.value,q=+qr.value,c=+coh.value,mu=+mur.value,s1=Pc+q,p=Pc+q/3,C=Pc+q/2,R=q/2,phi=Math.atan(mu),beta=(Math.PI/4-phi/2)*180/Math.PI,dist=(c+mu*C)/Math.sqrt(1+mu*mu),margin=dist-R,fail=margin<=0;$('[data-pcv]').textContent=Pc.toFixed(0)+' MPa';$('[data-qv]').textContent=q.toFixed(0)+' MPa';$('[data-cv]').textContent=c.toFixed(0)+' MPa';$('[data-muv]').textContent=mu.toFixed(2);$('[data-s1]').textContent=s1.toFixed(0);$('[data-p]').textContent=p.toFixed(1);$('[data-r]').textContent=R.toFixed(1);$('[data-beta]').textContent=beta.toFixed(1)+'°';const st=$('[data-status]');st.classList.toggle('fail',fail);st.textContent=fail?'Failure envelope reached':'Stable: '+margin.toFixed(1)+' MPa from tangency';
+const chart=$('[data-chart]'),w=Math.max(380,chart.parentElement.clientWidth),h=330,iw=w-80,ih=h-63,xmax=Math.max(180,s1*1.12,R*1.25*iw/ih),ymax=xmax*ih/iw,A=axes(chart,w,h,xmax,ymax);const circlePts=Array.from({length:121},(_,i)=>{const a=Math.PI-Math.PI*i/120;return[A.X(C+R*Math.cos(a)),A.Y(R*Math.sin(a))]});S('path',{d:circlePts.map((v,i)=>(i?'L':'M')+v[0].toFixed(1)+','+v[1].toFixed(1)).join(' '),class:'circle'},chart);const xEnd=Math.max(0,Math.min(xmax,(ymax-c)/mu));S('line',{x1:A.X(0),y1:A.Y(c),x2:A.X(xEnd),y2:A.Y(c+mu*xEnd),class:'envelope'},chart);const lx=xEnd*.58;S('text',{x:A.X(lx),y:A.Y(c+mu*lx)-8},chart,'|τ| = τ₀ + μᵢσₙ');S('text',{x:A.X(Pc),y:A.Y(0)+18,'text-anchor':'middle'},chart,'σ₃');S('text',{x:A.X(s1),y:A.Y(0)+18,'text-anchor':'middle'},chart,'σ₁');if(fail){const nx=-mu/Math.sqrt(1+mu*mu),ny=1/Math.sqrt(1+mu*mu),tx=C+R*nx,ty=R*ny;S('circle',{cx:A.X(tx),cy:A.Y(ty),r:7,class:'tangent'},chart);S('text',{x:A.X(tx)+10,y:A.Y(ty)-10},chart,'critical plane')}
+const sp=$('[data-specimen]'),sw=Math.max(250,sp.parentElement.clientWidth),sh=330,cx=sw/2,cy=170;sp.innerHTML='';sp.setAttribute('viewBox',`0 0 ${sw} ${sh}`);S('rect',{x:cx-62,y:48,width:124,height:238,rx:7,class:'specimen'},sp);arrow(sp,cx,15,cx,65,'σ₁');arrow(sp,cx,318,cx,270,'σ₁');arrow(sp,cx-105,cy,cx-60,cy,'σ₃');arrow(sp,cx+105,cy,cx+60,cy,'σ₃');const a=(90-beta)*Math.PI/180,dx=82*Math.cos(a),dy=-82*Math.sin(a);S('line',{x1:cx-dx,y1:cy-dy,x2:cx+dx,y2:cy+dy,class:'plane',opacity:fail?1:.35},sp);S('text',{x:cx,y:305,'text-anchor':'middle',class:'muted'},sp,`βf = ${beta.toFixed(1)}°`)}
+[pc,qr,coh,mur].forEach(x=>x.addEventListener('input',draw));new ResizeObserver(draw).observe(root);draw()})();
+</script>
+</section>
+  </main>
+  <footer class="lecture-footer">
+    <span id="activity-counter" aria-live="polite">Activity 1 of 5</span>
+    <span>Use ← and → to change activity</span>
+    <div class="footer-nav"><button type="button" class="btn" id="previous" disabled>Previous</button><button type="button" class="btn" id="next">Next</button></div>
+  </footer>
+</div>
+<script>
+(()=>{
+  const buttons=[...document.querySelectorAll('[data-activity]')];
+  const panels=[...document.querySelectorAll('.activity-panel')];
+  const previous=document.getElementById('previous'),next=document.getElementById('next'),counter=document.getElementById('activity-counter');
+  let current=1;
+  function show(number,focus=false){
+    current=Math.max(1,Math.min(5,number));
+    buttons.forEach(button=>button.setAttribute('aria-selected',String(+button.dataset.activity===current)));
+    panels.forEach(panel=>{const key=panel.dataset.panel;panel.hidden=key==='foundation'?![1,2].includes(current):+key!==current});
+    if(current===1)document.getElementById('tab-area')?.click();
+    if(current===2)document.getElementById('tab-length')?.click();
+    previous.disabled=current===1;next.disabled=current===5;counter.textContent='Activity '+current+' of 5';
+    requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')));
+    if(focus)buttons[current-1].focus();
+  }
+  buttons.forEach(button=>button.addEventListener('click',()=>show(+button.dataset.activity)));
+  previous.addEventListener('click',()=>show(current-1));next.addEventListener('click',()=>show(current+1));
+  document.addEventListener('keydown',event=>{if(['INPUT','SELECT','TEXTAREA'].includes(document.activeElement?.tagName))return;if(event.key==='ArrowRight'){event.preventDefault();show(current+1)}if(event.key==='ArrowLeft'){event.preventDefault();show(current-1)}});
+  document.getElementById('fullscreen').addEventListener('click',async()=>{if(!document.fullscreenElement)await document.documentElement.requestFullscreen?.();else await document.exitFullscreen?.()});
+  document.addEventListener('pointerover',event=>{const target=event.target.closest?.('[data-tooltip]');if(!target)return;let tip=document.querySelector('.tooltip-floating');if(!tip){tip=document.createElement('div');tip.className='tooltip-floating';document.body.appendChild(tip)}tip.textContent=target.dataset.tooltip;tip.hidden=false});
+  document.addEventListener('pointermove',event=>{const tip=document.querySelector('.tooltip-floating:not([hidden])');if(tip){tip.style.left=Math.min(innerWidth-tip.offsetWidth-8,event.clientX+12)+'px';tip.style.top=Math.min(innerHeight-tip.offsetHeight-8,event.clientY+12)+'px'}});
+  document.addEventListener('pointerout',event=>{if(event.target.closest?.('[data-tooltip]')){const tip=document.querySelector('.tooltip-floating');if(tip)tip.hidden=true}});
+  show(1);
+})();
+</script>
+</body>
+</html>
