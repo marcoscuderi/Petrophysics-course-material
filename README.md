@@ -44,6 +44,6 @@ Dependencies are inferred from the supplied code and are not version-pinned. Pyt
 
 ## Provenance and reuse
 
-Materials were organized from the final supplied Drive folders. The Confalonieri and papers directories, class-group spreadsheet and generated system caches are excluded. Source files are preserved byte-for-byte except five large slide decks, which are split losslessly into ordered PDF parts to fit the upload limit. Complete original PDFs are linked in [DATA.md](DATA.md); [MATERIALS.csv](MATERIALS.csv) records their original labels, repository paths and checksums.
+Source files are preserved byte-for-byte except five large slide decks, which are split losslessly into ordered PDF parts to fit the upload limit. Complete original PDFs are linked in [DATA.md](DATA.md); [MATERIALS.csv](MATERIALS.csv) records their original labels, repository paths and checksums.
 
 The course draws on *Experimental Rock Deformation — The Brittle Field* by Paterson and Wong. The book and research-paper PDFs are not distributed here. Third-party figures and material retain their original rights and attribution. No additional reuse license has been assigned as part of this transfer.
