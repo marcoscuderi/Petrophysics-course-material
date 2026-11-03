@@ -6,20 +6,20 @@ Teaching materials by Marco Scuderi, Sapienza Università di Roma: lecture slide
 
 The available lecture folders are numbered consecutively in their original teaching order. This is an index of the supplied materials, not a reconstruction of missing sessions. Original file names and numbers printed within slides are retained for traceability and compatibility.
 
-| Lecture | Topic | Original Drive folder |
+| Lecture | Topic | 
 |---|---|---|
-| 01 | [Course introduction](lectures/01/) | L00 |
-| 02 | [Describing rocks quantitatively](lectures/02/) | L01 |
-| 03 | [Stress and strain](lectures/03/) | L02 |
-| 04 | [Elastic deformation](lectures/04/) | L03 |
-| 05 | [Elastic waves and laboratory ultrasonics](lectures/05/) | L04 |
-| 06 | [Elastic waves as rock-state probes I](lectures/06/) | L05 |
-| 07 | [Elastic waves as rock-state probes II](lectures/07/) | L06 |
-| 08 | [UCS data analysis and mechanical–acoustic integration](lectures/08/) | L09 |
-| 09 | [Brittle fracture and acoustic emission I](lectures/09/) | L13 |
-| 10 | [Brittle fracture and acoustic emission II](lectures/10/) | L14 |
-| 11 | [UCS and acoustic-emission laboratory](lectures/11/) | L15_lab |
-| 12 | [Acoustic-emission data analysis](lectures/12/) | L16 |
+| 01 | [Course introduction](lectures/01/) | 
+| 02 | [Describing rocks quantitatively](lectures/02/) | 
+| 03 | [Stress and strain](lectures/03/) | 
+| 04 | [Elastic deformation](lectures/04/) | 
+| 05 | [Elastic waves and laboratory ultrasonics](lectures/05/) | 
+| 06 | [Elastic waves as rock-state probes I](lectures/06/) | 
+| 07 | [Elastic waves as rock-state probes II](lectures/07/) | 
+| 08 | [UCS data analysis and mechanical–acoustic integration](lectures/08/) | 
+| 09 | [Brittle fracture and acoustic emission I](lectures/09/) | 
+| 10 | [Brittle fracture and acoustic emission II](lectures/10/) | 
+| 11 | [UCS and acoustic-emission laboratory](lectures/11/) | 
+| 12 | [Acoustic-emission data analysis](lectures/12/) | 
 
 ## Using the materials
 
